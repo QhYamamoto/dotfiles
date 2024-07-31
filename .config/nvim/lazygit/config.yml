@@ -1,0 +1,5 @@
+quitOnTopLevelReturn: true
+gui:
+  theme:
+    selectedLineBgColor:
+      - "#30363f"

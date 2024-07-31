@@ -1,0 +1,24 @@
+{
+  "coc.preferences.formatOnSave": true,
+  "coc.source.file.ignoreHidden": false,
+  "[php]": {
+    "coc.preferences.formatOnSave": false
+  },
+  "[blade]": {
+    "coc.preferences.formatOnSave": false
+  },
+  "inlayHint.enable": false,
+  "inlayHint.display": false,
+  "pyright.inlayHints.variableTypes": false,
+  "pyright.inlayHints.parameterTypes": false,
+  "pyright.inlayHints.functionReturnTypes": false,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportArgumentType": "none",
+    "reportOptionalMemberAccess": "none",
+    "reportPossiblyUnboundVariable": "none"
+  },
+  "powershell.integratedConsole.showOnStartup": false,
+  "markdownlint.config": {
+    "line-length": false
+  }
+}
