@@ -1,6 +1,9 @@
 name: Execute init.sh on WSL
 
-on: [push]
+on:
+  push:
+    paths:
+      - init.sh
 
 jobs:
   run-initializer:
