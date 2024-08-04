@@ -25,6 +25,7 @@ keymap.set("n", "<C-c>", "<C-w>w", { noremap = true, silent = true }) -- jump to
 keymap.set("n", "<LEADER>q", "<CMD>qa<CR>")
 keymap.set("n", "<M-u>", "<C-a>", { noremap = true, silent = true })
 keymap.set("n", "<M-d>", "<C-x>", { noremap = true, silent = true })
+keymap.set("n", "<M-f>", "w", { noremap = true, silent = true })
 
 -- window
 keymap.set("n", "<LEADER>sv", "<C-w>v", { desc = "Split window vertically" })
