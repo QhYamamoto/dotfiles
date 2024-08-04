@@ -4,6 +4,10 @@
 WSL_HOME="$HOME"
 WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
 
+##################################################
+# Copy or create symbolic link for config files
+##################################################
+
 # function to copy files/directories
 copy_config() {
   local source="$1"
@@ -20,11 +24,12 @@ copy_config() {
   if [ $? -eq 0 ]; then
     echo "Copied: $source -> $destination"
   else
-    echo "Error: Failed to copy from $source to $destination" >&2
+    echo "Error: Failed to copy from $source to $destination"
+    exit 1
   fi
 }
 
-# function to create symbolic lin/bashk
+# function to create symbolic link
 create_symlink() {
   local target="$1"
   local link_name="$2"
@@ -45,7 +50,8 @@ create_symlink() {
   if ln -sfn "$target" "$link_name"; then
     echo "Symlink created: $link_name -> $target"
   else
-    echo "Error: Failed to create symlink: $link_name -> $target" >&2
+    echo "Error: Failed to create symlink: $link_name -> $target"
+    exit 1
   fi
 }
 
@@ -68,3 +74,75 @@ for config_path_key in "${!config_paths[@]}"; do
     create_symlink "$config_path_key" "$config_path_value"
   fi
 done
+
+verify_installation() {
+  local verification_cmd="$1"
+
+  if [ -z "$verification_cmd" ]; then
+    continue
+  fi
+  output=$($verification_cmd 2>&1)
+  if [[ "$output" != *"command not found"* ]]; then
+    echo "The package '$package_name' installed successfully."
+  else
+    echo "Error: The package '$package_name' isn't insalled."
+    exit 1
+  fi
+}
+
+##################################################
+# Install packages
+##################################################
+# installation by apt
+# packages associative array (["packagename"]="verification cmd")
+declare -A packages=(
+  ["bat"]="ln -s /usr/bin/batcat ~/.local/bin/bat && bat --version"
+  ["curl"]="curl --version"
+  ["fd-find"]="ln -s $(which fdfind) ~/.local/bin/fd && fd --version"
+  ["fzf"]="fzf --version"
+  ["lua5.4"]="lua -v"
+  ["liblua5.4-dev"]=""
+  ["git"]="git --version"
+  ["neovim"]="nvim --version"
+  ["npm"]="npm --version"
+  ["ripgrep"]="rg --version"
+  ["yarn"]="yarn --version"
+  ["zsh"]="zsh -version"
+  ["zsh-autosuggestions"]=""
+  ["zsh-syntax-highlighting"]=""
+)
+
+IFS=" "
+
+for package_name in "${!packages[@]}"; do
+  # install
+  sudo apt update -qq && sudo apt install -y $package_name
+
+  # check if the installations have been succeeded
+  verification_cmd=${packages[$package_name]}
+  verify_installation "$verification_cmd"
+done
+
+# install eza
+sudo apt update
+sudo apt install -y gpg
+sudo mkdir -p /etc/apt/keyrings
+wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.list
+sudo apt update
+sudo apt install -y eza
+
+verify_installation "eza --version"
+
+
+# TODO: Check if the installations below have been succeeded.
+# installation by curl
+# nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+# zoxide
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+
+# installation by git
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
