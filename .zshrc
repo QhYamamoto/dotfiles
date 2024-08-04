@@ -187,3 +187,5 @@ alias ls="eza --color=always --icons=always --long --git --no-filesize --no-time
 # Better cd
 eval "$(zoxide init zsh)"
 alias cd=z
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
