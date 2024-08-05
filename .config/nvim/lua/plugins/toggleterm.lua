@@ -27,7 +27,7 @@ return {
 
     local Terminal = require("toggleterm.terminal").Terminal
     local lazygit = Terminal:new({
-      cmd = "lazygit -ucf ~/.config/nvim/lazygit/config.yml",
+      cmd = "lazygit",
       hidden = true,
       direction = "float",
       count = 1000
