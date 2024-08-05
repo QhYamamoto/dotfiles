@@ -101,7 +101,6 @@ declare -A packages=(
   ["bat"]="ln -s /usr/bin/batcat ~/.local/bin/bat && bat --version"
   ["curl"]="curl --version"
   ["fd-find"]="ln -s $(which fdfind) ~/.local/bin/fd && fd --version"
-  ["fzf"]="fzf --version"
   ["lua5.4"]="lua -v"
   ["liblua5.4-dev"]=""
   ["git"]="git --version"
@@ -125,6 +124,8 @@ for package_name in "${!packages[@]}"; do
   verify_installation "$verification_cmd"
 done
 
+cd
+
 # install eza
 sudo apt update
 sudo apt install -y gpg
@@ -137,8 +138,6 @@ sudo apt install -y eza
 
 verify_installation "eza --version"
 
-
-# TODO: Check if the installations below have been succeeded.
 # installation by curl
 # nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -146,5 +145,22 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 # zoxide
 curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
+# git-completion
+curl -o ~/.zsh/git-completion.sh \
+    https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+
+# git-prompt
+curl -o ~/.zsh/git-prompt.sh \
+    https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+# install brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+sudo apt-get install build-essential
+brew install gcc
+
 # installation by git
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+
+# install fzf
+git clone --depth=1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --all
