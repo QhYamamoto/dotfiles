@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - init.sh
+      - .github/workflows/run-initializer.yml
 
 jobs:
   run-initializer:
