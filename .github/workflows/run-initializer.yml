@@ -1,4 +1,4 @@
-name: Execute init.sh on WSL
+name: Execute init.sh on ubuntu-latest
 
 on:
   push:
