@@ -3,3 +3,4 @@ gui:
   theme:
     selectedLineBgColor:
       - "#30363f"
+  windowSize: half
