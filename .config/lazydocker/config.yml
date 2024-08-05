@@ -1,0 +1,7 @@
+gui:
+  theme:
+    selectedLineBgColor:
+      - "#30363f"
+  showBottomLine: false
+  screenMode: "half"
+  containerStatusHealthStyle: "icon"
