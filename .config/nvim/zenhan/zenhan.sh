@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source ~/.config/nvim/zenhan/.env
+WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
 
-EXE_PATH="$WINDOWS_HOME_DIR/AppData/Local/Temp/zenhan.exe"
+EXE_PATH="$WIN_HOME/AppData/Local/Temp/zenhan.exe"
 
 # copy zenhan.exe to Windows temp directory
 cp ~/.config/nvim/zenhan/zenhan.exe $EXE_PATH
