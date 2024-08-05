@@ -7,7 +7,7 @@ if _wt.config_builder then config = _wt.config_builder() end
 
 config.colors = require "colors"
 config.window_decorations = "RESIZE"
-config.default_prog = { "local", "~" }
+config.default_prog = { "wsl", "~" }
 config.window_background_opacity = 0.75
 config.window_close_confirmation = "NeverPrompt"
 config.audible_bell = "Disabled"
