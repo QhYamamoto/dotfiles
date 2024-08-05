@@ -60,6 +60,7 @@ declare -A config_paths=(
   ["$WSL_HOME/dotfiles/.zshrc"]="$WSL_HOME/.zshrc"
   ["$WSL_HOME/dotfiles/zsh/p10k.zsh"]="$WSL_HOME/.p10k.zsh"
   ["$WSL_HOME/dotfiles/.config/nvim"]="$WSL_HOME/.config/nvim"
+  ["$WSL_HOME/dotfiles/.config/lazygit"]="$WSL_HOME/.config/lazygit"
   ["$WSL_HOME/dotfiles/.config/wezterm"]="$WIN_HOME/.config/wezterm"
 )
 
