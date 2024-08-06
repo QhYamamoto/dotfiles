@@ -3,4 +3,5 @@ return {
   "christoomey/vim-tmux-navigator",
   "mattn/vim-maketable",
   'anuvyklack/pretty-fold.nvim',
+  "mcauley-penney/tidy.nvim",
 }
