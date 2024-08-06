@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export WSL_HOME="$HOME"
-export WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
-export ZENHAN_EXE="$WIN_HOME/AppData/Local/zenhan.exe"
+WSL_HOME="$HOME"
+WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
+ZENHAN_EXE="$WIN_HOME/AppData/Local/zenhan.exe"
 
 
 ##################################################
@@ -63,7 +63,7 @@ create_symlink() {
 declare -A config_paths=(
   ["$WSL_HOME/dotfiles/.zshrc"]="$WSL_HOME/.zshrc"
   ["$WSL_HOME/dotfiles/zsh/p10k.zsh"]="$WSL_HOME/.p10k.zsh"
-  ["$WSL_HOME/dotfiles/zsh/zenhan.sh"]="$WSL_HOME/.zenhan.sh"
+  ["$WSL_HOME/dotfiles/zsh/zenhan.zsh"]="$WSL_HOME/.zenhan.zsh"
   ["$WSL_HOME/dotfiles/.config/nvim"]="$WSL_HOME/.config/nvim"
   ["$WSL_HOME/dotfiles/.config/lazygit"]="$WSL_HOME/.config/lazygit"
   ["$WSL_HOME/dotfiles/.config/lazydocker"]="$WSL_HOME/.config/lazydocker"

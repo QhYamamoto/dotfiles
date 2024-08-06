@@ -8,10 +8,10 @@ vim.api.nvim_create_autocmd({
   group = "lua",
   callback = function()
     local home = os.getenv("HOME")
-    local script_path = home .. "/.zenhan.sh"
+    local script_path = home .. "/.zenhan.zsh"
 
     local uv = vim.loop
-    uv.spawn("bash", {
+    uv.spawn("zsh", {
       args = { script_path },
       stdio = { nil, nil, nil },
     })
