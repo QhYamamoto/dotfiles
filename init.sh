@@ -1,23 +1,27 @@
 #!/bin/bash
 
-# home directories
-WSL_HOME="$HOME"
-WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
+export WSL_HOME="$HOME"
+export WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
+export ZENHAN_EXE="$WIN_HOME/AppData/Local/zenhan.exe"
+
 
 ##################################################
 # Copy or create symbolic link for config files
 ##################################################
-
 # function to copy files/directories
-copy_config() {
+copy_item() {
   local source="$1"
   local destination="$2"
 
   if [ -d "$destination" ]; then
     rm -rf "$destination"
-    cp -r "$source" "$destination"
   elif [ -f "$destination" ]; then
     rm "$destination"
+  fi
+
+  if [ -d $source ]; then
+    cp -r "$source" "$destination"
+  elif [ -f $source ]; then
     cp "$source" "$destination"
   fi
 
@@ -59,6 +63,7 @@ create_symlink() {
 declare -A config_paths=(
   ["$WSL_HOME/dotfiles/.zshrc"]="$WSL_HOME/.zshrc"
   ["$WSL_HOME/dotfiles/zsh/p10k.zsh"]="$WSL_HOME/.p10k.zsh"
+  ["$WSL_HOME/dotfiles/zsh/zenhan.sh"]="$WSL_HOME/.zenhan.sh"
   ["$WSL_HOME/dotfiles/.config/nvim"]="$WSL_HOME/.config/nvim"
   ["$WSL_HOME/dotfiles/.config/lazygit"]="$WSL_HOME/.config/lazygit"
   ["$WSL_HOME/dotfiles/.config/lazydocker"]="$WSL_HOME/.config/lazydocker"
@@ -70,7 +75,7 @@ for config_path_key in "${!config_paths[@]}"; do
   config_path_value="${config_paths[$config_path_key]}"
   if [[ "$config_path_value" == "$WIN_HOME/"* ]]; then
     # if config_path starts with $WIN_HOME, copy it to windows home directory
-    copy_config "$config_path_key" "$config_path_value"
+    copy_item "$config_path_key" "$config_path_value"
   else
     # else create symbolic link
     create_symlink "$config_path_key" "$config_path_value"
@@ -152,6 +157,16 @@ curl -o ~/.zsh/git-completion.sh \
 # git-prompt
 curl -o ~/.zsh/git-prompt.sh \
     https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+# zenhan
+[[ ! -f zenhan.zip ]] || rm zenhan.zip
+[[ ! -d zenhan ]] || rm -rf zenhan
+curl -fLO https://github.com/iuchim/zenhan/releases/download/v0.0.1/zenhan.zip
+unzip zenhan.zip
+chmod u+x zenhan/bin64/zenhan.exe
+[[ ! -d $(dirname "$ZENHAN_EXE") ]] || copy_item zenhan/bin64/zenhan.exe "$ZENHAN_EXE"
+rm zenhan.zip
+rm -rf zenhan
 
 # install brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
