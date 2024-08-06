@@ -43,6 +43,17 @@ return {
           },
         },
       },
+      pickers = {
+        find_files = {
+          find_command = { 'rg', '--ignore', '--iglob', '!.git', '--hidden', '--files' }
+        },
+        grep_string = {
+          additional_args = { '--hidden' }
+        },
+        live_grep = {
+          additional_args = { '--hidden' }
+        }
+      }
     })
 
     telescope.load_extension("fzf")
@@ -50,12 +61,7 @@ return {
 
     local keymap = vim.keymap
 
-    keymap.set(
-      "n",
-      "<LEADER>ff",
-      "<CMD>Telescope find_files find_command=rg,--ignore,--hidden,--files<CR>",
-      { desc = "Fuzzy find files in cwd" }
-    )
+    keymap.set("n", "<LEADER>ff", "<CMD>Telescope find_files<CR>", { desc = "Fuzzy find files in cwd" })
     keymap.set("n", "<LEADER>fr", "<CMD>Telescope resume<CR>", { desc = "Fuzzy find with cache" })
     keymap.set("n", "<LEADER>fp", "<CMD>Telescope project<CR>", { desc = "Find project" })
     keymap.set("n", "<LEADER>ft", "<CMD>TodoTelescope<CR>", { desc = "Find todos" })
