@@ -1,22 +1,22 @@
 return {
   "navarasu/onedark.nvim",
   priority = 1000,
-  config = function()
-    local onedark = require("onedark")
+  config = function ()
+    local onedark = require "onedark"
 
-    onedark.setup({
+    onedark.setup {
       style = "darker",
       transparent = true,
       term_colors = true,
       code_style = {
-        comments = 'none'
+        comments = "none",
       },
       highlights = {
         LineNr = { fg = "#ABB2BF" },
         DiffChange = { bg = "#3B5469" },
         ["@comment"] = { fg = "#8C95A8" },
       },
-    })
+    }
 
     onedark.load()
 

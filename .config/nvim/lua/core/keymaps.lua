@@ -1,5 +1,5 @@
 vim.g.mapleader = " "
-vim.o.mouse = 'a'
+vim.o.mouse = "a"
 
 local keymap = vim.keymap
 
@@ -32,10 +32,10 @@ keymap.set("n", "<LEADER>sv", "<C-w>v", { desc = "Split window vertically" })
 keymap.set("n", "<LEADER>sh", "<C-w>s", { desc = "Split window horizontally" })
 keymap.set("n", "<LEADER>sx", "<CMD>close<CR>", { desc = "Close current split" })
 keymap.set("n", "<LEADER>se", "<C-w>=", { desc = "Make splits equal size" })
-keymap.set("n", "<S-Left>", '<C-W><', { noremap = true, silent = true })
-keymap.set("n", "<S-Right>", '<C-W>>', { noremap = true, silent = true })
-keymap.set("n", "<S-Up>", '<C-W>-', { noremap = true, silent = true })
-keymap.set("n", "<S-Down>", '<C-W>+', { noremap = true, silent = true })
+keymap.set("n", "<S-Left>", "<C-W><", { noremap = true, silent = true })
+keymap.set("n", "<S-Right>", "<C-W>>", { noremap = true, silent = true })
+keymap.set("n", "<S-Up>", "<C-W>-", { noremap = true, silent = true })
+keymap.set("n", "<S-Down>", "<C-W>+", { noremap = true, silent = true })
 
 -- shortcuts to ensure compatibility with other editors
 keymap.set("n", "<LEADER>bp", "<CMD>bprev<CR>", { desc = "Jump to previous buffer" })
@@ -59,14 +59,14 @@ keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true })
 -- for terminal
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true })
 
-keymap.set("n", "J", function()
-    repeat_func(function()
+keymap.set("n", "J", function ()
+    repeat_func(function ()
       local current_line = vim.api.nvim_get_current_line()
-      local next_line = vim.api.nvim_buf_get_lines(0, vim.fn.line(".") + 1 - 1, vim.fn.line(".") + 2 - 1, false)[1]
+      local next_line = vim.api.nvim_buf_get_lines(0, vim.fn.line "." + 1 - 1, vim.fn.line "." + 2 - 1, false)[1]
       if next_line then
         local next_line_trimmed = next_line:gsub("^%s+", "")
         vim.api.nvim_set_current_line(current_line .. next_line_trimmed)
-        vim.api.nvim_buf_set_lines(0, vim.fn.line(".") + 1 - 1, vim.fn.line(".") + 1, false, {})
+        vim.api.nvim_buf_set_lines(0, vim.fn.line "." + 1 - 1, vim.fn.line "." + 1, false, {})
       end
     end, vim.v.count or 1
     )

@@ -1,10 +1,10 @@
 return {
   "akinsho/toggleterm.nvim",
-  config = function()
-    local toggleterm = require("toggleterm")
-    toggleterm.setup({
+  config = function ()
+    local toggleterm = require "toggleterm"
+    toggleterm.setup {
       size = 20,
-      open_mapping = { '<M-t>' },
+      open_mapping = { "<M-t>" },
       hide_numbers = true,
       shade_filetypes = {},
       shade_terminals = true,
@@ -23,21 +23,21 @@ return {
           background = "Normal",
         },
       },
-    })
+    }
 
-    local Terminal = require("toggleterm.terminal").Terminal
-    local lazygit = Terminal:new({
+    local Terminal = require "toggleterm.terminal".Terminal
+    local lazygit = Terminal:new {
       cmd = "lazygit",
       hidden = true,
       direction = "float",
-      count = 1000
-    })
-    local lazydocker = Terminal:new({
+      count = 1000,
+    }
+    local lazydocker = Terminal:new {
       cmd = "lazydocker",
       hidden = true,
       direction = "float",
-      count = 1001
-    })
+      count = 1001,
+    }
 
     function toggle_lazygit()
       lazygit:toggle()

@@ -4,10 +4,10 @@ return {
     "nvim-tree/nvim-web-devicons",
     "xiyaowong/transparent.nvim",
   },
-  config = function()
-    local lualine = require("lualine")
-    local lazy_status = require("lazy.status") -- to configure lazy pending updates count
-    local transparent = require("transparent")
+  config = function ()
+    local lualine = require "lualine"
+    local lazy_status = require "lazy.status"  -- to configure lazy pending updates count
+    local transparent = require "transparent"
 
     local function command_display()
       if vim.fn.reg_recording() ~= "" then
@@ -17,10 +17,10 @@ return {
       end
     end
 
-    transparent.clear_prefix("lualine")
+    transparent.clear_prefix "lualine"
 
     -- configure lualine with modified theme
-    lualine.setup({
+    lualine.setup {
       options = {
         theme = "onedark",
       },
@@ -43,17 +43,17 @@ return {
         lualine_c = { "filename" },
         lualine_x = { "location" },
         lualine_y = {},
-        lualine_z = {}
+        lualine_z = {},
       },
-    })
+    }
 
     vim.api.nvim_create_augroup("LualineCmdline", { clear = true })
     vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" },
       {
         group = "LualineCmdline",
-        callback = function()
-          require("lualine").refresh()
-        end
+        callback = function ()
+          require "lualine".refresh()
+        end,
       })
   end,
 }

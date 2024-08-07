@@ -1,3 +1,3 @@
 return {
-	"rhysd/conflict-marker.vim",
+  "rhysd/conflict-marker.vim",
 }
