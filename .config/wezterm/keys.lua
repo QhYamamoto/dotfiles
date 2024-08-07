@@ -16,7 +16,7 @@ return {
   { key = "d",          mods = "CTRL|SHIFT", action = act.CloseCurrentPane { confirm = true } },
   {
     key = "r",
-    mods = "CTRL|SHIFT|ALT",
+    mods = "ALT",
     action = _wt.action_callback(function(_, pane)
       local current_tab = pane:tab()
       local current_tab_id = current_tab:tab_id()

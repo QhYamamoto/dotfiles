@@ -47,7 +47,9 @@ return {
     )
 
     keymap.set("n", "<A-h>", "<Cmd>BufferPrevious<CR>", opts("Go to previous buffer"))
+    keymap.set("n", "<A-s>", "<Cmd>BufferPrevious<CR>", opts("Go to previous buffer"))
     keymap.set("n", "<A-l>", "<Cmd>BufferNext<CR>", opts("Go to next buffer"))
+    keymap.set("n", "<A-g>", "<Cmd>BufferNext<CR>", opts("Go to next buffer"))
 
     keymap.set("n", "<LEADER>1", "<Cmd>BufferGoto 1<CR>", opts("Go to buffer 1"))
     keymap.set("n", "<LEADER>2", "<Cmd>BufferGoto 2<CR>", opts("Go to buffer 2"))
