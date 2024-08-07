@@ -47,5 +47,29 @@ return {
   end,
   get_layer_key_toggle_event = function(layer_key_name)
     return layer_key_toggle_events[layer_key_name]
+  end,
+  remove_left_dirs = function(path, num_dirs)
+    local trimmed_path = path:gsub("^/", "")
+    local parts = {}
+
+    for part in trimmed_path:gmatch("[^/]+") do
+      table.insert(parts, part)
+    end
+
+    for _ = 1, num_dirs do
+      table.remove(parts, 1)
+    end
+
+    return table.concat(parts, "/")
+  end,
+
+  get_tab_title = function(tab_info)
+    local title = tab_info.tab_title
+
+    if title and #title > 0 then
+      return title
+    end
+
+    return tab_info.active_pane.title
   end
 }
