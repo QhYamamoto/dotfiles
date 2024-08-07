@@ -1,9 +1,9 @@
 return {
   "goolord/alpha-nvim",
   event = "VimEnter",
-  config = function()
-    local alpha = require("alpha")
-    local dashboard = require("alpha.themes.dashboard")
+  config = function ()
+    local alpha = require "alpha"
+    local dashboard = require "alpha.themes.dashboard"
 
     -- Set header
     dashboard.section.header.val = {
@@ -27,6 +27,6 @@ return {
     alpha.setup(dashboard.opts)
 
     -- Disable folding on alpha buffer
-    vim.cmd([[autocmd FileType alpha setlocal nofoldenable]])
+    vim.cmd [[autocmd FileType alpha setlocal nofoldenable]]
   end,
 }

@@ -3,10 +3,10 @@ return {
   requires = {
     "nvim-lua/plenary.nvim",
   },
-  config = function()
-    local spectre = require("spectre")
+  config = function ()
+    local spectre = require "spectre"
 
-    spectre.setup({
+    spectre.setup {
       find_engine = {
         ["rg"] = {
           cmd = "rg",
@@ -22,22 +22,22 @@ return {
           ["ignore-case"] = {
             value = "--ignore-case",
             icon = "[I]",
-            desc = "ignore case"
+            desc = "ignore case",
           },
           ["hidden"] = {
             value = "--hidden",
             desc = "hidden file",
-            icon = "[H]"
+            icon = "[H]",
           },
         },
       },
       default = {
         find = {
           cmd = "rg",
-          options = { "hidden" }
+          options = { "hidden" },
         },
       },
-    })
+    }
 
     local keymap = vim.keymap;
 
@@ -65,5 +65,5 @@ return {
       "<CMD>lua require('spectre').open_file_search()<CR>",
       { desc = "Search on current file" }
     )
-  end
+  end,
 }
