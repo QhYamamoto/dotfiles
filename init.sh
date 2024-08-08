@@ -187,3 +187,11 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 # install fzf
 git clone --depth=1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all
+
+##################################################
+# Set default shell to Zsh
+##################################################
+echo "We'll set your default shell to Zsh. Please input your password."
+chsh -s $(which zsh)
+
+echo "If authentication fails, please execute the following command to set your default shell to Zsh: \`chsh -s \$(which zsh)\`."
