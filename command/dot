@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+dot() {
+  local command=$1
+
+  DOTFILES_DIR="$HOME/dotfiles"
+
+  case "$command" in
+    init)
+      bash "$DOTFILES_DIR/init.sh"
+      ;;
+    update)
+      bash "$DOTFILES_DIR/update.sh"
+      ;;
+    *)
+      echo "Unknown command: $command"
+      exit 1
+      ;;
+  esac
+}
+
+dot $@
