@@ -101,7 +101,6 @@ alias cd=z
 ##################################################
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-
 ##################################################
 # other minor settings
 ##################################################
@@ -110,3 +109,12 @@ if (( $+commands[lesspipe] )); then
     eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
+##################################################
+# enable self-made commands
+##################################################
+DOTFILES_DIR="$HOME/dotfiles"
+export PATH="$DOTFILES_DIR/command:$PATH"
+declare cmds=("dot")
+for cmd in "${cmds[@]}"; do
+  source "$DOTFILES_DIR/zsh/compdef/_$cmd.zsh"
+done
