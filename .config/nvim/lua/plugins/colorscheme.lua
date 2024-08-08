@@ -14,7 +14,7 @@ return {
       highlights = {
         LineNr = { fg = "#ABB2BF" },
         DiffChange = { bg = "#3B5469" },
-        ["@comment"] = { fg = "#8C95A8" },
+        ["@comment"] = { fg = "#8C95A8", fmt = "italic" },
       },
     }
 

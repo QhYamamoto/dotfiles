@@ -5,6 +5,23 @@ local _u = require "utils"
 local config = {}
 if _wt.config_builder then config = _wt.config_builder() end
 
+config.font_shaper = "Harfbuzz"
+_wt.font("0xProto Nerd Font Mono", { weight = "Regular", stretch = "Normal", style = "Normal" })
+config.harfbuzz_features = {
+  "ss01",
+  "ss02",
+  "ss03",
+  "ss04",
+  "ss05",
+  "ss06",
+  "zero",
+  "onum",
+  "calt=0",
+  "clig=0",
+  "liga=0",
+}
+
+config.line_height = 0.9
 config.colors = require "colors"
 config.window_decorations = "RESIZE"
 config.default_prog = { "wsl", "~" }
@@ -26,8 +43,6 @@ config.skip_close_confirmation_for_processes_named = {
   "wslhost.exe",
   "conhost.exe",
 }
-
-config.font = _wt.font("0xProto Nerd Font Mono", { weight = "Regular", stretch = "Normal", style = "Normal" })
 
 -- open window in maximum size
 local mux = _wt.mux
