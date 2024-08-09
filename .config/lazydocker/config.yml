@@ -5,3 +5,4 @@ gui:
   showBottomLine: false
   screenMode: "half"
   containerStatusHealthStyle: "icon"
+  returnImmediately: true
