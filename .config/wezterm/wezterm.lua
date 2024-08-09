@@ -6,9 +6,8 @@ local config = {}
 if _wt.config_builder then config = _wt.config_builder() end
 
 config.font_shaper = "Harfbuzz"
-_wt.font("0xProto Nerd Font Mono", { weight = "Regular", stretch = "Normal", style = "Normal" })
+_wt.font("0xProto", { weight = "Regular", stretch = "Normal", style = "Italic" })
 config.harfbuzz_features = {
-  "ss01",
   "ss02",
   "ss03",
   "ss04",
