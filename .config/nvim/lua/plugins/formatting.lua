@@ -1,8 +1,9 @@
 return {
   "stevearc/conform.nvim",
   event = { "BufReadPre", "BufNewFile" },
-  config = function ()
+  config = function()
     local conform = require "conform"
+    local stylua_target_file_path = ""
 
     conform.setup {
       formatters_by_ft = {
@@ -28,13 +29,13 @@ return {
       },
     }
 
-    vim.keymap.set({ "n", "v" }, "<LEADER>mp", function ()
+    local keymap = vim.keymap
+    keymap.set({ "n", "v" }, "<LEADER>mp", function()
       conform.format {
         lsp_fallback = true,
         async = false,
         timeout_ms = 1000,
       }
-    end, { desc = "Format file or range (in visual mode)" }
-    )
+    end, { desc = "Format file or range (in visual mode)" })
   end,
 }
