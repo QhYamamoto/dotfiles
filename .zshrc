@@ -39,6 +39,16 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 export PATH="$HOME/.local/bin:$PATH"
 
 ##################################################
+# enable self-made commands
+##################################################
+DOTFILES_DIR="$HOME/dotfiles"
+export PATH="$DOTFILES_DIR/command:$PATH"
+declare cmds=("dot")
+for cmd in "${cmds[@]}"; do
+  source "$DOTFILES_DIR/zsh/compdef/_$cmd.zsh"
+done
+
+##################################################
 # zsh-syntax-highlighting and zsh-autosuggestions
 ##################################################
 [[ ! -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] || source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -108,13 +118,3 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 if (( $+commands[lesspipe] )); then
     eval "$(SHELL=/bin/sh lesspipe)"
 fi
-
-##################################################
-# enable self-made commands
-##################################################
-DOTFILES_DIR="$HOME/dotfiles"
-export PATH="$DOTFILES_DIR/command:$PATH"
-declare cmds=("dot")
-for cmd in "${cmds[@]}"; do
-  source "$DOTFILES_DIR/zsh/compdef/_$cmd.zsh"
-done
