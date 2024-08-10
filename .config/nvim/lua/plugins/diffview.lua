@@ -1,13 +1,13 @@
 return {
   "sindrets/diffview.nvim",
-  config = function ()
+  config = function()
     local keymap = vim.keymap
 
     keymap.set("n", "<LEADER>gdo", "<CMD>:DiffviewOpen<CR>", { desc = "Open diff view (HEAD~1..HEAD)" })
     keymap.set("n", "<LEADER>gdc", "<CMD>:DiffviewClose<CR>", { desc = "Close diff view" })
 
     local function get_git_rev_from_clipboard()
-      local rev = vim.fn.getreg "+"  -- get string from clipboard
+      local rev = vim.fn.getreg "+" -- get string from clipboard
       if rev:match "^[0-9a-fA-F]+$" then
         return rev
       else

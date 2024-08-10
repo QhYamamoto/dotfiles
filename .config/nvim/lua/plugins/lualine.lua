@@ -4,9 +4,9 @@ return {
     "nvim-tree/nvim-web-devicons",
     "xiyaowong/transparent.nvim",
   },
-  config = function ()
+  config = function()
     local lualine = require "lualine"
-    local lazy_status = require "lazy.status"  -- to configure lazy pending updates count
+    local lazy_status = require "lazy.status" -- to configure lazy pending updates count
     local transparent = require "transparent"
 
     local function command_display()
@@ -48,12 +48,11 @@ return {
     }
 
     vim.api.nvim_create_augroup("LualineCmdline", { clear = true })
-    vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" },
-      {
-        group = "LualineCmdline",
-        callback = function ()
-          require "lualine".refresh()
-        end,
-      })
+    vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+      group = "LualineCmdline",
+      callback = function()
+        require("lualine").refresh()
+      end,
+    })
   end,
 }

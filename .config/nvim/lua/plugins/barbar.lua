@@ -1,14 +1,14 @@
 return {
   "romgrk/barbar.nvim",
   dependencies = {
-    "lewis6991/gitsigns.nvim",     -- OPTIONAL: for git status
+    "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
     "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
   },
-  init = function ()
+  init = function()
     vim.g.barbar_auto_setup = false
 
     local keymap = vim.keymap
-    local opts = function (desc)
+    local opts = function(desc)
       return { desc = desc, silent = true }
     end
     -- scripts to restore last closed buffer

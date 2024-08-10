@@ -2,7 +2,7 @@ return {
   "lewis6991/gitsigns.nvim",
   event = { "BufReadPre", "BufNewFile" },
   opts = {
-    on_attach = function (bufnr)
+    on_attach = function(bufnr)
       local gs = package.loaded.gitsigns
 
       local function map(mode, l, r, desc)
@@ -16,10 +16,10 @@ return {
       -- Actions
       map("n", "<LEADER>hs", gs.stage_hunk, "Stage hunk")
       map("n", "<LEADER>hr", gs.reset_hunk, "Reset hunk")
-      map("v", "<LEADER>hs", function ()
+      map("v", "<LEADER>hs", function()
         gs.stage_hunk { vim.fn.line ".", vim.fn.line "v" }
       end, "Stage hunk")
-      map("v", "<LEADER>hr", function ()
+      map("v", "<LEADER>hr", function()
         gs.reset_hunk { vim.fn.line ".", vim.fn.line "v" }
       end, "Reset hunk")
 
@@ -30,13 +30,13 @@ return {
 
       map("n", "<LEADER>hp", gs.preview_hunk, "Preview hunk")
 
-      map("n", "<LEADER>hb", function ()
+      map("n", "<LEADER>hb", function()
         gs.blame_line { full = true }
       end, "Blame line")
       map("n", "<LEADER>hB", gs.toggle_current_line_blame, "Toggle line blame")
 
       map("n", "<LEADER>hd", gs.diffthis, "Diff this")
-      map("n", "<LEADER>hD", function ()
+      map("n", "<LEADER>hD", function()
         gs.diffthis "~"
       end, "Diff this ~")
 

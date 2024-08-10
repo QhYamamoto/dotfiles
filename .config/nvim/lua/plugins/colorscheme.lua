@@ -1,7 +1,7 @@
 return {
   "navarasu/onedark.nvim",
   priority = 1000,
-  config = function ()
+  config = function()
     local onedark = require "onedark"
 
     onedark.setup {

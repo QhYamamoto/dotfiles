@@ -5,5 +5,7 @@ return {
   opts = {
     indent = { char = "┊" },
   },
-  config = function () require "ibl".setup() end,
+  config = function()
+    require("ibl").setup()
+  end,
 }
