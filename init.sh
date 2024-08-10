@@ -63,7 +63,6 @@ declare -A config_paths=(
   ["$WSL_HOME/dotfiles/.zshrc"]="$WSL_HOME/.zshrc"
   ["$WSL_HOME/dotfiles/zsh/p10k.zsh"]="$WSL_HOME/.p10k.zsh"
   ["$WSL_HOME/dotfiles/zsh/zenhan.zsh"]="$WSL_HOME/.zenhan.zsh"
-  ["$WSL_HOME/dotfiles/.config/nvim"]="$WSL_HOME/.config/nvim"
   ["$WSL_HOME/dotfiles/.config/lazygit"]="$WSL_HOME/.config/lazygit"
   ["$WSL_HOME/dotfiles/.config/lazydocker"]="$WSL_HOME/.config/lazydocker"
   ["$WSL_HOME/dotfiles/.config/wezterm"]="$WIN_HOME/.config/wezterm"
@@ -179,6 +178,10 @@ rm -rf zenhan
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 sudo apt-get install build-essential
 brew install gcc
+
+# install neovim via brew
+brew install neovim
+verify_installation "nvim --version"
 
 # installation by git
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
