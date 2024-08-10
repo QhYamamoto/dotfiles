@@ -66,21 +66,21 @@ return {
     end
 
     local keymap = vim.keymap
-    keymap.set("n", "<LEADER>fs", function()
+    keymap.set("n", "<LEADER>rp", function()
       -- keymaps
       refresh_query()
       spectre.toggle { search_text = search_query, replace_query = replace_query, path = path }
     end, { desc = "Toggle Spectre" })
 
-    keymap.set("n", "<LEADER>fw", function()
+    keymap.set("n", "<LEADER>rw", function()
       spectre.open_visual { select_word = true, path = path }
     end, { desc = "Search current word" })
 
-    keymap.set("v", "<LEADER>fw", function()
+    keymap.set("v", "<LEADER>rw", function()
       spectre.open_visual { path = path }
     end, { desc = "Search current word" })
 
-    keymap.set("n", "<LEADER>fc", function()
+    keymap.set("n", "<LEADER>rc", function()
       spectre.open_file_search()
     end, { desc = "Search on current file" })
   end,
