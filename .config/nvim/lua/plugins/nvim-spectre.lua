@@ -5,8 +5,16 @@ return {
   },
   config = function()
     local spectre = require "spectre"
+    local actions = require "spectre.actions"
 
     spectre.setup {
+      mapping = {
+        ["select_template"] = {
+          map = "<LEADER>rt",
+          cmd = "<cmd>lua require('spectre.actions').select_template()<CR>",
+          desc = "pick template",
+        },
+      },
       find_engine = {
         ["rg"] = {
           cmd = "rg",
@@ -39,31 +47,41 @@ return {
       },
     }
 
-    local keymap = vim.keymap
+    -- local variables to register search query
+    local path = ""
+    local search_query = ""
+    local replace_query = ""
 
-    keymap.set(
-      "n",
-      "<LEADER>fs",
-      "<CMD>lua require('spectre').toggle({ path = '!.git/' })<CR>",
-      { desc = "Toggle Spectre" }
-    )
-    keymap.set(
-      "n",
-      "<LEADER>fw",
-      "<CMD>lua require('spectre').open_visual({ select_word=true, path = '!.git/' })<CR>",
-      { desc = "Search current word" }
-    )
-    keymap.set(
-      "v",
-      "<LEADER>fw",
-      "<ESC><CMD>lua require('spectre').open_visual({ path = '!.git/' })<CR>",
-      { desc = "Search current word" }
-    )
-    keymap.set(
-      "n",
-      "<LEADER>fc",
-      "<CMD>lua require('spectre').open_file_search()<CR>",
-      { desc = "Search on current file" }
-    )
+    -- function that refreshes search query
+    local refresh_query = function()
+      local state = actions.get_state()
+      -- by default, exclude .git directory
+      if path == "" then
+        path = "!.git/"
+      else
+        path = state.query.path
+      end
+      search_query = state.query.search_query
+      replace_query = state.query.replace_query
+    end
+
+    local keymap = vim.keymap
+    keymap.set("n", "<LEADER>fs", function()
+      -- keymaps
+      refresh_query()
+      spectre.toggle { search_text = search_query, replace_query = replace_query, path = path }
+    end, { desc = "Toggle Spectre" })
+
+    keymap.set("n", "<LEADER>fw", function()
+      spectre.open_visual { select_word = true, path = path }
+    end, { desc = "Search current word" })
+
+    keymap.set("v", "<LEADER>fw", function()
+      spectre.open_visual { path = path }
+    end, { desc = "Search current word" })
+
+    keymap.set("n", "<LEADER>fc", function()
+      spectre.open_file_search()
+    end, { desc = "Search on current file" })
   end,
 }
