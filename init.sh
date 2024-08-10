@@ -81,7 +81,8 @@ for config_path_key in "${!config_paths[@]}"; do
 done
 
 verify_installation() {
-  local verification_cmd="$1"
+  local package_name="$1"
+  local verification_cmd="$2"
 
   if [ -z "$verification_cmd" ]; then
     continue
@@ -107,7 +108,6 @@ declare -A packages=(
   ["lua5.4"]="lua -v"
   ["liblua5.4-dev"]=""
   ["git"]="git --version"
-  ["neovim"]="nvim --version"
   ["npm"]="npm --version"
   ["ripgrep"]="rg --version"
   ["yarn"]="yarn --version"
@@ -124,7 +124,7 @@ for package_name in "${!packages[@]}"; do
 
   # check if the installations have been succeeded
   verification_cmd=${packages[$package_name]}
-  verify_installation "$verification_cmd"
+  verify_installation "$package_name" "$verification_cmd"
 done
 
 cd
@@ -139,7 +139,7 @@ sudo chmod 644 /etc/apt/keyrings/gierens.gpg /etc/apt/sources.list.d/gierens.lis
 sudo apt update
 sudo apt install -y eza
 
-verify_installation "eza --version"
+verify_installation "eza" "eza --version"
 
 # installation by curl
 # nvm
@@ -178,10 +178,11 @@ rm -rf zenhan
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 sudo apt-get install build-essential
 brew install gcc
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # install neovim via brew
 brew install neovim
-verify_installation "nvim --version"
+verify_installation "neovim" "nvim --version"
 
 # installation by git
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
