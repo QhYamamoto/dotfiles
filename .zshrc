@@ -1,7 +1,7 @@
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+  *i*) ;;
+  *) return ;;
 esac
 
 ##################################################
@@ -116,5 +116,5 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 ##################################################
 # make less more friendly for non-text input files, see lesspipe(1)
 if (( $+commands[lesspipe] )); then
-    eval "$(SHELL=/bin/sh lesspipe)"
+  eval "$(SHELL=/bin/sh lesspipe)"
 fi

@@ -4,7 +4,6 @@ WSL_HOME="$HOME"
 WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
 ZENHAN_EXE="$WIN_HOME/AppData/Local/zenhan.exe"
 
-
 ##################################################
 # Copy or create symbolic link for config files
 ##################################################
@@ -152,17 +151,17 @@ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh 
 
 # git-completion
 curl -o ~/.zsh/git-completion.sh \
-    https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
+  https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
 
 # git-prompt
 curl -o ~/.zsh/git-prompt.sh \
-    https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+  https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 
 # Nerd font
 local fonts_dir="$WSL_HOME/.fonts"
 local font_zip_name="0xProto_2_100.zip"
 curl -fLO "https://github.com/0xType/0xProto/releases/download/2.100/$font_zip_name"
-sudo unzip "$font_zip_name" -d "$fonts_dir" 
+sudo unzip "$font_zip_name" -d "$fonts_dir"
 rm "$font_zip_name"
 fc-cache -fv
 
