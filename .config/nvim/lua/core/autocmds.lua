@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd({
   "CmdlineLeave",
 }, {
   group = "lua",
-  callback = function ()
+  callback = function()
     local home = os.getenv "HOME"
     local script_path = home .. "/.zenhan.zsh"
 

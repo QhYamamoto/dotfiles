@@ -20,7 +20,7 @@ keymap.set({ "i", "c" }, "ｊｋ", "<ESC>", { desc = "Exit insert mode with ｊ�
 keymap.set("n", "い", "i", { desc = "Enter insert mode with い" })
 keymap.set("i", "<C-v>", "<ESC>pa", { desc = "Paste." })
 keymap.set("n", "<LEADER>nh", ":nohl<CR>", { desc = "Clear search highlights" })
-keymap.set({ "n", "v" }, "d", '"_d')                                  -- prevent to yank on delete
+keymap.set({ "n", "v" }, "d", '"_d') -- prevent to yank on delete
 keymap.set("n", "<C-c>", "<C-w>w", { noremap = true, silent = true }) -- jump to floating window
 keymap.set("n", "<LEADER>q", "<CMD>qa<CR>")
 keymap.set("n", "<M-u>", "<C-a>", { noremap = true, silent = true })
@@ -55,21 +55,17 @@ keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, silent = tru
 keymap.set("n", "<C-e>", "$", { noremap = true, silent = true })
 keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true })
 
-
 -- for terminal
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true })
 
-keymap.set("n", "J", function ()
-    repeat_func(function ()
-      local current_line = vim.api.nvim_get_current_line()
-      local next_line = vim.api.nvim_buf_get_lines(0, vim.fn.line "." + 1 - 1, vim.fn.line "." + 2 - 1, false)[1]
-      if next_line then
-        local next_line_trimmed = next_line:gsub("^%s+", "")
-        vim.api.nvim_set_current_line(current_line .. next_line_trimmed)
-        vim.api.nvim_buf_set_lines(0, vim.fn.line "." + 1 - 1, vim.fn.line "." + 1, false, {})
-      end
-    end, vim.v.count or 1
-    )
-  end,
-  { noremap = true, silent = true }
-)
+keymap.set("n", "J", function()
+  repeat_func(function()
+    local current_line = vim.api.nvim_get_current_line()
+    local next_line = vim.api.nvim_buf_get_lines(0, vim.fn.line "." + 1 - 1, vim.fn.line "." + 2 - 1, false)[1]
+    if next_line then
+      local next_line_trimmed = next_line:gsub("^%s+", "")
+      vim.api.nvim_set_current_line(current_line .. next_line_trimmed)
+      vim.api.nvim_buf_set_lines(0, vim.fn.line "." + 1 - 1, vim.fn.line "." + 1, false, {})
+    end
+  end, vim.v.count or 1)
+end, { noremap = true, silent = true })

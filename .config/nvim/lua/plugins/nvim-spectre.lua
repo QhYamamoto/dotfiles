@@ -3,7 +3,7 @@ return {
   requires = {
     "nvim-lua/plenary.nvim",
   },
-  config = function ()
+  config = function()
     local spectre = require "spectre"
 
     spectre.setup {
@@ -39,7 +39,7 @@ return {
       },
     }
 
-    local keymap = vim.keymap;
+    local keymap = vim.keymap
 
     keymap.set(
       "n",

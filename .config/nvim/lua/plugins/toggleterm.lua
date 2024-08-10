@@ -1,6 +1,6 @@
 return {
   "akinsho/toggleterm.nvim",
-  config = function ()
+  config = function()
     local toggleterm = require "toggleterm"
     toggleterm.setup {
       size = 20,
@@ -25,7 +25,7 @@ return {
       },
     }
 
-    local Terminal = require "toggleterm.terminal".Terminal
+    local Terminal = require("toggleterm.terminal").Terminal
     local lazygit = Terminal:new {
       cmd = "lazygit",
       hidden = true,

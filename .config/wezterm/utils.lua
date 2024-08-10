@@ -26,29 +26,28 @@ local function update_tab_color_on_layer_key_pressed(layer_key_name)
   }
 end
 
-
 return {
-  foreach = function (table, callback)
+  foreach = function(table, callback)
     for i, v in ipairs(table) do
       callback(v, i)
     end
   end,
-  register_toggleable_layer_key = function (layer_key_name)
+  register_toggleable_layer_key = function(layer_key_name)
     layer_key_flags[layer_key_name] = false
     local toggle_event_name = "toggle-" .. layer_key_name
     layer_key_toggle_events[layer_key_name] = toggle_event_name
-    _wt.on(toggle_event_name, function (window)
+    _wt.on(toggle_event_name, function(window)
       toggle_layer_key_flag(layer_key_name)
       window:set_config_overrides(update_tab_color_on_layer_key_pressed(layer_key_name))
     end)
   end,
-  get_layer_key_flag = function (layer_key_name)
+  get_layer_key_flag = function(layer_key_name)
     return layer_key_flags[layer_key_name]
   end,
-  get_layer_key_toggle_event = function (layer_key_name)
+  get_layer_key_toggle_event = function(layer_key_name)
     return layer_key_toggle_events[layer_key_name]
   end,
-  remove_left_dirs = function (path, num_dirs)
+  remove_left_dirs = function(path, num_dirs)
     local trimmed_path = path:gsub("^/", "")
     local parts = {}
 
@@ -63,7 +62,7 @@ return {
     return table.concat(parts, "/")
   end,
 
-  get_tab_title = function (tab_info)
+  get_tab_title = function(tab_info)
     local title = tab_info.tab_title
 
     if title and #title > 0 then

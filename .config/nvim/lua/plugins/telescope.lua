@@ -9,7 +9,7 @@ return {
     "nvim-telescope/telescope-project.nvim",
     "ThePrimeagen/harpoon",
   },
-  config = function ()
+  config = function()
     local telescope = require "telescope"
     local actions = require "telescope.actions"
 
@@ -26,10 +26,10 @@ return {
           order_by = "asc",
           search_by = "title",
           sync_with_nvim_tree = true,
-          on_project_selected = function (prompt_bufnr)
+          on_project_selected = function(prompt_bufnr)
             project_actions.change_working_directory(prompt_bufnr)
             vim.cmd "SessionRestore"
-            require "harpoon.ui".nav_file(1)
+            require("harpoon.ui").nav_file(1)
           end,
         },
       },
