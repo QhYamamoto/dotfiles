@@ -69,6 +69,12 @@ return {
       end,
     })
 
+    vim.filetype.add {
+      extension = {
+        zsh = "zsh",
+      },
+    }
+
     -- used to enable autocompletion (assign to every lsp server config)
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -109,6 +115,13 @@ return {
               },
             },
           },
+        }
+      end,
+      ["bashls"] = function()
+        -- configure shell server
+        lspconfig["bashls"].setup {
+          capabilities = capabilities,
+          filetypes = { "sh", "bash", "zsh" },
         }
       end,
     }

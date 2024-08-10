@@ -27,6 +27,7 @@ return {
         "lua_ls",
         "emmet_ls",
         "pyright",
+        "bashls",
       },
 
       automatic_installation = true,
@@ -38,6 +39,8 @@ return {
         "stylua",
         "autopep8",
         "eslint_d",
+        "shfmt",
+        "beautysh",
       },
     }
   end,

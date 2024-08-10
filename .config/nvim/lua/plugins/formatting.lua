@@ -21,6 +21,19 @@ return {
         liquid = { "prettier" },
         lua = { "stylua" },
         python = { "autopep8" },
+        sh = { "shfmt" },
+        bash = { "shfmt" },
+        zsh = { "beautysh" },
+        zshrc = { "beautysh" },
+      },
+      formatters = {
+        beautysh = {
+          inherit = true,
+          append_args = {
+            "-i",
+            "2",
+          },
+        },
       },
       format_on_save = {
         lsp_fallback = true,
