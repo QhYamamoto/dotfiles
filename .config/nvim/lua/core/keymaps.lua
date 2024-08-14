@@ -74,3 +74,101 @@ keymap.set("n", "J", function()
     end
   end, vim.v.count or 1)
 end, { noremap = true, silent = true })
+
+--------------------------------------------------
+-- convert surrounding chars command
+--------------------------------------------------
+_G.SURROUNDING_CHARS_TABLE = {
+  { "(", ")" },
+  { "[", "]" },
+  { "{", "}" },
+  { "<", ">" },
+  { '"', '"' },
+  { "'", "'" },
+  { "`", "`" },
+}
+
+function _G.convert_sorrounding_chars(char)
+  local start_surrounding_char = ""
+  local end_surrounding_char = ""
+  for _, chars in ipairs(SURROUNDING_CHARS_TABLE) do
+    if char == chars[1] then
+      start_surrounding_char = chars[1]
+      end_surrounding_char = chars[2]
+    end
+  end
+
+  if start_surrounding_char == "" and end_surrounding_char == "" then
+    start_surrounding_char = char
+    end_surrounding_char = char
+  end
+
+  local start_pos = vim.fn.getpos "'<" -- start position of visual selection
+  local end_pos = vim.fn.getpos "'>" -- end position of visual selection
+
+  local start_line_number = start_pos[2]
+  local start_col_number = start_pos[3]
+  local end_line_number = end_pos[2]
+  local end_col_number = end_pos[3]
+  local lines = vim.fn.getline(start_line_number, end_line_number) -- selected lines
+
+  -- get selected text
+  local line_index = 1
+  for line_number = start_line_number, end_line_number do
+    local line = lines[line_index]
+    local converted_text = nil
+
+    if line ~= nil then
+      -- if selection start and selection end are in the same line
+      if start_line_number == end_line_number then
+        local selected_text = line:sub(start_col_number, end_col_number)
+        converted_text = line:sub(1, start_col_number - 1)
+          .. start_surrounding_char
+          .. selected_text:sub(2, -2)
+          .. end_surrounding_char
+          .. line:sub(end_col_number + 1)
+      -- else, convert start line
+      elseif line_number == start_line_number then
+        local selected_text = line:sub(start_col_number - 1)
+        print(line:sub(1, start_col_number - 1))
+        converted_text = line:sub(1, start_col_number - 1) .. start_surrounding_char .. selected_text:sub(3)
+      -- and then, convert end line
+      elseif line_number == end_line_number then
+        local selected_text = line:sub(1, end_col_number - 1)
+        converted_text = selected_text:sub(1, -1) .. end_surrounding_char
+      end
+
+      if converted_text ~= nil then
+        vim.fn.setline(line_number, converted_text)
+      end
+
+      line_index = line_index + 1
+    end
+  end
+end
+
+function _G.convert_sorrounding_chars_with_free_input()
+  local input = vim.fn.input "Enter surrounding chars: "
+  convert_sorrounding_chars(input)
+end
+
+for _, chars in ipairs(SURROUNDING_CHARS_TABLE) do
+  local start_surrounding_char = chars[1]
+  local end_surrounding_char = chars[2]
+  keymap.set(
+    "v",
+    "ys" .. start_surrounding_char,
+    ":lua convert_sorrounding_chars([[" .. start_surrounding_char .. "]])<CR>",
+    {
+      desc = "convert surrounding characters to: " .. start_surrounding_char .. end_surrounding_char,
+      noremap = true,
+      silent = true,
+    }
+  )
+end
+
+keymap.set("v", "ysi", ":lua convert_sorrounding_chars_with_free_input()<CR>", {
+  desc = "convert surrounding characters to chars specified by free input",
+  noremap = true,
+  silent = true,
+})
