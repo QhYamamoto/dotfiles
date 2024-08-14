@@ -28,6 +28,7 @@ return {
         "emmet_ls",
         "pyright",
         "bashls",
+        "volar",
       },
 
       automatic_installation = true,
@@ -41,6 +42,8 @@ return {
         "eslint_d",
         "shfmt",
         "beautysh",
+        "php-cs-fixer",
+        "blade-formatter",
       },
     }
   end,

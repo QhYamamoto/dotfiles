@@ -49,6 +49,7 @@ return {
         "php",
         "powershell",
         "sql",
+        "python",
       },
       incremental_selection = {
         enable = true,
