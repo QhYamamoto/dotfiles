@@ -41,12 +41,18 @@ return {
 
     function toggle_lazygit()
       lazygit:toggle()
+      if lazygit:is_open() then
+        lazygit:set_mode "i"
+      end
     end
 
     vim.keymap.set("n", "<leader>lg", "<cmd>lua toggle_lazygit()<CR>", { silent = true })
 
     function toggle_lazydocker()
       lazydocker:toggle()
+      if lazydocker:is_open() then
+        lazydocker:set_mode "i"
+      end
     end
 
     vim.keymap.set("n", "<leader>ld", "<cmd>lua toggle_lazydocker()<CR>", { silent = true })
