@@ -47,6 +47,7 @@ return {
     end
 
     vim.keymap.set("n", "<leader>lg", "<cmd>lua toggle_lazygit()<CR>", { silent = true })
+    vim.keymap.set("t", '"lg', "<cmd>lua toggle_lazygit()<CR>", { silent = true })
 
     function toggle_lazydocker()
       lazydocker:toggle()
@@ -56,5 +57,6 @@ return {
     end
 
     vim.keymap.set("n", "<leader>ld", "<cmd>lua toggle_lazydocker()<CR>", { silent = true })
+    vim.keymap.set("t", '"ld', "<cmd>lua toggle_lazydocker()<CR>", { silent = true })
   end,
 }
