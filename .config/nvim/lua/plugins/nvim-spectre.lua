@@ -14,6 +14,16 @@ return {
           cmd = "<cmd>lua require('spectre.actions').select_template()<CR>",
           desc = "pick template",
         },
+        ["toggle_line"] = {
+          map = "dl",
+          cmd = "<cmd>lua require('spectre').toggle_line()<CR>",
+          desc = "toggle item",
+        },
+        ["delete_line"] = {
+          map = "dd",
+          cmd = '"_dd',
+          desc = "delete line",
+        },
       },
       find_engine = {
         ["rg"] = {
