@@ -19,7 +19,14 @@ keymap.set({ "i", "c" }, "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 keymap.set({ "i", "c" }, "ｊｋ", "<ESC>", { desc = "Exit insert mode with ｊｋ" })
 keymap.set("n", "い", "i", { desc = "Enter insert mode with い" })
 keymap.set("i", "<C-v>", "<ESC>pa", { desc = "Paste." })
-keymap.set("n", "<LEADER>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<ESC>", function()
+  -- if search register is not nil, then execute nohl command
+  if vim.fn.getreg "/" then
+    vim.cmd "nohl"
+  else
+    vim.cmd "normal! <ESC>"
+  end
+end, { desc = "Clear search highlights" })
 keymap.set({ "n", "v" }, "d", '"_d') -- prevent to yank on delete
 keymap.set("n", "<C-c>", "<C-w>w", { noremap = true, silent = true }) -- jump to floating window
 keymap.set("n", "<LEADER>q", "<CMD>qa<CR>")
