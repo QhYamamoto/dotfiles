@@ -138,6 +138,12 @@ return {
           },
         }
       end,
+      ["typos_lsp"] = function()
+        lspconfig["typos_lsp"].setup {
+          capabilities = capabilities,
+          filetypes = { "*", "!toggleterm" },
+        }
+      end,
     }
   end,
 }

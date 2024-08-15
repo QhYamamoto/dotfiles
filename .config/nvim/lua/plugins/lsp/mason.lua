@@ -29,6 +29,7 @@ return {
         "pyright",
         "bashls",
         "volar",
+        "typos_lsp",
       },
 
       automatic_installation = true,
