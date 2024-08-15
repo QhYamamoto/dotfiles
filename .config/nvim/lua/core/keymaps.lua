@@ -95,7 +95,7 @@ _G.SURROUNDING_CHARS_TABLE = {
   { "`", "`" },
 }
 
-function _G.convert_surrounding_chars(openning_char, closing_char)
+function _G.convert_surrounding_chars(opening_char, closing_char)
   local start_pos = vim.fn.getpos "'<" -- start position of visual selection
   local end_pos = vim.fn.getpos "'>" -- end position of visual selection
 
@@ -107,7 +107,7 @@ function _G.convert_surrounding_chars(openning_char, closing_char)
   --- @type string[]
   local lines = vim.fn.getline(start_line_number, end_line_number) -- selected lines
 
-  ---Function to convert line with start/end surrounding char
+  ---Function to convert line with opening/closing surrounding char
   ---@param line string
   ---@param i integer
   local convert_line = function(line, i)
@@ -121,7 +121,7 @@ function _G.convert_surrounding_chars(openning_char, closing_char)
     if start_line_number == end_line_number then
       setline(table.concat {
         line:sub(1, start_col_number - 1),
-        openning_char,
+        opening_char,
         line:sub(start_col_number + 1, end_col_number - 1),
         closing_char,
         line:sub(end_col_number + 1),
@@ -130,7 +130,7 @@ function _G.convert_surrounding_chars(openning_char, closing_char)
     elseif current_line_number == start_line_number then
       setline(table.concat {
         line:sub(1, start_col_number - 1),
-        openning_char,
+        opening_char,
         line:sub(start_col_number + 1),
       })
       -- and then, convert end line
@@ -153,14 +153,14 @@ function _G.convert_surrounding_chars_with_free_input()
 end
 
 foreach(SURROUNDING_CHARS_TABLE, function(chars, _)
-  local openning_char = chars[1]
+  local opening_char = chars[1]
   local closing_char = chars[2]
   keymap.set(
     "v",
-    "ys" .. openning_char,
-    ":lua convert_surrounding_chars([[" .. openning_char .. "]], [[" .. closing_char .. "]])<CR>",
+    "ys" .. opening_char,
+    ":lua convert_surrounding_chars([[" .. opening_char .. "]], [[" .. closing_char .. "]])<CR>",
     {
-      desc = "convert surrounding characters to: " .. openning_char .. closing_char,
+      desc = "convert surrounding characters to: " .. opening_char .. closing_char,
       noremap = true,
       silent = true,
     }
