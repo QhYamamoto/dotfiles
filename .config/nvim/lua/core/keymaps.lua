@@ -86,14 +86,36 @@ end, { noremap = true, silent = true })
 -- convert surrounding chars command
 --------------------------------------------------
 _G.SURROUNDING_CHARS_TABLE = {
-  { "(", ")" },
-  { "[", "]" },
-  { "{", "}" },
-  { "<", ">" },
-  { '"', '"' },
-  { "'", "'" },
-  { "`", "`" },
+  ["("] = { "(", ")" },
+  ["["] = { "[", "]" },
+  ["{"] = { "{", "}" },
+  ["<"] = { "<", ">" },
+  ['"'] = { '"', '"' },
+  ["'"] = { "'", "'" },
+  ["`"] = { "`", "`" },
+  ["H"] = { "HTML", "HTML" },
+  ["S"] = { "SQL", "SQL" },
 }
+
+---Convert first match of `original` in `str` to `target`
+---@param str string
+---@param original string
+---@param target string
+---@return string
+local gsub_first = function(str, original, target)
+  local converted_string, _ = str:gsub("^" .. escape_pattern(original), escape_pattern(target), 1)
+  return converted_string
+end
+
+---Convert last match of `original` in `str` to `target`
+---@param str string
+---@param original string
+---@param target string
+---@return string
+local gsub_last = function(str, original, target)
+  local converted_string, _ = str:gsub("(.*)" .. escape_pattern(original), "%1" .. escape_pattern(target))
+  return converted_string
+end
 
 function _G.convert_surrounding_chars(opening_char, closing_char)
   local start_pos = vim.fn.getpos "'<" -- start position of visual selection
@@ -104,8 +126,24 @@ function _G.convert_surrounding_chars(opening_char, closing_char)
   local end_line_number = end_pos[2]
   local end_col_number = end_pos[3]
 
-  --- @type string[]
+  ---@type string[]
   local lines = vim.fn.getline(start_line_number, end_line_number) -- selected lines
+
+  -- detect original surrounding characters
+  local opening_original_char = ""
+  local closing_original_char = ""
+  local first_line_selected_str = lines[1]:sub(start_col_number)
+  foreach(SURROUNDING_CHARS_TABLE, function(chars, _)
+    if first_line_selected_str ~= gsub_first(first_line_selected_str, chars[1], opening_char) then
+      opening_original_char = chars[1]
+      closing_original_char = chars[2]
+    end
+  end)
+
+  -- if original chars aren't detected, then return
+  if opening_original_char == "" or closing_original_char == "" then
+    return
+  end
 
   ---Function to convert line with opening/closing surrounding char
   ---@param line string
@@ -119,31 +157,37 @@ function _G.convert_surrounding_chars(opening_char, closing_char)
 
     -- if selection start and selection end are in the same line
     if start_line_number == end_line_number then
+      local selected_str = line:sub(start_col_number, end_col_number)
+      local converted_str = gsub_first(selected_str, opening_original_char, opening_char)
+      converted_str = gsub_last(converted_str, closing_original_char, closing_char)
+
       setline(table.concat {
         line:sub(1, start_col_number - 1),
-        opening_char,
-        line:sub(start_col_number + 1, end_col_number - 1),
-        closing_char,
+        converted_str,
         line:sub(end_col_number + 1),
       })
       -- else, convert start line
     elseif current_line_number == start_line_number then
+      local selected_str = line:sub(start_col_number)
+      local converted_str = gsub_first(selected_str, opening_original_char, opening_char)
+
       setline(table.concat {
         line:sub(1, start_col_number - 1),
-        opening_char,
-        line:sub(start_col_number + 1),
+        converted_str,
       })
       -- and then, convert end line
     elseif current_line_number == end_line_number then
+      local selected_str = line:sub(1, end_col_number)
+      local converted_str = gsub_last(selected_str, closing_original_char, closing_char)
+
       setline(table.concat {
-        line:sub(1, end_col_number - 1),
-        closing_char,
+        converted_str,
         line:sub(end_col_number + 1),
       })
     end
   end
 
-  foreach(lines, convert_line)
+  iforeach(lines, convert_line)
 end
 
 function _G.convert_surrounding_chars_with_free_input()
@@ -152,13 +196,13 @@ function _G.convert_surrounding_chars_with_free_input()
   convert_surrounding_chars(opening_char, closing_char)
 end
 
-foreach(SURROUNDING_CHARS_TABLE, function(chars, _)
+foreach(SURROUNDING_CHARS_TABLE, function(chars, key)
   local opening_char = chars[1]
   local closing_char = chars[2]
   keymap.set(
     "v",
-    "ys" .. opening_char,
-    ":lua convert_surrounding_chars([[" .. opening_char .. "]], [[" .. closing_char .. "]])<CR>",
+    "ys" .. key,
+    ":lua convert_surrounding_chars([==[" .. opening_char .. "]==], [==[" .. closing_char .. "]==])<CR>",
     {
       desc = "convert surrounding characters to: " .. opening_char .. closing_char,
       noremap = true,
