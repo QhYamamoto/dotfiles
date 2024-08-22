@@ -136,6 +136,10 @@ return {
               tsdk = vim.env.HOME .. "/node_modules/typescript/lib",
             },
           },
+          cmd = {
+            "/usr/local/bin/vue-language-server",
+            "--stdio",
+          },
         }
       end,
       ["typos_lsp"] = function()
