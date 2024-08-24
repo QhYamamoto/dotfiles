@@ -174,6 +174,13 @@ chmod u+x zenhan/bin64/zenhan.exe
 rm zenhan.zip
 rm -rf zenhan
 
+# lsp for ahk
+mkdir vscode-autohotkey2-lsp
+cd vscode-autohotkey2-lsp
+curl -L -o install.js https://raw.githubusercontent.com/thqby/vscode-autohotkey2-lsp/main/tools/install.js
+node install.js
+cd
+
 # install brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 sudo apt-get install build-essential
