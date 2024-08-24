@@ -5,6 +5,7 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
+    "ray-x/lsp_signature.nvim",
   },
   config = function()
     -- import lspconfig plugin
@@ -181,5 +182,39 @@ return {
         }
       end,
     }
+
+    -- settings of lsp for ahk
+    -- FIXME: When opening an ahk file, the message `environment variable not found` is displayed.
+    local configs = require "lspconfig.configs"
+    configs["ahk2"] = {
+      default_config = {
+        autostart = true,
+        cmd = {
+          "node",
+          vim.fn.expand(vim.env.HOME .. "/vscode-autohotkey2-lsp/server/dist/server.js"),
+          "--stdio",
+        },
+        filetypes = { "ahk", "autohotkey", "ah2" },
+        init_options = {
+          locale = "en-us",
+          InterpreterPath = "/mnt/c/Program Files/AutoHotkey/v2/AutoHotkey.exe",
+        },
+        single_file_support = true,
+        flags = { debounce_text_changes = 500 },
+        capabilities = capabilities,
+        on_attach = function(_, _)
+          require("lsp_signature").on_attach {
+            bind = true,
+            use_lspsaga = false,
+            floating_window = true,
+            fix_pos = true,
+            hint_enable = true,
+            hi_parameter = "Search",
+            handler_opts = { "double" },
+          }
+        end,
+      },
+    }
+    lspconfig["ahk2"].setup {}
   end,
 }
