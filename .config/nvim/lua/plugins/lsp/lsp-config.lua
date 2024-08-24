@@ -147,7 +147,10 @@ return {
         lspconfig["typos_lsp"].setup {
           capabilities = capabilities,
           filetypes = {
+            "ah2",
+            "ahk",
             "angular",
+            "autohotkey",
             "bash",
             "blade",
             "csh",
