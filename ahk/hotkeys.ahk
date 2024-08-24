@@ -21,7 +21,7 @@ For ext in ["jpg", "jpeg", "png", "bmp", "tiff"] {
     ; Remove file extension.
     FileNameWithoutExt := RegExReplace(A_LoopFileName, "\.[^.]*$")
     if (FileNameWithoutExt = "default") {
-      ; Assing default file path to `DefaultWallpaperPath`
+      ; Assign default file path to `DefaultWallpaperPath`
       DefaultWallpaperPath := A_LoopFileFullPath
       continue
     }
