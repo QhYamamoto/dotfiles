@@ -92,7 +92,7 @@ verify_installation() {
   if [[ "$output" != *"command not found"* ]]; then
     echo "The package '$package_name' installed successfully."
   else
-    echo "Error: The package '$package_name' isn't insalled."
+    echo "Error: The package '$package_name' isn't installed."
     exit 1
   fi
 }
