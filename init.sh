@@ -182,6 +182,11 @@ curl -L -o install.js https://raw.githubusercontent.com/thqby/vscode-autohotkey2
 node install.js
 cd
 
+# MouseGestureL
+curl -L -O https://ss1.xrea.com/pyonkichi.g1.xrea.com/archives/MGLahk140.zip
+unzip MGLahk140.zip -d "$ahk_dir/MouseGestureL"
+rm MGLahk140.zip
+
 # install brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 sudo apt-get install build-essential
