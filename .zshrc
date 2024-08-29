@@ -43,7 +43,7 @@ export PATH="$HOME/.local/bin:$PATH"
 ##################################################
 DOTFILES_DIR="$HOME/dotfiles"
 export PATH="$DOTFILES_DIR/command:$PATH"
-declare cmds=("dot")
+declare cmds=("dotfiles")
 for cmd in "${cmds[@]}"; do
   source "$DOTFILES_DIR/zsh/compdef/_$cmd.zsh"
 done
