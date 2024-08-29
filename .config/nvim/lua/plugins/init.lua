@@ -5,4 +5,8 @@ return {
   "mattn/vim-maketable",
   "anuvyklack/pretty-fold.nvim",
   "mcauley-penney/tidy.nvim",
+  {
+    "aklt/plantuml-syntax",
+    lazy = false,
+  },
 }
