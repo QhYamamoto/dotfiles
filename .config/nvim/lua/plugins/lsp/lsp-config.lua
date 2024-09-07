@@ -220,5 +220,14 @@ return {
       },
     }
     lspconfig["ahk2"].setup {}
+
+    -- settings for terraform-ls
+    lspconfig["terraformls"].setup {}
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+      pattern = { "*.tf", "*.tfvars" },
+      callback = function()
+        vim.lsp.buf.format()
+      end,
+    })
   end,
 }
