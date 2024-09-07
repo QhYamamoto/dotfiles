@@ -30,6 +30,7 @@ return {
         "bashls",
         "volar",
         "typos_lsp",
+        "prismals",
       },
 
       automatic_installation = true,
