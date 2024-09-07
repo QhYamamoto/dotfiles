@@ -111,6 +111,7 @@ declare -A packages=(
   ["git"]="git --version"
   ["npm"]="npm --version"
   ["ripgrep"]="rg --version"
+  ["xsel"]="xsel --version"
   ["yarn"]="yarn --version"
   ["zsh"]="zsh -version"
   ["zsh-autosuggestions"]=""

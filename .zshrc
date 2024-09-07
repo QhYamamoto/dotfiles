@@ -111,6 +111,13 @@ alias cd=z
 ##################################################
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+
+##################################################
+# xsel
+##################################################
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
 ##################################################
 # other minor settings
 ##################################################
@@ -118,3 +125,6 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 if (( $+commands[lesspipe] )); then
   eval "$(SHELL=/bin/sh lesspipe)"
 fi
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/bin/terraform terraform
