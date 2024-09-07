@@ -27,7 +27,7 @@ SetSystemEnv(EnvKey, EnvValue, ValueType := "REG_SZ") {
 }
 
 /**
- * Set new value to system environment variable.
+ * Get system environment variable value.
  * NOTE: This function requires Administrator's permission.
  * @param {String} EnvKey
  * @returns {String} By default, returns `""`
