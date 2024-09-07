@@ -1,4 +1,3 @@
-quitOnTopLevelReturn: true
 gui:
   theme:
     selectedLineBgColor:
