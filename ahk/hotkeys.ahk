@@ -1,3 +1,5 @@
+#Include "./utils.ahk"
+
 ; Reload this script: <C-M-r>
 ^!r:: Reload()
 
@@ -12,11 +14,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 DefaultWallpaperPath := ""
 WallpaperPaths := []
-WallpaperIndex := 0
+WallPaperEnvKey := "WALLPAPER_INDEX"
+
+; Get WALLPAPER_INDEX value
+WallpaperIndex := GetSystemEnv(WallPaperEnvKey)
+
+; If it's not set, initialize by 0
+if (WallpaperIndex = "") {
+  SetSystemEnv(WallPaperEnvKey, 0)
+  WallpaperIndex := 0
+}
 
 For ext in ["jpg", "jpeg", "png", "bmp", "tiff"] {
   Dir := A_WorkingDir . "\..\wallpapers\*." . ext
-  Loop Files, Dir, "F"  ; Recurse into subfolders.
+  Loop Files, Dir, "FR"  ; Recurse into subfolders.
   {
     ; Remove file extension.
     FileNameWithoutExt := RegExReplace(A_LoopFileName, "\.[^.]*$")
@@ -59,6 +70,7 @@ MsgNoWallpaperImages := "There are no image files for wallpaper. Place them in t
     ; Increment the index and loop back to 0 if it exceeds the array length
     WallpaperIndex := Mod(WallpaperIndex + 1, WallpaperPaths.Length)
     SetWallpaper(WallpaperPaths[WallpaperIndex + 1])  ; +1 because array index starts from 1 in ahk
+    SetSystemEnv(WallPaperEnvKey, WallpaperIndex)
   } else {
     global MsgNoWallpaperImages
     MsgBox(MsgNoWallpaperImages)
@@ -76,6 +88,7 @@ MsgNoWallpaperImages := "There are no image files for wallpaper. Place them in t
       WallpaperIndex := WallpaperPaths.Length - 1
     }
     SetWallpaper(WallpaperPaths[WallpaperIndex + 1])  ; +1 because array index starts from 1 in ahk
+    SetSystemEnv(WallPaperEnvKey, WallpaperIndex)
   } else {
     global MsgNoWallpaperImages
     MsgBox(MsgNoWallpaperImages)
