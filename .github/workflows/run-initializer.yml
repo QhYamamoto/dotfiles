@@ -5,6 +5,8 @@ on:
     paths:
       - init.sh
       - .github/workflows/run-initializer.yml
+    branches-ignore:
+      - main
 
 jobs:
   run-initializer:
