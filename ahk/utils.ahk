@@ -23,7 +23,9 @@ ENV_REGISTRY_KEY := "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
  * @param {String} ValueType
  */
 SetSystemEnv(EnvKey, EnvValue, ValueType := "REG_SZ") {
-  RegWrite(EnvValue, ValueType, ENV_REGISTRY_KEY, EnvKey)
+  if A_IsAdmin {
+    RegWrite(EnvValue, ValueType, ENV_REGISTRY_KEY, EnvKey)
+  }
 }
 
 /**
@@ -33,5 +35,7 @@ SetSystemEnv(EnvKey, EnvValue, ValueType := "REG_SZ") {
  * @returns {String} By default, returns `""`
  */
 GetSystemEnv(EnvKey) {
-  return RegRead(ENV_REGISTRY_KEY, EnvKey, "")
+  if A_IsAdmin {
+    return RegRead(ENV_REGISTRY_KEY, EnvKey, "")
+  }
 }
