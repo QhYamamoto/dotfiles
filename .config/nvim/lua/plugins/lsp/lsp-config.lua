@@ -170,6 +170,7 @@ return {
             "markdown",
             "mksh",
             "php",
+            "plantuml",
             "prisma",
             "python",
             "scss",
