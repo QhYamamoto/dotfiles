@@ -126,5 +126,8 @@ if (( $+commands[lesspipe] )); then
   eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
+# terraform cmd compleition and alias
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
+alias tf="terraform"
+compdef tf="terraform"
