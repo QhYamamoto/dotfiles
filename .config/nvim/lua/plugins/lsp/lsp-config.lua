@@ -185,6 +185,18 @@ return {
           },
         }
       end,
+      ["yamlls"] = function()
+        lspconfig["yamlls"].setup {
+          capabilities = capabilities,
+          settings = {
+            yaml = {
+              schemas = {
+                ["https://raw.githubusercontent.com/lalcebo/json-schema/master/serverless/reference.json"] = "serverless.yaml",
+              },
+            },
+          },
+        }
+      end,
     }
 
     -- settings of lsp for ahk

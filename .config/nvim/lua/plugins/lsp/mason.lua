@@ -31,6 +31,7 @@ return {
         "volar",
         "typos_lsp",
         "prismals",
+        "yamlls",
       },
 
       automatic_installation = true,
