@@ -25,38 +25,56 @@ return {
       },
     }
 
-    local Terminal = require("toggleterm.terminal").Terminal
-    local lazygit = Terminal:new {
+    local tui_tools = {}
+    local function get_opened_tui_tool()
+      local result = nil
+      foreach(tui_tools, function(tui_tool, _)
+        if tui_tool:is_open() then
+          result = tui_tool
+        end
+      end)
+      return result
+    end
+    local add_tui_tool = function(label, settings, open_cmd, close_cmd)
+      settings.count = 1000 + (#tui_tools - 1)
+      local Terminal = require("toggleterm.terminal").Terminal
+      local this_tool = Terminal:new(settings)
+      tui_tools[#tui_tools + 1] = this_tool
+
+      -- define function for toggling this tui tool
+      _G["toggle_" .. label] = function()
+        -- if this tool is closed, close currently opened tui tool.
+        local is_open = this_tool:is_open()
+        if not is_open then
+          local opened_tui_tool = get_opened_tui_tool()
+          if opened_tui_tool then
+            opened_tui_tool:toggle()
+          end
+        end
+
+        this_tool:toggle()
+        is_open = not is_open
+        vim.defer_fn(function()
+          if is_open then -- if state's been changed from `close` → `open`, set neovim to insertmode
+            vim.api.nvim_command "startinsert"
+          end
+        end, 100)
+      end
+
+      vim.keymap.set("n", open_cmd, "<CMD>lua toggle_" .. label .. "()<CR>", { silent = true })
+      vim.keymap.set("t", close_cmd, "<CMD>lua toggle_" .. label .. "()<CR>", { silent = true })
+    end
+
+    add_tui_tool("lazygit", {
       cmd = "lazygit",
       hidden = true,
       direction = "float",
-      count = 1000,
-    }
-    local lazydocker = Terminal:new {
+    }, "<LEADER>lg", '"lg')
+
+    add_tui_tool("lazydocker", {
       cmd = "lazydocker",
       hidden = true,
       direction = "float",
-      count = 1001,
-    }
-
-    function toggle_lazygit()
-      lazygit:toggle()
-      if lazygit:is_open() then
-        lazygit:set_mode "i"
-      end
-    end
-
-    vim.keymap.set("n", "<leader>lg", "<cmd>lua toggle_lazygit()<CR>", { silent = true })
-    vim.keymap.set("t", '"lg', "<cmd>lua toggle_lazygit()<CR>", { silent = true })
-
-    function toggle_lazydocker()
-      lazydocker:toggle()
-      if lazydocker:is_open() then
-        lazydocker:set_mode "i"
-      end
-    end
-
-    vim.keymap.set("n", "<leader>ld", "<cmd>lua toggle_lazydocker()<CR>", { silent = true })
-    vim.keymap.set("t", '"ld', "<cmd>lua toggle_lazydocker()<CR>", { silent = true })
+    }, "<LEADER>ld", '"ld')
   end,
 }
