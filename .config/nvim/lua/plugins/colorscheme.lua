@@ -25,5 +25,8 @@ return {
     set_hl(0, "@lsp.type.variable", { fg = "#EC818A", italic = true })
     set_hl(0, "DiagnosticUnnecessary", { fg = "#8A959D", strikethrough = true })
     set_hl(0, "@variable", { fg = "#EC818A", italic = true })
+
+    local cl_bg = vim.fn.synIDattr(vim.fn.hlID "CursorLine", "bg")
+    set_hl(0, "Visual", { bg = cl_bg })
   end,
 }
