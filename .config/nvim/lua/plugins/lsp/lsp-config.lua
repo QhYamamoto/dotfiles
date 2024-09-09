@@ -195,6 +195,7 @@ return {
               },
             },
           },
+          filetypes = { "yaml" },
         }
       end,
     }
