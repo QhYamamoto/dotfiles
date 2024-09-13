@@ -28,6 +28,7 @@ return {
         zsh = { "beautysh" },
         zshrc = { "beautysh" },
         blade = { "blade-formatter" },
+        vue = { "prettier" },
       },
       formatters = {
         beautysh = {
