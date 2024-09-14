@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-dot() {
+dotfiles() {
   local command=$1
 
   DOTFILES_DIR="$HOME/dotfiles"
@@ -19,4 +19,4 @@ dot() {
   esac
 }
 
-dot $@
+dotfiles $@
