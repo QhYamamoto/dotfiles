@@ -203,7 +203,7 @@ ahk_dir=${ahk_dir/"/mnt/c/"/"C:/"}
 startup_ahk_bat_path="$WIN_HOME/.ahk/startup_ahk.bat"
 touch "$startup_ahk_bat_path"
 echo "
-  start \"\" /B \"$ahk_dir/App/v2/AutoHotkey64.exe\" \"$ahk_dir/main.ahk\"
+  powershell -Command \"Start-Process '$ahk_dir/App/v2/AutoHotkey64.exe' -ArgumentList '$ahk_dir/main.ahk' -Verb RunAs\"
   start \"\" /B \"$ahk_dir/App/v1/AutoHotkeyU64.exe\" \"$ahk_dir/MouseGestureL/MouseGestureL.ahk\"
 " >"$startup_ahk_bat_path"
 
