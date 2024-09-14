@@ -15,6 +15,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Check working directory
+        run: pwd
+
+      - name: List files in bash/packages
+        run: ls -la ./bash/packages
+
       - name: Grant execute permissions for init.sh
         run: chmod +x ./init.sh
 
