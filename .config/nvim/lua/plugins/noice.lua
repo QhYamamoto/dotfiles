@@ -17,6 +17,7 @@ return {
 
     local notify = require "notify"
     notify.setup {
+      timeout = 0,
       background_colour = "#000000",
     }
   end,
