@@ -14,5 +14,9 @@ return {
     end
     keymap.set("n", "k", rhs_for_k, { noremap = false, silent = true, expr = true })
     keymap.set("n", "<Up>", rhs_for_k, { noremap = false, silent = true, expr = true })
+
+    -- Customize the acceleration speed.
+    -- Increasing the interval between table elements will increase the speed.
+    vim.g.accelerated_jk_acceleration_table = { 2, 7, 12, 17, 22, 27 }
   end,
 }
