@@ -57,8 +57,6 @@ keymap.set("i", "<A-Down>", "<ESC>ddpi", { desc = "Swap current line with line b
 keymap.set({ "n", "i" }, "<A-Up>", "<Up>ddp<Up>", { desc = "Swap current line with line above" })
 keymap.set("i", "<A-Up>", "<ESC><Up>ddp<Up>i", { desc = "Swap current line with line above" })
 keymap.set("n", "<C-a>", "gg^vG$", { desc = "Select whole text" })
-keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { noremap = true, silent = true, expr = true })
-keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { noremap = true, silent = true, expr = true })
 keymap.set("n", "<C-e>", "$", { noremap = true, silent = true })
 keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true })
 
