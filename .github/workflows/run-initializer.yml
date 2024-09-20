@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - init.sh
-      - .github/workflows/run-initializer.yml
+      - bash/**
     branches-ignore:
       - main
 
