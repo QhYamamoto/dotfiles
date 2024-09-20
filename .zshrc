@@ -131,3 +131,5 @@ autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
 alias tf="terraform"
 compdef tf="terraform"
+
+source $HOME/.config/broot/launcher/bash/br
