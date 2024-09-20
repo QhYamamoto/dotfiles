@@ -76,6 +76,12 @@ return {
       direction = "float",
     }, "<LEADER>ld")
 
+    add_tui_tool("lazysql", {
+      cmd = "lazysql",
+      hidden = true,
+      direction = "float",
+    }, "<LEADER>ls")
+
     -- Custom toggle cmd
     vim.keymap.set("n", "<M-t>", function()
       local count = tonumber(vim.v.count) > 0 and tonumber(vim.v.count) or 1
