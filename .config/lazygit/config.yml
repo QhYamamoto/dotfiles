@@ -3,3 +3,12 @@ gui:
     selectedLineBgColor:
       - "#30363f"
   expandFocusedSidePanel: true
+customCommands:
+  - key: "<C-p>"
+    description: "pull (force)"
+    context: "localBranches"
+    command: 'git stash save "stashed by force pull" && git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref @)'
+    prompts:
+      - type: "confirm"
+        title: "pull (force)"
+        body: "Are you sure you want to force pull? (Your local changes will be stashed.)"
