@@ -4,7 +4,7 @@ return {
     local toggleterm = require "toggleterm"
     toggleterm.setup {
       size = 20,
-      open_mapping = { "<M-t>" },
+      -- open_mapping = { "<M-t>" },
       hide_numbers = true,
       shade_filetypes = {},
       shade_terminals = true,
@@ -35,7 +35,7 @@ return {
       end)
       return result
     end
-    local add_tui_tool = function(label, settings, open_cmd, close_cmd)
+    local add_tui_tool = function(label, settings, open_cmd)
       settings.count = 1000 + (#tui_tools - 1)
       local Terminal = require("toggleterm.terminal").Terminal
       local this_tool = Terminal:new(settings)
@@ -62,19 +62,32 @@ return {
       end
 
       vim.keymap.set("n", open_cmd, "<CMD>lua toggle_" .. label .. "()<CR>", { silent = true })
-      vim.keymap.set("t", close_cmd, "<CMD>lua toggle_" .. label .. "()<CR>", { silent = true })
     end
 
     add_tui_tool("lazygit", {
       cmd = "lazygit",
       hidden = true,
       direction = "float",
-    }, "<LEADER>lg", '"lg')
+    }, "<LEADER>lg")
 
     add_tui_tool("lazydocker", {
       cmd = "lazydocker",
       hidden = true,
       direction = "float",
-    }, "<LEADER>ld", '"ld')
+    }, "<LEADER>ld")
+
+    -- Custom toggle cmd
+    vim.keymap.set("n", "<M-t>", function()
+      local count = tonumber(vim.v.count) > 0 and tonumber(vim.v.count) or 1
+      vim.cmd("ToggleTerm " .. count)
+    end, { noremap = true, silent = true })
+    vim.keymap.set("t", "<M-t>", function()
+      local opened_tui_tool = get_opened_tui_tool()
+      if opened_tui_tool then
+        opened_tui_tool:toggle()
+      else
+        vim.cmd "ToggleTerm"
+      end
+    end, { noremap = true, silent = true })
   end,
 }
