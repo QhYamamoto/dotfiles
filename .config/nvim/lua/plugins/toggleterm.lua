@@ -82,6 +82,12 @@ return {
       direction = "float",
     }, "<LEADER>ls")
 
+    add_tui_tool("broot", {
+      cmd = "broot -G --conf ~/.config/broot/config.toml",
+      hidden = true,
+      direction = "float",
+    }, "<LEADER>br")
+
     -- Custom toggle cmd
     vim.keymap.set("n", "<M-t>", function()
       local count = tonumber(vim.v.count) > 0 and tonumber(vim.v.count) or 1

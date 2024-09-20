@@ -1,0 +1,18 @@
+default_flags = "-ih --sort-by-type-dirs-first"
+
+[[verbs]]
+key = "enter"
+execution = "nvr -l {file}"
+apply_to = "file"
+leave_broot = false
+
+[[verbs]]
+invocation = "preview"
+key = "ctrl-p"
+internal = "toggle_preview"
+apply_to = "file"
+
+[[verbs]]
+key = "c"
+execution = "bash -c 'touch {file}'"
+apply_to = "directory"

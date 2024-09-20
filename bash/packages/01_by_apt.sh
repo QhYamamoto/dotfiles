@@ -17,6 +17,7 @@ declare -A packages=(
   ["zsh"]="zsh -version"
   ["zsh-autosuggestions"]=""
   ["zsh-syntax-highlighting"]=""
+  ["python3-pip"]="pip3 --version"
 )
 
 IFS=" "
