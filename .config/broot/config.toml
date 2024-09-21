@@ -16,3 +16,8 @@ apply_to = "file"
 key = "c"
 execution = "bash -c 'touch {file}'"
 apply_to = "directory"
+
+[[verbs]]
+invocation = "z"
+execution = ":toggle_tree"
+apply_to = "directory"
