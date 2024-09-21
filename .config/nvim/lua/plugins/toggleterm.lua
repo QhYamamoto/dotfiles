@@ -83,7 +83,7 @@ return {
     }, "<LEADER>ls")
 
     add_tui_tool("broot", {
-      cmd = "broot -G --conf ~/.config/broot/config.toml -c :z",
+      cmd = "broot --conf ~/.config/broot/config.toml -c :z",
       hidden = true,
       direction = "float",
     }, "<LEADER>br")

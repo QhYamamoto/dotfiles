@@ -1,4 +1,4 @@
-default_flags = "-ih --sort-by-type-dirs-first"
+default_flags = "-Gih --sort-by-type-dirs-first"
 
 [[verbs]]
 key = "enter"
