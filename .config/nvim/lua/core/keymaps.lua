@@ -63,10 +63,15 @@ keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true })
 -- for terminal
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true })
 
-keymap.set("n", "<leader>y", function()
+keymap.set("n", "<LEADER>yf", function()
   vim.fn.setreg("+", vim.fn.expand "%:p")
-  print "Filepath's been copied to your clipboard!!"
+  print "Filepath has been copied to your clipboard!!"
 end, { desc = "save fullpath to currently opened file in a buffer", noremap = true, silent = true })
+
+keymap.set("n", "<LEADER>yb", function()
+  vim.fn.setreg("+", vim.fn.expand "%:t")
+  print "File basename has been copied to your clipboard!!"
+end, { desc = "save basename of currently opened file in a buffer", noremap = true, silent = true })
 
 keymap.set("n", "J", function()
   repeat_func(function()
