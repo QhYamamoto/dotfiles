@@ -2,7 +2,7 @@ default_flags = "-ih --sort-by-type-dirs-first"
 
 [[verbs]]
 key = "enter"
-execution = "nvr -l {file}"
+execution = "~/.config/broot/open_file.sh {file}"
 apply_to = "file"
 leave_broot = false
 
