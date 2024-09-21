@@ -13,9 +13,8 @@ internal = "toggle_preview"
 apply_to = "file"
 
 [[verbs]]
-key = "c"
-execution = "bash -c 'touch {file}'"
-apply_to = "directory"
+invocation = "t {subpath}"
+external = "touch {directory}/{subpath}"
 
 [[verbs]]
 invocation = "z"
