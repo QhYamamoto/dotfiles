@@ -132,4 +132,6 @@ complete -o nospace -C /usr/bin/terraform terraform
 alias tf="terraform"
 compdef tf="terraform"
 
+alias sail='./vendor/bin/sail'
+
 source $HOME/.config/broot/launcher/bash/br
