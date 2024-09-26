@@ -51,5 +51,18 @@ return {
         { name = "path" },
       },
     }
+
+    local keymap = vim.keymap
+    keymap.set({ "i", "s" }, "<Tab>", function()
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      end
+    end, { silent = true })
+
+    keymap.set({ "i", "s" }, "<S-Tab>", function()
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      end
+    end, { silent = true })
   end,
 }
