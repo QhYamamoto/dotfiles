@@ -57,7 +57,7 @@ return {
   { key = "LeftArrow", mods = "CTRL", action = act.SendKey { key = "b", mods = "META" } },
   { key = "i", mods = "SHIFT|CTRL", action = act.SendKey { key = "e", mods = "CTRL" } },
   -- copy & paste
-  { key = "Space", mods = "CTRL", action = act.ActivateCopyMode },
+  { key = "v", mods = "SHIFT|CTRL", action = act.ActivateCopyMode },
   { key = "v", mods = "CTRL", action = act.PasteFrom "Clipboard" },
   -- F13 layer key mappings
   {
