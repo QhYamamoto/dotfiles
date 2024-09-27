@@ -17,6 +17,14 @@ customCommands:
     description: "Checkout (with auto-stash and auto-pop)"
     context: "localBranches"
     command: 'git stash save "auto-stash" && git checkout {{ .SelectedLocalBranch.Name }} && git stash pop'
+  - key: "E"
+    description: "create empty commit"
+    command: "git commit --allow-empty -m {{index .PromptResponses 0 | quote}}"
+    context: "files"
+    prompts:
+      - type: "input"
+        title: "Empty commit message"
+        initialValue: ""
 os:
   editPreset: "nvim-remote"
 git:
