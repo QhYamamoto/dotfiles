@@ -9,3 +9,6 @@ curl -o "$WSL_HOME"/.zsh/git-completion.sh \
 # git-prompt
 curl -o "$WSL_HOME"/.zsh/git-prompt.sh \
   https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+
+# git-delta
+brew install git-delta

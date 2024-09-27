@@ -18,3 +18,7 @@ customCommands:
     command: 'git stash save "auto-stash" && git checkout {{ .SelectedLocalBranch.Name }} && git stash pop'
 os:
   editPreset: "nvim-remote"
+git:
+  paging:
+    colorArg: always
+    pager: delta -n -s --dark --paging=never
