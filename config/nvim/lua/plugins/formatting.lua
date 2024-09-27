@@ -4,7 +4,7 @@ return {
   config = function()
     local conform = require "conform"
 
-    local FILETYPES_TO_DISABLE_AUTO_FORMAT = { "php", "blade" }
+    local FILETYPES_TO_DISABLE_AUTO_FORMAT = {} --[[ { "php", "blade" } ]]
 
     conform.setup {
       formatters_by_ft = {
