@@ -35,7 +35,7 @@ return {
       },
       defaults = {
         path_display = { "smart" },
-        file_ignore_patterns = { "\\.git/" },
+        file_ignore_patterns = { ".git/" },
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous,
