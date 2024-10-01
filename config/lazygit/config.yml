@@ -3,7 +3,7 @@ gui:
     selectedLineBgColor:
       - reverse
   expandFocusedSidePanel: true
-  sidePanelWidth: 0.2
+  sidePanelWidth: 0.25
 customCommands:
   - key: "<C-p>"
     description: "Pull (force)"
