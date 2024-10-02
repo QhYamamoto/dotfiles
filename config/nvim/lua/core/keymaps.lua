@@ -21,12 +21,21 @@ keymap.set("n", "い", "i", { desc = "Enter insert mode with い" })
 keymap.set("i", "<C-v>", "<ESC>pa", { desc = "Paste." })
 keymap.set("n", "<ESC>", function()
   -- if search register is not nil, then execute nohl command
-  if vim.fn.getreg "/" then
+  if vim.fn.getreg "/" ~= "" then
+    vim.fn.setreg("/", "")
     vim.cmd "nohl"
-  else
-    vim.cmd "normal! <ESC>"
+    return
   end
-end, { desc = "Clear search highlights" })
+
+  -- if focused window is floating one
+  local winid = vim.api.nvim_get_current_win()
+  if vim.api.nvim_win_get_config(winid).relative ~= "" then
+    vim.api.nvim_win_close(winid, true)
+    return
+  end
+
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", true)
+end)
 keymap.set({ "n", "v" }, "d", '"_d') -- prevent to yank on delete
 keymap.set("n", "<C-c>", "<C-w>w", { noremap = true, silent = true }) -- jump to floating window
 keymap.set("n", "<LEADER>q", "<CMD>qa<CR>")
