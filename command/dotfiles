@@ -12,6 +12,9 @@ dotfiles() {
     update)
       bash "$DOTFILES_DIR/update.sh"
       ;;
+    git)
+      bash "$DOTFILES_DIR/bash/_setup_git.sh"
+      ;;
     *)
       echo "Unknown command: $command"
       exit 1
