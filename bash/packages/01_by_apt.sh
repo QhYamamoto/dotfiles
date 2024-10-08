@@ -13,7 +13,6 @@ declare -A packages=(
   ["npm"]="npm --version"
   ["ripgrep"]="rg --version"
   ["xsel"]="xsel --version"
-  ["yarn"]="yarn --version"
   ["zsh"]="zsh -version"
   ["zsh-syntax-highlighting"]=""
   ["python3-pip"]="pip3 --version"
