@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ./bash/_functions.sh
-
 sudo apt install gnupg2 apt-transport-https
 wget -O - https://pkg.wslutiliti.es/public.key | sudo gpg -o /usr/share/keyrings/wslu-archive-keyring.pgp --dearmor
 
@@ -10,5 +8,3 @@ $(. /etc/os-release && echo "$VERSION_CODENAME") main" | sudo tee /etc/apt/sourc
 
 sudo apt update
 sudo apt install wslu
-
-verify_package_installation "wslu" "wslview --version"
