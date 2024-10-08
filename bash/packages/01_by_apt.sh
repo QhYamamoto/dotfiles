@@ -27,3 +27,7 @@ for package_name in "${!packages[@]}"; do
   verification_cmd=${packages[$package_name]}
   verify_package_installation "$package_name" "$verification_cmd"
 done
+
+# create symlink for some useful commands
+ln -s $(which batcat) $WSL_HOME/.local/bin/bat
+ln -s $(which fdfind) $WSL_HOME/.local/bin/fd
