@@ -2,6 +2,15 @@
 
 scripts_dir="./bash"
 
+# Get the current user's username
+USER_NAME=$(whoami)
+
+# Create a backup of the sudoers file
+sudo cp /etc/sudoers /etc/sudoers.bak
+
+# Add the current user to the sudoers file
+echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" | sudo EDITOR='tee -a' visudo
+
 mapfile -t scripts < <(find "$scripts_dir" -type f -name "*.sh" | sort)
 
 for script in "${scripts[@]}"; do
@@ -18,3 +27,7 @@ echo "We are about to set Zsh as your default shell. Please enter your password.
 chsh -s $(which zsh)
 
 echo "If authentication fails, please run the following command manually to set Zsh as your default shell: \`chsh -s \$(which zsh)\`."
+
+# restore original sudoers file
+sudo cp /etc/sudoers.bak /etc/sudoers
+sudo chmod 0440 /etc/sudoers
