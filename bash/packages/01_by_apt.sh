@@ -15,7 +15,6 @@ declare -A packages=(
   ["xsel"]="xsel --version"
   ["yarn"]="yarn --version"
   ["zsh"]="zsh -version"
-  ["zsh-autosuggestions"]=""
   ["zsh-syntax-highlighting"]=""
   ["python3-pip"]="pip3 --version"
   ["python3-venv"]=""
