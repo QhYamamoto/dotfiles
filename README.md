@@ -1,3 +1,19 @@
+# Prerequisites
+
+- Windows 11
+
+- WSL
+
+  - Distributions
+    - Ubuntu 22.04 (LTS)
+    - Ubuntu 24.04 (LTS)
+
+- Wezterm (recommended)
+
+  ```powershell
+  winget install wez.wezterm
+  ```
+
 # Installation
 
 1. Install curl and unzip
@@ -25,6 +41,7 @@ cd ~/dotfiles && bash ./init.sh
 ```
 
 5. Please exit and re-open the terminal.
+
 ```sh
 exit
 ```
@@ -36,6 +53,7 @@ cd ~/dotfiles && dotfiles git
 ```
 
 7. Copy generated public key to your clipboard.
+
 ```sh
 cat ~/.ssh/github_id_rsa.pub | pbcopy
 ```
