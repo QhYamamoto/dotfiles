@@ -3,7 +3,7 @@
 autoload -U +X compinit && compinit
 
 _dotfiles() {
-  local commands=("init" "update" "git")
+  local commands=("init" "update" "git" "ahk")
   compadd "${commands[@]}"
 }
 
