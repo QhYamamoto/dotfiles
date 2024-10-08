@@ -3,6 +3,8 @@
 source ./bash/_constants.sh
 source ./bash/_functions.sh
 
+mkdir "$WIN_HOME/.config"
+
 # Associative array for config paths that will be copied
 declare -A copy_paths=(
   ["$WSL_HOME/dotfiles/config/wezterm"]="$WIN_HOME/.config/wezterm"
