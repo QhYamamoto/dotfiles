@@ -1,8 +1,20 @@
 #!/bin/bash
 
 source ./bash/_constants.sh
+source ./bash/_functions.sh
+
+echo "We'll setup AutoHotKey on Windows. Please kill all AutoHotKey processes before continuing."
+read -p "Press any key to continue..."
+
+[ -d "$WIN_HOME/.ahk" ] && rm -rf "$WIN_HOME/.ahk"
+copy_item "$WSL_HOME/dotfiles/ahk" "$WIN_HOME/.ahk"
+
+if verify_package_installation "curl" "curl --version"; then
+  sudo apt update -qq && sudo apt install -yqq curl
+fi
 
 # lsp
+[ -d "$WSL_HOME/vscode-autohotkey2-lsp" ] && rm -rf "$WSL_HOME/vscode-autohotkey2-lsp"
 mkdir "$WSL_HOME/vscode-autohotkey2-lsp"
 cd "$WSL_HOME/vscode-autohotkey2-lsp"
 curl -L -o install.js https://raw.githubusercontent.com/thqby/vscode-autohotkey2-lsp/main/tools/install.js
@@ -10,7 +22,7 @@ node install.js
 rm install.js
 cd "$WSL_HOME/dotfiles"
 
-# AutoHotkey v1/v2
+# Install AutoHotkey v1/v2
 ahk_dir="$WIN_HOME/.ahk"
 mkdir "$ahk_dir/App"
 curl -L -o ahk-v1.zip https://www.autohotkey.com/download/1.1/AutoHotkey_1.1.37.02.zip

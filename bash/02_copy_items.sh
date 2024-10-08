@@ -8,7 +8,6 @@ mkdir "$WIN_HOME/.config"
 # Associative array for config paths that will be copied
 declare -A copy_paths=(
   ["$WSL_HOME/dotfiles/config/wezterm"]="$WIN_HOME/.config/wezterm"
-  ["$WSL_HOME/dotfiles/ahk"]="$WIN_HOME/.ahk"
 )
 
 # Copy configuration files to Windows for each entry in copy_paths
