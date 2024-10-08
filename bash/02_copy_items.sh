@@ -5,7 +5,7 @@ source ./bash/_functions.sh
 
 # Associative array for config paths that will be copied
 declare -A copy_paths=(
-  ["$WSL_HOME/dotfiles/.config/wezterm"]="$WIN_HOME/.config/wezterm"
+  ["$WSL_HOME/dotfiles/config/wezterm"]="$WIN_HOME/.config/wezterm"
   ["$WSL_HOME/dotfiles/ahk"]="$WIN_HOME/.ahk"
 )
 
