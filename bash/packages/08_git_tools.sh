@@ -2,6 +2,8 @@
 
 source ./bash/_constants.sh
 
+mkdir -p "$WSL_HOME/.zsh"
+
 # git-completion
 curl -o "$WSL_HOME"/.zsh/git-completion.sh \
   https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
