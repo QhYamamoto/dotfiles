@@ -3,12 +3,12 @@
 source ./bash/_constants.sh
 
 # lsp
-mkdir vscode-autohotkey2-lsp
-cd vscode-autohotkey2-lsp
+mkdir "$WSL_HOME/vscode-autohotkey2-lsp"
+cd "$WSL_HOME/vscode-autohotkey2-lsp"
 curl -L -o install.js https://raw.githubusercontent.com/thqby/vscode-autohotkey2-lsp/main/tools/install.js
 node install.js
 rm install.js
-cd ..
+cd "$WSL_HOME/dotfiles"
 
 # AutoHotkey v1/v2
 ahk_dir="$WIN_HOME/.ahk"
