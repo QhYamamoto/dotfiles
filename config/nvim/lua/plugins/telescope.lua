@@ -17,11 +17,7 @@ return {
     telescope.setup {
       extensions = {
         project = {
-          base_dirs = {
-            "~/dev/toppan-kumagaya",
-            "~/dev/integritis",
-            "~",
-          },
+          base_dirs = { "~" },
           theme = "dropdown",
           order_by = "asc",
           search_by = "title",
