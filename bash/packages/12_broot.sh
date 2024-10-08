@@ -6,3 +6,6 @@ sudo curl -L https://dystroy.org/broot/download/x86_64-linux/broot -o /usr/bin/b
 sudo chmod +x /usr/bin/broot
 
 verify_package_installation "broot" "broot --version"
+
+# Initialize broot
+broot
