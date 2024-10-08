@@ -79,7 +79,8 @@ verify_package_installation() {
 
   # Skip the check if the verification command is not provided
   if [ -z "$verification_cmd" ]; then
-    continue
+    echo "The package '$package_name' installed successfully."
+    return
   fi
 
   # Execute the verification command and capture the output

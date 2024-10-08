@@ -26,8 +26,8 @@ unzip MGLahk140.zip -d "$ahk_dir/MouseGestureL"
 rm MGLahk140.zip
 
 # create Batch file that is to be placed to startup directory
+startup_ahk_bat_path="$ahk_dir/startup_ahk.bat"
 ahk_dir=${ahk_dir/"/mnt/c/"/"C:/"}
-startup_ahk_bat_path="$WIN_HOME/.ahk/startup_ahk.bat"
 touch "$startup_ahk_bat_path"
 echo "
   powershell -Command \"Start-Process '$ahk_dir/App/v2/AutoHotkey64.exe' -ArgumentList '$ahk_dir/main.ahk' -Verb RunAs\"
