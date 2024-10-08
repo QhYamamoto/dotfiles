@@ -24,7 +24,7 @@ declare -A packages=(
 IFS=" "
 
 for package_name in "${!packages[@]}"; do
-  sudo apt update -qq && sudo apt install -y $package_name
+  sudo apt update -qq && sudo apt install -yqq $package_name
   verification_cmd=${packages[$package_name]}
   verify_package_installation "$package_name" "$verification_cmd"
 done
