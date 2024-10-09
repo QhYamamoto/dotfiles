@@ -21,7 +21,7 @@ dotfiles() {
       bash "$DOTFILES_DIR/bash/_setup_git.sh"
       ;;
     ahk)
-      bash "$DOTFILES_DIR/bash/03_setup_ahk.sh"
+      bash "$DOTFILES_DIR/bash/_setup_ahk.sh"
       ;;
     *)
       echo "Unknown command: $command"
