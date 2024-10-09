@@ -7,5 +7,5 @@ sudo chmod +x /usr/bin/broot
 
 verify_package_installation "broot" "broot --version"
 
-# Initialize broot
-broot
+# Set br cmd install state to `refused`
+broot --set-install-state refused
