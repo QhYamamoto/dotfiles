@@ -17,6 +17,7 @@ declare -A symlink_paths=(
   ["$WSL_HOME/dotfiles/config/lazygit"]="$WSL_HOME/.config/lazygit"
   ["$WSL_HOME/dotfiles/config/lazydocker"]="$WSL_HOME/.config/lazydocker"
   ["$WSL_HOME/dotfiles/config/nvim"]="$WSL_HOME/.config/nvim"
+  ["$WSL_HOME/dotfiles/config/wezterm"]="$WSL_HOME/.config/wezterm"
 )
 
 # Create symbolic links for each entry in symlink_paths
@@ -24,3 +25,11 @@ for config_path_key in "${!symlink_paths[@]}"; do
   config_path_value="${symlink_paths[$config_path_key]}"
   create_symlink "$config_path_key" "$config_path_value"
 done
+
+# Check if $WIN_HOME is not empty, then run PowerShell script
+if [[ -n "$WIN_HOME" ]]; then
+  win_wezterm_dir="$WIN_HOME\\.config\\wezterm"
+  win_wezterm_dir=${win_wezterm_dir/"/mnt/c/Users/"/"C:\\Users\\"}
+  powershell.exe -ExecutionPolicy Bypass -File "./powershell/mklink.ps1" \
+    -LinkPath "$win_wezterm_dir" -TargetPath "$(wslpath -w ~)\\dotfiles\\config\\wezterm"
+fi
