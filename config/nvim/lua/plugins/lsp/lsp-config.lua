@@ -198,6 +198,22 @@ return {
           filetypes = { "yaml" },
         }
       end,
+      ["ts_ls"] = function()
+        lspconfig["ts_ls"].setup {
+          capabilities = capabilities,
+          on_attach = function(_, bufnr)
+            vim.keymap.set("n", "<LEADER>oi", function()
+              local params = {
+                command = "_typescript.organizeImports",
+                arguments = { vim.api.nvim_buf_get_name(0) },
+                title = "typescript.organizeImports",
+              }
+              vim.lsp.buf.execute_command(params)
+              vim.cmd "silent! write"
+            end, { buffer = bufnr, noremap = true, silent = true })
+          end,
+        }
+      end,
     }
 
     -- settings of lsp for ahk
