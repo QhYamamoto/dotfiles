@@ -1,10 +1,15 @@
 #!/bin/zsh
 
+DOTFILES_DIR="$HOME/dotfiles"
+
 dotfiles() {
+
+  if [ $# -eq 0 ]; then
+    cd "$DOTFILES_DIR" && nvim
+    exit 0
+  fi
+
   local command=$1
-
-  DOTFILES_DIR="$HOME/dotfiles"
-
   case "$command" in
     init)
       bash "$DOTFILES_DIR/init.sh"
