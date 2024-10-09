@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./bash/_constants.sh
+
 scripts_dir="./bash"
 
 # Get the current user's username
@@ -21,6 +23,11 @@ for script in "${scripts[@]}"; do
     source "$script"
   fi
 done
+
+# If WIN_HOME is not null,
+if [[ -n "$WIN_HOME" ]]; then
+  source ./bash/_setup_ahk.sh
+fi
 
 # Set Zsh as default shell
 echo "We are about to set Zsh as your default shell. Please enter your password."
