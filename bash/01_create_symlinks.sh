@@ -28,6 +28,7 @@ done
 
 # Check if $WIN_HOME is not empty, then run PowerShell script
 if [[ -n "$WIN_HOME" ]]; then
+  mkdir "$WIN_HOME/.config"
   win_wezterm_dir="$WIN_HOME\\.config\\wezterm"
   win_wezterm_dir=${win_wezterm_dir/"/mnt/c/Users/"/"C:\\Users\\"}
   powershell.exe -ExecutionPolicy Bypass -File "./powershell/mklink.ps1" \
