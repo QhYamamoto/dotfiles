@@ -25,6 +25,7 @@ return {
         "cssls",
         "lua_ls",
         "emmet_ls",
+        "powershell_es",
         "pyright",
         "bashls",
         "volar",
