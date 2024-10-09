@@ -214,6 +214,12 @@ return {
           end,
         }
       end,
+      ["powershell_es"] = function()
+        lspconfig["powershell_es"].setup {
+          capabilities = capabilities,
+          bundle_path = vim.env.HOME,
+        }
+      end,
     }
 
     -- settings of lsp for ahk
