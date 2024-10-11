@@ -46,21 +46,15 @@
    exit
    ```
 
-6. Run git setup command. (Please name your key pair `github_id_rsa`)
+6. Run git setup command and follow the instructions.
 
    ```sh
    cd ~/dotfiles && dotfiles git
    ```
 
-7. Copy generated public key to your clipboard.
+7. Register the public key to [your github account](https://github.com/settings/keys).
 
-   ```sh
-   cat ~/.ssh/github_id_rsa.pub | pbcopy
-   ```
-
-8. Add the public key to [your github account](https://github.com/settings/keys).
-
-9. Remove dotfiles directory and clone the repository again via git.
+8. Remove dotfiles directory and clone the repository again via git.
 
    ```sh
    cd && rm -rf ~/dotfiles && git clone git@github.com:QhYamamoto/dotfiles.git
