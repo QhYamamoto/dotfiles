@@ -3,9 +3,8 @@
 source ./bash/_constants.sh
 source ./bash/_functions.sh
 
-# FIXME:
-mkdir "$WSL_HOME/.config"
-mkdir "$WSL_HOME/.config/broot"
+[ -d "$WSL_HOME/.config" ] || mkdir "$WSL_HOME/.config"
+[ -d "$WSL_HOME/.config/broot" ] || mkdir "$WSL_HOME/.config/broot"
 
 # Associative array for config paths that will be symlinked
 declare -A symlink_paths=(
