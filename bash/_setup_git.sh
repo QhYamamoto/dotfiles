@@ -2,6 +2,14 @@
 
 source ./bash/_constants.sh
 
+# Check options
+overwrite_config=false
+for arg in "$@"; do
+  if [[ $arg == "--overwrite-global-config" ]]; then
+    overwrite_config=true
+  fi
+done
+
 # Create ssh directory if it doesn't exist
 [ -d $WSL_HOME/.ssh ] || mkdir "$WSL_HOME/.ssh"
 
@@ -14,9 +22,10 @@ read -p "Please enter your user name:"git_user_name
 read -p "Please enter your email address:"git_user_email
 read -p "Please enter ssh key pair name:" git_key_pair_name
 
-# TODO: enable to decide if overwrite global user.name and user.email by cli option
-git config --global user.name "$git_user_name"
-git config --global user.email "$git_user_email"
+if [[ $overwrite_config == true ]]; then
+  git config --global user.name "$git_user_name"
+  git config --global user.email "$git_user_email"
+fi
 
 # Create ssh config file if it doesn't exist
 [ -f "$WSL_HOME/.ssh/config" ] || touch "$WSL_HOME/.ssh/config"
