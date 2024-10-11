@@ -3,9 +3,10 @@
 DOTFILES_DIR="$HOME/dotfiles"
 
 dotfiles() {
+  cd "$DOTFILES_DIR"
 
   if [ $# -eq 0 ]; then
-    cd "$DOTFILES_DIR" && nvim
+    nvim
     exit 0
   fi
 
