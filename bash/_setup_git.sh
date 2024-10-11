@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 source ./bash/_constants.sh
 
@@ -8,30 +8,36 @@ source ./bash/_constants.sh
 # Setup git config
 git config --global core.editor "nvim"
 
-echo "Setting up git."
-echo "Please enter your user name:"
-read git_user_name
-echo "Please enter your email address:"
-read git_user_email
+echo "Setting up git..."
+read -p "Please enter Host:" git_host
+read -p "Please enter your user name:"git_user_name
+read -p "Please enter your email address:"git_user_email
+read -p "Please enter ssh key pair name:" git_key_pair_name
 
+# TODO: enable to decide if overwrite global user.name and user.email by cli option
 git config --global user.name "$git_user_name"
 git config --global user.email "$git_user_email"
 
-# Create ssh config file
-cat <<EOF >"$WSL_HOME/.ssh/config"
-Host github.com
-  HostName github.com
+# Create ssh config file if it doesn't exist
+[ -f "$WSL_HOME/.ssh/config" ] || touch "$WSL_HOME/.ssh/config"
+
+# Add Host to ssh config file
+cat <<EOF >>"$WSL_HOME/.ssh/config"
+Host $git_host
+  HostName $git_host
   User $git_user_name
-  IdentityFile $WSL_HOME/.ssh/github_id_rsa
+  IdentityFile $WSL_HOME/.ssh/$git_key_pair_name
 EOF
 
 # Generate ssh keys
 cd "$WSL_HOME/.ssh"
-echo "Now, we will set up ssh keys for github. Please name your key file 'github_id_rsa'."
-ssh-keygen -t ed25519 -C "$git_user_email"
+ssh-keygen -t ed25519 -C "$git_user_email" -f "$git_key_pair_name"
 
 # Add the private key to the ssh-agent
 eval "$(ssh-agent -s)"
-ssh-add "$WSL_HOME/.ssh/github_id_rsa"
+ssh-add "$WSL_HOME/.ssh/$git_key_pair_name"
 
-echo "SSH keys are now set up!! Please add the public key to your github account."
+# Copy generated public key to the system clipboard.
+cat "$WSL_HOME/.ssh/$git_key_pair_name.pub" | xsel --clipboard --input
+
+echo "SSH keys are now set up and public key is copied to your clipboard!! Please add it to your git service account."
