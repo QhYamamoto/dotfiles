@@ -10,15 +10,34 @@ dotfiles() {
   fi
 
   local command=$1
+  shift
+
   case "$command" in
     init)
       bash "$DOTFILES_DIR/init.sh"
       ;;
-    update)
-      bash "$DOTFILES_DIR/update.sh"
-      ;;
     git)
-      bash "$DOTFILES_DIR/bash/_setup_git.sh"
+      local overwrite_global_config=false
+
+      while [[ $# -gt 0 ]]; do
+        echo "\$1: $1"
+        case "$1" in
+          "--overwrite-global-config")
+            overwrite_global_config=true
+            ;;
+          *)
+            echo "Unknown option for git command: $1"
+            exit 1
+            ;;
+        esac
+        shift
+      done
+
+      if [ "$overwrite_global_config" = true ]; then
+        bash "$DOTFILES_DIR/bash/_setup_git.sh" --overwrite-global-config
+      else
+        bash "$DOTFILES_DIR/bash/_setup_git.sh"
+      fi
       ;;
     ahk)
       bash "$DOTFILES_DIR/bash/_setup_ahk.sh"
