@@ -1,0 +1,5 @@
+{
+  "keyMappings": "# Insert your preferred key mappings here.\n\nunmap d\nunmap u\nmap <c-d> scrollPageDown\nmap <c-u> scrollPageUp\nmap <c-e> scrollPageUp",
+  "linkHintCharacters": "wertasdfgzxcv",
+  "settingsVersion": "2.1.2"
+}
