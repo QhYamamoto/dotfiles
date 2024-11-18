@@ -28,5 +28,17 @@ return {
 
     local cl_bg = vim.fn.synIDattr(vim.fn.hlID "CursorLine", "bg")
     set_hl(0, "Visual", { bg = cl_bg })
+
+    -- Diagnostics settings
+    vim.diagnostic.config {
+      underline = true,
+      signs = true,
+      update_in_insert = false,
+    }
+
+    set_hl(0, "DiagnosticUnderlineError", { undercurl = false, underline = true, sp = "Red" })
+    set_hl(0, "DiagnosticUnderlineWarn", { undercurl = false, underline = true, sp = "Yellow" })
+    set_hl(0, "DiagnosticUnderlineInfo", { undercurl = false, underline = true, sp = "Blue" })
+    set_hl(0, "DiagnosticUnderlineHint", { undercurl = false, underline = true, sp = "Cyan" })
   end,
 }
