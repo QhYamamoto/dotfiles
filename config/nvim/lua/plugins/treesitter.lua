@@ -13,15 +13,15 @@ return {
 
     -- configure treesitter
     treesitter.setup { -- enable syntax highlighting
+      modules = {},
+      sync_install = false,
+      auto_install = false,
+      ignore_install = {},
       highlight = {
         enable = true,
       },
       -- enable indentation
       indent = { enable = true },
-      -- enable autotagging (w/ nvim-ts-autotag plugin)
-      autotag = {
-        enable = true,
-      },
       -- ensure these language parsers are installed
       ensure_installed = {
         "json",
@@ -59,6 +59,16 @@ return {
           scope_incremental = false,
           node_decremental = "<bs>",
         },
+      },
+    }
+
+    -- autotag
+    local autotag = require "nvim-ts-autotag"
+    autotag.setup {
+      opts = {
+        enable_close = true,
+        enable_rename = true,
+        enable_close_on_slash = false,
       },
     }
   end,
