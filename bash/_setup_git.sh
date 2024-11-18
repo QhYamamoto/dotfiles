@@ -18,8 +18,8 @@ git config --global core.editor "nvim"
 
 echo "Setting up git..."
 read -p "Please enter Host:" git_host
-read -p "Please enter your user name:"git_user_name
-read -p "Please enter your email address:"git_user_email
+read -p "Please enter your user name:" git_user_name
+read -p "Please enter your email address:" git_user_email
 read -p "Please enter ssh key pair name:" git_key_pair_name
 
 if [[ $overwrite_config == true ]]; then

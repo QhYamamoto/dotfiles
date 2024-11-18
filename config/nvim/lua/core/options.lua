@@ -42,3 +42,6 @@ opt.whichwrap:append {
   ["["] = true,
   ["]"] = true,
 }
+
+opt.spelllang = "en_us,cjk"
+opt.spell = true
