@@ -29,7 +29,6 @@ return {
         "pyright",
         "bashls",
         "volar",
-        "typos_lsp",
         "prismals",
         "yamlls",
       },
