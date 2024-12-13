@@ -34,6 +34,13 @@ keymap.set("n", "<ESC>", function()
     return
   end
 
+  -- Check if the current buffer is a Diffview buffer
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname:match "diffview:" then
+    vim.cmd "DiffviewClose"
+    return
+  end
+
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<ESC>", true, false, true), "n", true)
 end)
 keymap.set({ "n", "v" }, "d", '"_d') -- prevent to yank on delete
