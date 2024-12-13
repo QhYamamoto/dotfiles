@@ -18,7 +18,8 @@ return {
       local bufnr = vim.api.nvim_get_current_buf()
 
       -- disable diagnostics on terminal
-      if vim.bo[bufnr].buftype == "terminal" then
+      local file_type = vim.bo[bufnr].buftype
+      if file_type == "terminal" or file_type == "NvimTree" then
         return
       end
 
