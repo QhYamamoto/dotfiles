@@ -2,9 +2,29 @@ return {
   "sindrets/diffview.nvim",
   config = function()
     local keymap = vim.keymap
+    local last_diffview_args = nil
 
-    keymap.set("n", "<LEADER>gdo", "<CMD>:DiffviewOpen<CR>", { desc = "Open diff view (HEAD~1..HEAD)" })
+    keymap.set("n", "<LEADER>gdo", function()
+      local input = vim.fn.input "DiffviewOpen args: "
+      if input == "" then
+        input = "HEAD~1..HEAD"
+      end
+
+      last_diffview_args = input
+
+      vim.cmd("DiffviewOpen " .. input)
+    end, { desc = "Open diff view with custom args" })
+
     keymap.set("n", "<LEADER>gdc", "<CMD>:DiffviewClose<CR>", { desc = "Close diff view" })
+
+    vim.keymap.set("n", "<LEADER>gdr", function()
+      if not last_diffview_args then
+        print "No previous Diffview state to restore!"
+        return
+      end
+
+      vim.cmd("DiffviewOpen " .. last_diffview_args)
+    end, { desc = "Restore last closed diff view" })
 
     local function get_git_rev_from_clipboard()
       local rev = vim.fn.getreg "+" -- get string from clipboard
