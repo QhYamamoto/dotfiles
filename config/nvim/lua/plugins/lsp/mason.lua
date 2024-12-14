@@ -31,6 +31,7 @@ return {
         "volar",
         "prismals",
         "yamlls",
+        "rust-analyzer",
       },
 
       automatic_installation = true,
