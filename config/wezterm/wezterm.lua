@@ -75,7 +75,13 @@ _wt.on("format-tab-title", function(tab)
     num = 1
   end
 
-  title = _u.remove_left_dirs(title:match "%((.+)%)", num)
+  local short_title = _u.remove_left_dirs(title:match "%((.+)%)", num)
+
+  if short_title == "" then
+    title = title
+  else
+    title = short_title
+  end
 
   return { { Text = title } }
 end)
