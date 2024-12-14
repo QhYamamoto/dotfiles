@@ -5,6 +5,14 @@ local _u = require "utils"
 local secondary_pane_ids = {}
 local act = _wt.action
 
+local toggleable_layer_key_action = function(window, pane, toggleable_layer_key, key, action)
+  if _u.get_layer_key_flag(toggleable_layer_key) then
+    window:perform_action(action, pane)
+  else
+    window:perform_action(act { SendKey = { key = key } }, pane)
+  end
+end
+
 return {
   -- tabs
   { key = "t", mods = "SHIFT|CTRL", action = act.SpawnTab "CurrentPaneDomain" },
@@ -69,22 +77,42 @@ return {
     key = "LeftArrow",
     mods = "NONE",
     action = _wt.action_callback(function(window, pane)
-      if _u.get_layer_key_flag(_C.F13) then
-        window:perform_action(act { MoveTabRelative = -1 }, pane)
-      else
-        window:perform_action(act { SendKey = { key = "LeftArrow" } }, pane)
-      end
+      toggleable_layer_key_action(window, pane, _C.F13, "LeftArrow", act { MoveTabRelative = -1 })
     end),
   },
   {
     key = "RightArrow",
     mods = "NONE",
     action = _wt.action_callback(function(window, pane)
-      if _u.get_layer_key_flag(_C.F13) then
-        window:perform_action(act { MoveTabRelative = 1 }, pane)
-      else
-        window:perform_action(act { SendKey = { key = "RightArrow" } }, pane)
-      end
+      toggleable_layer_key_action(window, pane, _C.F13, "RightArrow", act { MoveTabRelative = 1 })
+    end),
+  },
+  {
+    key = "UpArrow",
+    mods = "NONE",
+    action = _wt.action_callback(function(window, pane)
+      toggleable_layer_key_action(window, pane, _C.F13, "UpArrow", act { ScrollByLine = -1 })
+    end),
+  },
+  {
+    key = "DownArrow",
+    mods = "NONE",
+    action = _wt.action_callback(function(window, pane)
+      toggleable_layer_key_action(window, pane, _C.F13, "DownArrow", act { ScrollByLine = 1 })
+    end),
+  },
+  {
+    key = "u",
+    mods = "NONE",
+    action = _wt.action_callback(function(window, pane)
+      toggleable_layer_key_action(window, pane, _C.F13, "u", act { ScrollByPage = -0.5 })
+    end),
+  },
+  {
+    key = "d",
+    mods = "NONE",
+    action = _wt.action_callback(function(window, pane)
+      toggleable_layer_key_action(window, pane, _C.F13, "d", act { ScrollByPage = 0.5 })
     end),
   },
 }
