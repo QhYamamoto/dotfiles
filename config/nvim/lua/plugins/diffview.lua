@@ -15,8 +15,6 @@ return {
       vim.cmd("DiffviewOpen " .. input)
     end, { desc = "Open diff view with custom args" })
 
-    keymap.set("n", "<LEADER>gdc", "<CMD>:DiffviewClose<CR>", { desc = "Close diff view" })
-
     vim.keymap.set("n", "<LEADER>gdr", function()
       if not last_diffview_args then
         print "No previous Diffview state to restore!"
@@ -48,7 +46,7 @@ return {
 
     keymap.set(
       "n",
-      "<LEADER>gdr",
+      "<LEADER>gdc",
       "<CMD>lua DiffViewOpenWithGitRev()<CR>",
       { desc = "Open diff view ({HashId on clipboard}~1..{HashID on clipboard})", noremap = true, silent = true }
     )
