@@ -49,6 +49,11 @@ for cmd in "${cmds[@]}"; do
 done
 
 ##################################################
+# make PATH for laravel installer
+##################################################
+export PATH=$HOME/.config/composer/vendor/laravel/installer/bin:$PATH
+
+##################################################
 # zsh-syntax-highlighting and zsh-autosuggestions
 ##################################################
 [[ ! -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] || source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -148,3 +153,6 @@ _cdk_yargs_completions()
 }
 compdef _cdk_yargs_completions cdk
 alias cdk="npx cdk"
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
