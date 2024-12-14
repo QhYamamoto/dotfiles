@@ -178,6 +178,26 @@ return {
           bundle_path = vim.env.HOME,
         }
       end,
+      ["rust_analyzer"] = function()
+        lspconfig["rust_analyzer"].setup {
+          capabilities = capabilities,
+          diagnostics = {
+            refreshSupport = false,
+          },
+          on_attach = function(_, _)
+            -- ignore rust-analyzer diagnostic of code 32802
+            for _, method in ipairs { "textDocument/diagnostic", "workspace/diagnostic" } do
+              local default_diagnostic_handler = vim.lsp.handlers[method]
+              vim.lsp.handlers[method] = function(err, result, context, config)
+                if err ~= nil and err.code == -32802 then
+                  return
+                end
+                return default_diagnostic_handler(err, result, context, config)
+              end
+            end
+          end,
+        }
+      end,
     }
 
     -- settings of lsp for ahk
