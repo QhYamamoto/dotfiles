@@ -17,6 +17,9 @@ dotfiles() {
     init)
       bash "$DOTFILES_DIR/init.sh"
       ;;
+    update)
+      bash "$DOTFILES_DIR/bash/01_create_symlinks.sh"
+      ;;
     git)
       local overwrite_global_config=false
 
