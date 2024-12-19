@@ -235,3 +235,44 @@ keymap.set("v", "ysi", ":lua convert_surrounding_chars_with_free_input()<CR>", {
   noremap = true,
   silent = true,
 })
+
+--------------------------------------------------
+-- Insert sequential numbers command
+--------------------------------------------------
+vim.api.nvim_create_user_command("InsertNumbers", function()
+  local start = tonumber(vim.fn.input "Enter start value (default: 1): ") or 1
+  local step = tonumber(vim.fn.input "Enter step value (default: 1): ") or 1
+  local format = vim.fn.input "Enter format (default: %d): "
+  format = format ~= "" and format or "%d" -- because `vim.fn.input` never returns nil
+
+  local start_pos = vim.fn.getpos "v"
+  local end_pos = vim.fn.getpos "."
+  local start_row = start_pos[2]
+  local start_col = start_pos[3]
+  local end_row = end_pos[2]
+
+  -- 現在のバッファを取得
+  local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
+
+  -- 選択範囲のカラムに連番を挿入
+  local number = start
+  for i, line in ipairs(lines) do
+    local left_part = line:sub(1, start_col - 1)
+    local right_part = line:sub(start_col)
+    lines[i] = left_part .. string.format(format, number) .. right_part
+    number = number + step
+  end
+
+  vim.api.nvim_buf_set_lines(0, start_row - 1, end_row, false, lines)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+end, {
+  range = true,
+  desc = "Insert sequential numbers into the selected block",
+})
+
+vim.keymap.set(
+  "v",
+  "<LEADER>n",
+  "<CMD>InsertNumbers<CR>",
+  { desc = "Insert sequential numbers into the selected block" }
+)
