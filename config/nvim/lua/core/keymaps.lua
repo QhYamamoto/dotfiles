@@ -272,7 +272,37 @@ end, {
 
 vim.keymap.set(
   "v",
-  "<LEADER>n",
+  "<LEADER>ns",
   "<CMD>InsertNumbers<CR>",
   { desc = "Insert sequential numbers into the selected block" }
+)
+
+--------------------------------------------------
+-- make numbers on selected lines sequential
+--------------------------------------------------
+vim.api.nvim_create_user_command("MakeNumbersOnSelectedLinesSequential", function()
+  local start_pos = vim.fn.getpos "v"
+  local end_pos = vim.fn.getpos "."
+  local start_row = start_pos[2]
+  local end_row = end_pos[2]
+
+  local first_line = vim.fn.getline(start_row)
+
+  local start = tonumber(string.match(first_line, "%d+")) or 1
+  local step = tonumber(vim.fn.input "Enter step value (default: 1): ") or 1
+
+  local current_number = start
+  for row = start_row, end_row do
+    local line = vim.fn.getline(row)
+    local updated_line = string.gsub(line, "%d+", tostring(current_number))
+    vim.fn.setline(row, updated_line)
+    current_number = current_number + step
+  end
+end, { range = true })
+
+vim.keymap.set(
+  "v",
+  "<leader>nr",
+  "<CMD>MakeNumbersOnSelectedLinesSequential<CR>",
+  { desc = "Make numbers on selected lines sequential" }
 )
