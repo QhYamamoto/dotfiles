@@ -79,6 +79,9 @@ keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true })
 -- for terminal
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true })
 
+keymap.set({ "n", "v" }, "U", "<C-a>", { noremap = true, silent = true, desc = "Increment number" })
+keymap.set({ "n", "v" }, "D", "<C-x>", { noremap = true, silent = true, desc = "Increment number" })
+
 keymap.set("n", "<LEADER>yf", function()
   vim.fn.setreg("+", vim.fn.expand "%:p")
   print "Filepath has been copied to your clipboard!!"
