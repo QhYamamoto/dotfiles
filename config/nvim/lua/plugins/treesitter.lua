@@ -50,6 +50,7 @@ return {
         "powershell",
         "sql",
         "python",
+        "rust",
       },
       incremental_selection = {
         enable = true,
