@@ -1,7 +1,7 @@
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
-use std::fs;
 use std::path::Path;
+use std::{env, fs};
 
 use my_cli_tool::modules::filesystem;
 
@@ -55,4 +55,22 @@ fn test_create_symlink() {
 
     fs::remove_file(&symlink_dir_name).unwrap();
     fs::remove_dir_all(&random_dir_name).unwrap();
+}
+
+#[test]
+fn test_get_win_home() {
+    if let Some(win_home) = filesystem::get_win_home() {
+        assert!(win_home.starts_with("C:\\Users\\"));
+    };
+}
+
+#[test]
+fn test_get_wsl_home_in_windows_fs_format() {
+    let home = env::var("HOME").expect("Error: Environment Variable `HOME` is not set.");
+    if let Some(wsl_home_in_windows_fs_format) =
+        filesystem::get_wsl_home_in_windows_fs_format(&home)
+    {
+        println!("{}", wsl_home_in_windows_fs_format);
+        assert!(wsl_home_in_windows_fs_format.starts_with("\\\\wsl"))
+    }
 }
