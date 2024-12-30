@@ -1,4 +1,4 @@
-use std::{fs, path::Path};
+use std::{env, fs, path::Path, process::Command};
 
 use symlink::{remove_symlink_auto, symlink_auto};
 
@@ -37,4 +37,56 @@ pub fn create_symlink(src: &str, dest: &str) -> Result<(), Box<dyn std::error::E
     println!("Symlink created: {} -> {}", src, dest);
 
     Ok(())
+}
+
+pub fn get_win_home() -> Option<String> {
+    let win_home = String::from_utf8_lossy(
+        &Command::new("cmd.exe")
+            .args(["/C", "echo %HOMEDRIVE%%HOMEPATH%"])
+            .output()
+            .ok()?
+            .stdout,
+    )
+    .trim()
+    .to_string();
+
+    if win_home.is_empty() {
+        return None;
+    }
+
+    Some(win_home)
+}
+
+/// Get wsl home directory name.
+pub fn get_wsl_home() -> Option<String> {
+    let wsl_home = env::var("HOME").expect("Error: Environment Variable `HOME` is not set.");
+
+    if wsl_home.is_empty() {
+        return None;
+    }
+
+    Some(wsl_home)
+}
+
+/// Get wsl home directory name in Windows filesystem format.
+pub fn get_wsl_home_in_windows_fs_format() -> Option<String> {
+    if let Some(wsl_home) = get_wsl_home() {
+        let wsl_home_in_windows_fs_format = String::from_utf8_lossy(
+            &Command::new("wslpath")
+                .args(["-w", &wsl_home])
+                .output()
+                .ok()?
+                .stdout,
+        )
+        .trim()
+        .to_string();
+
+        if wsl_home_in_windows_fs_format.is_empty() {
+            return None;
+        }
+
+        return Some(wsl_home_in_windows_fs_format);
+    }
+
+    None
 }
