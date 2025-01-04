@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+arboard = "3.4.1"
 clap = "4.5.23"
 clap_complete = "4.5.40"
 rand = "0.8"
