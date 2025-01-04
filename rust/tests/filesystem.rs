@@ -65,6 +65,13 @@ fn test_get_win_home() {
 }
 
 #[test]
+fn test_get_win_home_in_wsl_format() {
+    if let Some(win_home_in_wsl_format) = filesystem::get_win_home_in_wsl_format() {
+        assert!(win_home_in_wsl_format.starts_with("/mnt/c/Users"));
+    };
+}
+
+#[test]
 fn test_get_wsl_home() {
     if let Some(wsl_home) = filesystem::get_wsl_home() {
         assert!(wsl_home.starts_with("/home/"));

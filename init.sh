@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ./bash/_constants.sh
-
 scripts_dir="./bash"
 
 # Get the current user's username
@@ -13,24 +11,16 @@ sudo cp /etc/sudoers /etc/sudoers.bak
 # Add the current user to the sudoers file
 echo "$USER_NAME ALL=(ALL) NOPASSWD:ALL" | sudo EDITOR='tee -a' visudo
 
-mapfile -t scripts < <(find "$scripts_dir" -type f -name "*.sh" | sort)
-
-for script in "${scripts[@]}"; do
-  base_name=$(basename "$script")
-
-  # Check if the base name starts with two digits
-  if [[ $base_name =~ ^[0-9]{2} ]]; then
-    source "$script"
-  fi
-done
+my-cli-tool init
 
 # If WIN_HOME is not null,
+WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
 if [[ -n "$WIN_HOME" ]]; then
-  source ./bash/_setup_ahk.sh
+  my-cli-tool ahk
 fi
 
 # Set Zsh as default shell
-echo "We are about to set Zsh as your default shell. Please enter your password."
+echo "Setting Zsh as default shell. Please enter your password..."
 chsh -s $(which zsh)
 
 echo "If authentication fails, please run the following command manually to set Zsh as your default shell: \`chsh -s \$(which zsh)\`."
