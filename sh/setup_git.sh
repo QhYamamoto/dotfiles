@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-source ./bash/_constants.sh
-
 # Check options
 overwrite_config=false
 for arg in "$@"; do
@@ -11,7 +9,7 @@ for arg in "$@"; do
 done
 
 # Create ssh directory if it doesn't exist
-[ -d $WSL_HOME/.ssh ] || mkdir "$WSL_HOME/.ssh"
+[ -d $HOME/.ssh ] || mkdir "$HOME/.ssh"
 
 # Setup git config
 git config --global core.editor "nvim"
@@ -28,25 +26,25 @@ if [[ $overwrite_config == true ]]; then
 fi
 
 # Create ssh config file if it doesn't exist
-[ -f "$WSL_HOME/.ssh/config" ] || touch "$WSL_HOME/.ssh/config"
+[ -f "$HOME/.ssh/config" ] || touch "$HOME/.ssh/config"
 
 # Add Host to ssh config file
-cat <<EOF >>"$WSL_HOME/.ssh/config"
+cat <<EOF >>"$HOME/.ssh/config"
 Host $git_host
   HostName $git_host
   User $git_user_name
-  IdentityFile $WSL_HOME/.ssh/$git_key_pair_name
+  IdentityFile $HOME/.ssh/$git_key_pair_name
 EOF
 
 # Generate ssh keys
-cd "$WSL_HOME/.ssh"
+cd "$HOME/.ssh"
 ssh-keygen -t ed25519 -C "$git_user_email" -f "$git_key_pair_name"
 
 # Add the private key to the ssh-agent
 eval "$(ssh-agent -s)"
-ssh-add "$WSL_HOME/.ssh/$git_key_pair_name"
+ssh-add "$HOME/.ssh/$git_key_pair_name"
 
 # Copy generated public key to the system clipboard.
-cat "$WSL_HOME/.ssh/$git_key_pair_name.pub" | xsel --clipboard --input
+cat "$HOME/.ssh/$git_key_pair_name.pub" | xsel --clipboard --input
 
 echo "SSH keys are now set up and public key is copied to your clipboard!! Please add it to your git service account."

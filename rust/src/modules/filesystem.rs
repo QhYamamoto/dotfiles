@@ -57,6 +57,28 @@ pub fn get_win_home() -> Option<String> {
     Some(win_home)
 }
 
+pub fn get_win_home_in_wsl_format() -> Option<String> {
+    if let Some(win_home) = get_win_home() {
+        let win_home_in_wsl_format = String::from_utf8_lossy(
+            &Command::new("wslpath")
+                .args([&win_home])
+                .output()
+                .ok()?
+                .stdout,
+        )
+        .trim()
+        .to_string();
+
+        if win_home_in_wsl_format.is_empty() {
+            return None;
+        }
+
+        return Some(win_home_in_wsl_format);
+    }
+
+    None
+}
+
 /// Get wsl home directory name.
 pub fn get_wsl_home() -> Option<String> {
     let wsl_home = env::var("HOME").expect("Error: Environment Variable `HOME` is not set.");
