@@ -1,0 +1,14 @@
+bat
+curl
+fd-find
+lua5.4
+liblua5.4-dev
+git
+npm
+ripgrep
+xsel
+zsh
+zsh-syntax-highlighting
+python3-pip
+python3-venv
+unzip
