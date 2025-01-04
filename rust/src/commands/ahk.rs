@@ -5,7 +5,7 @@ use std::{
     process::Command,
 };
 
-use my_cli_tool::modules::filesystem;
+use dotfiles::modules::filesystem;
 
 const DOTFILES_DIR: &str = "dotfiles";
 

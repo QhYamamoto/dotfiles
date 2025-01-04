@@ -3,7 +3,7 @@ use rand::{thread_rng, Rng};
 use std::fs;
 use std::path::Path;
 
-use my_cli_tool::modules::filesystem;
+use dotfiles::modules::filesystem;
 
 fn generate_random_string() -> String {
     thread_rng()

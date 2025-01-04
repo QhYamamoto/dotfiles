@@ -1,7 +1,7 @@
 use core::panic;
 use std::{collections::HashMap, fs, process::Command};
 
-use my_cli_tool::modules::filesystem::{self, get_wsl_home};
+use dotfiles::modules::filesystem::{self, get_wsl_home};
 
 const DIRECTORIES_TO_CREATE: [&str; 2] = ["/.config", "/.config/broot"];
 const DOTFILES_DIR: &str = "dotfiles";

@@ -1,14 +1,14 @@
 use clap::{Arg, Command};
 use clap_complete::{generate, Shell};
-use my_cli_tool::modules::filesystem::get_wsl_home;
+use dotfiles::modules::filesystem::get_wsl_home;
 use std::io;
 use std::process::Command as ProcessCommand;
 
 mod commands;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut app = Command::new("my-cli-tool")
-        .about("An example CLI application with auto-completion")
+    let mut app = Command::new("dotfiles")
+        .about("Custom dotfiles command.")
         .subcommand(Command::new("init").about("Initialize dotfiles settings."))
         .subcommand(Command::new("ahk").about("Install ahk and reset its settings."))
         .subcommand(
@@ -84,7 +84,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let shell = sub_matches
                 .get_one::<Shell>("shell")
                 .expect("Shell type is required");
-            generate(*shell, &mut app, "my-cli-tool", &mut io::stdout());
+            generate(*shell, &mut app, "dotfiles", &mut io::stdout());
         }
         _ => {
             ProcessCommand::new("sh")

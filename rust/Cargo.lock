@@ -227,6 +227,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "dotfiles"
+version = "0.1.0"
+dependencies = [
+ "arboard",
+ "clap",
+ "clap_complete",
+ "rand",
+ "symlink",
+]
+
+[[package]]
 name = "errno"
 version = "0.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -370,17 +381,6 @@ checksum = "4ffbe83022cedc1d264172192511ae958937694cd57ce297164951b8b3568394"
 dependencies = [
  "adler2",
  "simd-adler32",
-]
-
-[[package]]
-name = "my-cli-tool"
-version = "0.1.0"
-dependencies = [
- "arboard",
- "clap",
- "clap_complete",
- "rand",
- "symlink",
 ]
 
 [[package]]
