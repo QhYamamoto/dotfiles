@@ -3,7 +3,7 @@ use std::{collections::HashMap, fs, process::Command};
 
 use dotfiles::modules::filesystem::{self, get_wsl_home};
 
-const DIRECTORIES_TO_CREATE: [&str; 2] = ["/.config", "/.config/broot"];
+const DIRECTORIES_TO_CREATE: [&str; 3] = ["/.config", "/.config/broot", "/.zsh"];
 const DOTFILES_DIR: &str = "dotfiles";
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
@@ -40,6 +40,7 @@ fn create_symlinks(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>> 
                 "/wezterm",
             ],
         ),
+        ("zsh", vec!["/compdef"]),
     ]);
 
     for (prefix, sources) in symlink_hash_map {
