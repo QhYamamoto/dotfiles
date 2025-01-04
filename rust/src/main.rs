@@ -1,6 +1,8 @@
 use clap::{Arg, Command};
 use clap_complete::{generate, Shell};
+use my_cli_tool::modules::filesystem::get_wsl_home;
 use std::io;
+use std::process::Command as ProcessCommand;
 
 mod commands;
 
@@ -85,7 +87,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             generate(*shell, &mut app, "my-cli-tool", &mut io::stdout());
         }
         _ => {
-            eprintln!("Unknown command. Use --help for usage information.");
+            ProcessCommand::new("sh")
+                .arg("-c")
+                .arg(format!("cd {}/dotfiles && nvim", get_wsl_home().unwrap()))
+                .spawn()?
+                .wait()?;
         }
     }
 
