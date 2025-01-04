@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ./bash/_constants.sh
+WIN_HOME=$(wslpath "$(cmd.exe /C 'echo %HOMEDRIVE%%HOMEPATH%' 2>/dev/null | tr -d '\r')")
+ZENHAN_EXE="$WIN_HOME/AppData/Local/zenhan.exe"
 
 [[ ! -f zenhan.zip ]] || rm zenhan.zip
 [[ ! -d zenhan ]] || rm -rf zenhan

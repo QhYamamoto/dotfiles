@@ -7,14 +7,3 @@ tar xf lazygit.tar.gz lazygit
 sudo install lazygit /usr/local/bin
 rm lazygit.tar.gz
 rm -rf lazygit
-
-# lazydocker
-brew install jesseduffield/lazydocker/lazydocker
-
-# lazysql
-source ./bash/_functions.sh
-
-brew tap jorgerojas26/lazysql
-brew install lazysql
-
-verify_package_installation "lazysql" "lazysql --version"
