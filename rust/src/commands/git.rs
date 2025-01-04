@@ -1,6 +1,6 @@
 use arboard::Clipboard;
 use clap::ArgMatches;
-use my_cli_tool::modules::filesystem;
+use dotfiles::modules::filesystem;
 use std::fs::{self, OpenOptions};
 use std::io::{self, Write};
 use std::path::Path;
