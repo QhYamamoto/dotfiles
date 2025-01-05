@@ -1,7 +1,10 @@
 use core::panic;
 use std::{collections::HashMap, fs, process::Command};
 
-use dotfiles::modules::filesystem::{self, get_wsl_home};
+use dotfiles::modules::{
+    cli,
+    filesystem::{self, get_wsl_home},
+};
 
 const DIRECTORIES_TO_CREATE: [&str; 3] = ["/.config", "/.config/broot", "/.zsh"];
 const DOTFILES_DIR: &str = "dotfiles";
@@ -70,8 +73,9 @@ fn create_wezterm_symlink_from_windows_to_wsl(
         );
         let mklink_ps1_path = format!("{}/{}/powershell/mklink.ps1", wsl_home, DOTFILES_DIR);
 
-        Command::new("powershell.exe")
-            .args([
+        cli::run_command(
+            &[
+                "powershell.exe",
                 "-ExecutionPolicy",
                 "Bypass",
                 "-File",
@@ -80,9 +84,9 @@ fn create_wezterm_symlink_from_windows_to_wsl(
                 &win_wezterm_dir,
                 "-TargetPath",
                 &wsl_wezterm_dir,
-            ])
-            .status()
-            .expect("Failed to execute Powershell script.");
+            ],
+            "Failed to execute Powershell script.",
+        )?;
     }
 
     Ok(())
@@ -118,17 +122,12 @@ fn install_packages(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>>
             continue;
         }
 
-        let status = Command::new("sh")
-            .arg(&script_path)
-            .status()
-            .map_err(|e| format!("Failed to execute script {}: {}", script_path.display(), e))?;
-
-        if !status.success() {
-            eprintln!(
-                "Script {} failed with status: {}",
-                script_path.display(),
-                status
-            );
+        match cli::run_command(
+            &["sh", script_path.to_str().unwrap()],
+            &format!("Script {} failed.", script_path.display()),
+        ) {
+            Ok(_) => println!("Script {} executed successfully", script_path.display()),
+            Err(err) => eprintln!("{}", err),
         }
     }
 
@@ -148,19 +147,18 @@ fn create_command_shortcuts(wsl_home: &String) -> Result<(), Box<dyn std::error:
             .output()
             .unwrap_or_else(|e| panic!("Failed to find command {}: {}", original_command, e));
 
-        let status = Command::new("ln")
-            .args([
+        match cli::run_command(
+            &[
+                "ln",
                 "-s",
                 String::from_utf8_lossy(&witch_command.stdout).trim(),
                 &format!("{}/{}", local_bin_dir, shortcut_command),
-            ])
-            .status()?;
-
-        if status.success() {
-            println!("Shortcut for {} created successfully.", original_command);
-        } else {
-            eprintln!("Failed to create shortcut for {}.", original_command);
-        }
+            ],
+            &format!("Failed to create shortcut for {}.", original_command),
+        ) {
+            Ok(_) => println!("Shortcut for {} created successfully.", original_command),
+            Err(err) => eprintln!("{}", err),
+        };
     }
 
     Ok(())
