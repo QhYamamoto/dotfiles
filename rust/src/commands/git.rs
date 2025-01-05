@@ -1,37 +1,36 @@
 use arboard::Clipboard;
 use clap::ArgMatches;
-use dotfiles::modules::filesystem;
+use dotfiles::modules::{cli, filesystem};
 use std::fs::{self, OpenOptions};
-use std::io::{self, Write};
+use std::io::Write;
 use std::path::Path;
-use std::process::Command as ProcessCommand;
 
 pub fn run(matches: &ArgMatches) -> Result<(), Box<dyn std::error::Error>> {
     let overwrite_config = matches.get_flag("overwrite");
     let git_host = matches
         .get_one::<String>("host")
         .map(String::to_owned)
-        .unwrap_or_else(|| prompt("Please enter Host: "));
+        .unwrap_or_else(|| cli::prompt("Please enter Host: "));
     let git_user_name = matches
         .get_one::<String>("user")
         .map(String::to_owned)
-        .unwrap_or_else(|| prompt("Please enter your user name: "));
+        .unwrap_or_else(|| cli::prompt("Please enter your user name: "));
     let git_user_email = matches
         .get_one::<String>("email")
         .map(String::to_owned)
-        .unwrap_or_else(|| prompt("Please enter your email address: "));
+        .unwrap_or_else(|| cli::prompt("Please enter your email address: "));
     let git_key_pair_name = matches
         .get_one::<String>("key")
         .map(String::to_owned)
-        .unwrap_or_else(|| prompt("Please enter ssh key pair name: "));
+        .unwrap_or_else(|| cli::prompt("Please enter ssh key pair name: "));
 
     // Overwrite global config.
     if overwrite_config {
-        run_command(
+        cli::run_command(
             &["git", "config", "--global", "user.name", &git_user_name],
             "Failed to set git user name.",
         )?;
-        run_command(
+        cli::run_command(
             &["git", "config", "--global", "user.email", &git_user_email],
             "Failed to set git email.",
         )?;
@@ -46,7 +45,7 @@ pub fn run(matches: &ArgMatches) -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Generate ssh key.
-    run_command(
+    cli::run_command(
         &[
             "ssh-keygen",
             "-t",
@@ -59,7 +58,7 @@ pub fn run(matches: &ArgMatches) -> Result<(), Box<dyn std::error::Error>> {
         "Failed to generate SSH keys.",
     )?;
 
-    run_command(
+    cli::run_command(
         &[
             "sh",
             "-c",
@@ -98,26 +97,4 @@ pub fn run(matches: &ArgMatches) -> Result<(), Box<dyn std::error::Error>> {
     );
 
     Ok(())
-}
-
-fn prompt(message: &str) -> String {
-    print!("{}", message);
-    io::stdout().flush().unwrap();
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-
-    input.trim().to_string()
-}
-
-fn run_command(args: &[&str], error_message: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let status = ProcessCommand::new(args[0])
-        .args(&args[1..])
-        .status()
-        .expect(error_message);
-
-    if status.success() {
-        Ok(())
-    } else {
-        Err(format!("{} (command: {:?})", error_message, args).into())
-    }
 }
