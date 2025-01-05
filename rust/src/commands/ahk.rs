@@ -11,7 +11,8 @@ const DOTFILES_DIR: &str = "dotfiles";
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = filesystem::get_wsl_home().expect("Failed to get WSL home directory.");
-    let win_home = filesystem::get_win_home().expect("Failed to get Windows home directory.");
+    let win_home =
+        filesystem::get_win_home_in_wsl_fs_format().expect("Failed to get Windows home directory.");
 
     println!(
         "Setting up AutoHotKey on Windows. Please kill all AutoHotKey processes before continuing."
@@ -31,7 +32,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         fs::remove_dir_all(dest)?;
     }
 
-    copy_dir(src, dest)?;
+    filesystem::copy_item(src, dest)?;
 
     let status = Command::new(format!(
         "{}/{}/sh/installers/ahk/install.sh",
@@ -47,37 +48,6 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!("AutoHotKey setup completed successfully.");
-
-    Ok(())
-}
-
-/// Copies all items from the source directory to the destination directory.
-///
-/// * `src`: Path of source directory.
-/// * `dest`: Path of destination directory.
-fn copy_dir(src: &Path, dest: &Path) -> io::Result<()> {
-    if !src.exists() {
-        return Err(io::Error::new(
-            io::ErrorKind::NotFound,
-            "Source directory not found",
-        ));
-    }
-
-    if !dest.exists() {
-        fs::create_dir_all(dest)?;
-    }
-
-    for entry in fs::read_dir(src)? {
-        let entry = entry?;
-        let src_path = entry.path();
-        let dest_path = dest.join(entry.file_name());
-
-        if src_path.is_dir() {
-            copy_dir(&src_path, &dest_path)?;
-        } else {
-            fs::copy(&src_path, &dest_path)?;
-        }
-    }
 
     Ok(())
 }
