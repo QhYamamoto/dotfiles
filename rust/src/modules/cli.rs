@@ -36,3 +36,79 @@ pub fn run_command(args: &[&str], error_message: &str) -> Result<(), Box<dyn std
         Err(format!("{} (command: {:?})", error_message, args).into())
     }
 }
+
+/// Temporarily grants sudo privileges to the current user, executes the provided action, and then revokes the privileges.
+///
+/// * `action` - A closure representing the action to be executed with temporary sudo privileges.
+///
+/// This function temporarily modifies the `sudoers` file to grant sudo privileges to the current user,
+/// executes the provided closure, and ensures that the `sudoers` file is restored to its original state
+/// regardless of whether the closure succeeds or panics.
+///
+/// # Errors
+///
+/// This function returns an error if:
+/// - Modifying or restoring the `sudoers` file fails.
+/// - The provided action closure returns an error.
+///
+/// # Example
+/// ```rust
+/// use dotfiles::modules::cli;
+///
+/// let result = cli::with_temporary_sudo_privileges(|| {
+///     cli::run_command(&["echo", "Hello, world!"], "Failed to echo with sudo")?;
+///     Ok(())
+/// });
+///
+/// assert!(result.is_ok());
+/// ```
+pub fn with_temporary_sudo_privileges<F>(action: F) -> Result<(), Box<dyn std::error::Error>>
+where
+    F: Fn() -> Result<(), Box<dyn std::error::Error>> + std::panic::RefUnwindSafe,
+{
+    let username = whoami::username();
+
+    // Backup sudoers.
+    run_command(
+        &["sudo", "cp", "/etc/sudoers", "/etc/sudoers.bak"],
+        "Failed to create backup of sudoers file.",
+    )?;
+
+    // Add user to sudoers.
+    run_command(
+        &[
+            "sudo",
+            "sh",
+            "-c",
+            &format!("echo '{} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers", username),
+        ],
+        "Failed to add user to sudoers file.",
+    )?;
+
+    // Function to restore sudoers.
+    let restore_sudoers = || -> Result<(), Box<dyn std::error::Error>> {
+        run_command(
+            &["sudo", "mv", "/etc/sudoers.bak", "/etc/sudoers"],
+            "Failed to restore original sudoers file.",
+        )?;
+        run_command(
+            &["sudo", "chmod", "0440", "/etc/sudoers"],
+            "Failed to set correct permissions for sudoers file.",
+        )?;
+        Ok(())
+    };
+
+    // Run action.
+    let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(action)).map_err(|_| {
+        Box::<dyn std::error::Error>::from("An unexpected panic occurred during action execution.")
+    });
+
+    if let Err(e) = restore_sudoers() {
+        eprintln!("Failed to restore sudoers: {}", e);
+    }
+
+    match result {
+        Ok(action_result) => action_result,
+        Err(err) => Err(err),
+    }
+}

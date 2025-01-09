@@ -18,3 +18,35 @@ fn test_run_command_failure() {
         "Expected panic when running a non-existent command"
     );
 }
+
+#[test]
+fn test_with_temporary_sudo_privileges_success() {
+    let result = cli::with_temporary_sudo_privileges(|| {
+        cli::run_command(
+            &["sudo", "echo", "Testing sudo privileges"],
+            "Failed to echo with sudo",
+        )?;
+        Ok(())
+    });
+
+    assert!(
+        result.is_ok(),
+        "Expected success when running simple command with temporary sudo privileges"
+    );
+}
+
+#[test]
+fn test_with_temporary_sudo_privileges_failure() {
+    let result = cli::with_temporary_sudo_privileges(|| {
+        cli::run_command(
+            &["nonexistent_command"],
+            "Failed to run nonexistent command",
+        )?;
+        Ok(())
+    });
+
+    assert!(
+        result.is_err(),
+        "Expected failure when running a non-existent command with temporary sudo privileges"
+    );
+}

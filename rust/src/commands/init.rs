@@ -11,10 +11,15 @@ const DOTFILES_DIR: &str = "dotfiles";
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = get_wsl_home().expect("Error: Wsl home is Empty!!");
-    create_symlinks(&wsl_home)?;
-    create_wezterm_symlink_from_windows_to_wsl(&wsl_home)?;
-    install_packages(&wsl_home)?;
-    create_command_shortcuts(&wsl_home)?;
+
+    cli::with_temporary_sudo_privileges(|| {
+        create_symlinks(&wsl_home)?;
+        create_wezterm_symlink_from_windows_to_wsl(&wsl_home)?;
+        install_packages(&wsl_home)?;
+        create_command_shortcuts(&wsl_home)?;
+
+        Ok(())
+    })?;
 
     Ok(())
 }
