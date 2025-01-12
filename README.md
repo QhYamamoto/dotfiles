@@ -64,7 +64,7 @@
 
 Note that these commands are available after initialization.
 
-1. `dotfiles`
+1. `dotfiles` (alias: `dtf`)
 
    ```sh
    dotfiles -h
