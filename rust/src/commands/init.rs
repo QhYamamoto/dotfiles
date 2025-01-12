@@ -19,6 +19,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
         create_wezterm_symlink_from_windows_to_wsl(&wsl_home)?;
         install_packages(&wsl_home)?;
         create_command_shortcuts(&wsl_home)?;
+        set_zsh_as_default_shell()?;
 
         Ok(())
     })?;
@@ -167,6 +168,18 @@ fn create_command_shortcuts(wsl_home: &String) -> Result<(), Box<dyn std::error:
             Err(err) => eprintln!("{}", err),
         };
     }
+
+    Ok(())
+}
+fn set_zsh_as_default_shell() -> Result<(), Box<dyn std::error::Error>> {
+    println!("Setting Zsh as default shell. Please enter your password...");
+    match cli::run_command(
+        &["chsh", "-s", "/usr/bin/zsh"],
+        "Failed to set zsh as default shell. Please retry manually: `chsh -s /usr/bin/zsh`.",
+    ) {
+        Ok(_) => println!("Zsh has been set as default shell."),
+        Err(err) => eprintln!("{}", err),
+    };
 
     Ok(())
 }
