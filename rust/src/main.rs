@@ -58,6 +58,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ),
         )
         .subcommand(
+            Command::new("config")
+                .about("Open config directory of a specific tool in neovim.")
+                .arg(
+                    Arg::new("tool")
+                        .required(true)
+                        .value_parser(clap::builder::PossibleValuesParser::new([
+                            "broot",
+                            "lazydocker",
+                            "lazygit",
+                            "nvim",
+                            "wezterm",
+                        ]))
+                        .help("The app name to configure")
+                        .num_args(1),
+                ),
+        )
+        .subcommand(
             Command::new("completion")
                 .about("Generate shell completion scripts")
                 .arg(
@@ -79,6 +96,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Some(("git", sub_matches)) => {
             commands::git::run(sub_matches)?;
+        }
+        Some(("config", sub_matches)) => {
+            commands::config::run(sub_matches)?;
         }
         Some(("completion", sub_matches)) => {
             let shell = sub_matches
