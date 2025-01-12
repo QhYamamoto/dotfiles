@@ -76,7 +76,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .subcommand(
             Command::new("completion")
-                .about("Generate shell completion scripts")
+                .about("Generate shell completion scripts.")
                 .arg(
                     Arg::new("shell")
                         .required(true)
