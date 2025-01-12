@@ -126,14 +126,8 @@ alias pbcopy='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 
 ##################################################
-# other minor settings
-##################################################
-# make less more friendly for non-text input files, see lesspipe(1)
-if (( $+commands[lesspipe] )); then
-  eval "$(SHELL=/bin/sh lesspipe)"
-fi
-
 # terraform cmd compleition and alias
+##################################################
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/bin/terraform terraform
 alias tf="terraform"
@@ -143,7 +137,9 @@ alias sail='./vendor/bin/sail'
 
 source $HOME/.config/broot/launcher/bash/br
 
+##################################################
 # aws cdk cmd compleition and alias
+##################################################
 _cdk_yargs_completions()
 {
   local reply
@@ -156,5 +152,22 @@ _cdk_yargs_completions()
 compdef _cdk_yargs_completions cdk
 alias cdk="npx cdk"
 
+##################################################
+# nvm
+##################################################
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+##################################################
+# better less
+##################################################
+# make less more friendly for non-text input files, see lesspipe(1)
+if (( $+commands[lesspipe] )); then
+  eval "$(SHELL=/bin/sh lesspipe)"
+fi
+
+
+##################################################
+# aliases
+##################################################
+alias dtf="dotfiles"
