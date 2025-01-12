@@ -1,13 +1,15 @@
 use core::panic;
 use std::{collections::HashMap, fs, process::Command};
 
-use dotfiles::modules::{
-    cli,
-    filesystem::{self, get_wsl_home},
+use dotfiles::{
+    constants::DOTFILES_DIR,
+    modules::{
+        cli,
+        filesystem::{self, get_wsl_home},
+    },
 };
 
 const DIRECTORIES_TO_CREATE: [&str; 3] = ["/.config", "/.config/broot", "/.zsh"];
-const DOTFILES_DIR: &str = "dotfiles";
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = get_wsl_home().expect("Error: Wsl home is Empty!!");

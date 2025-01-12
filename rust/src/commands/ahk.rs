@@ -1,13 +1,10 @@
+use dotfiles::{constants::DOTFILES_DIR, modules::filesystem};
 use std::{
     fs,
     io::{self, Write},
     path::Path,
     process::Command,
 };
-
-use dotfiles::modules::filesystem;
-
-const DOTFILES_DIR: &str = "dotfiles";
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = filesystem::get_wsl_home().expect("Failed to get WSL home directory.");
