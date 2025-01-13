@@ -75,6 +75,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ),
         )
         .subcommand(
+            Command::new("sync")
+                .about("Synchronize dotfiles command.")
+                .arg(
+                    Arg::new("shell")
+                        .required(false)
+                        .default_value("zsh")
+                        .value_parser(clap::value_parser!(Shell))
+                        .help("The shell to generate the compdef script for"),
+                ),
+        )
+        .subcommand(
             Command::new("completion")
                 .about("Generate shell completion scripts.")
                 .arg(
@@ -99,6 +110,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Some(("config", sub_matches)) => {
             commands::config::run(sub_matches)?;
+        }
+        Some(("sync", sub_matches)) => {
+            let shell = sub_matches
+                .get_one::<Shell>("shell")
+                .expect("Shell type is required");
+            commands::sync::run(*shell, &mut app)?;
         }
         Some(("completion", sub_matches)) => {
             let shell = sub_matches
