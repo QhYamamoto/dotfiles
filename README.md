@@ -49,7 +49,7 @@
 6. Run git setup command and follow the instructions.
 
    ```sh
-   cd ~/dotfiles && dotfiles git
+   dtf git -H github.com -e {your_email_address} -u {your_git_account_name} -k id_github_rsa
    ```
 
 7. Register the public key to [your github account](https://github.com/settings/keys).
@@ -57,7 +57,7 @@
 8. Remove dotfiles directory and clone the repository again via git.
 
    ```sh
-   cd && rm -rf ~/dotfiles && git clone git@github.com:QhYamamoto/dotfiles.git
+   rm -rf ~/dotfiles && git clone git@github.com:QhYamamoto/dotfiles.git
    ```
 
 # Custom commands
