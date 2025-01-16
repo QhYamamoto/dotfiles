@@ -29,6 +29,7 @@ return {
         zshrc = { "beautysh" },
         blade = { "blade-formatter" },
         vue = { "prettier" },
+        sql = { "sql_formatter" },
       },
       formatters = {
         beautysh = {
