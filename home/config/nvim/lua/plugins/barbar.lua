@@ -27,6 +27,25 @@ return {
       callback = on_buf_delete,
     })
 
+    local function restore_last_closed_buffer()
+      if last_closed_buffer_num and vim.api.nvim_buf_is_valid(last_closed_buffer_num) then
+        vim.cmd("badd " .. last_closed_buffer_path)
+        vim.cmd("buffer " .. last_closed_buffer_num)
+        last_closed_buffer_num = nil
+        last_closed_buffer_path = nil
+      else
+        print "No buffer to restore"
+      end
+    end
+
+    -- custom keymaps
+    keymap.set(
+      "n",
+      "<LEADER>bR",
+      restore_last_closed_buffer,
+      { desc = "restore last closed buffer", noremap = true, silent = true }
+    )
+
     keymap.set("n", "<A-h>", "<Cmd>BufferPrevious<CR>", opts "Go to previous buffer")
     keymap.set("n", "<A-s>", "<Cmd>BufferPrevious<CR>", opts "Go to previous buffer")
     keymap.set("n", "<A-l>", "<Cmd>BufferNext<CR>", opts "Go to next buffer")
