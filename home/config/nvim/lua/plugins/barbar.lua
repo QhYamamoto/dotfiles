@@ -42,6 +42,8 @@ return {
     keymap.set("n", "<LEADER>8", "<Cmd>BufferGoto 8<CR>", opts "Go to buffer 8")
     keymap.set("n", "<LEADER>9", "<Cmd>BufferGoto 9<CR>", opts "Go to buffer 9")
     keymap.set("n", "<LEADER>0", "<Cmd>BufferLast<CR>", opts "Go to last buffer")
+
+    keymap.set("n", "<Space>bn", "<Cmd>BufferOrderByName<CR>", opts "Sort buffers by name")
   end,
   opts = {
     icons = {
