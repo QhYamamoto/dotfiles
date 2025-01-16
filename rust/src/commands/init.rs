@@ -77,10 +77,7 @@ fn create_wezterm_symlink_from_windows_to_wsl(
         let win_home_in_wsl_fs_format = filesystem::get_win_home_in_wsl_fs_format()
             .expect("Error: Failed to get windows home directory in wsl file system format.");
 
-        filesystem::create_dir_if_not_exists(&format!(
-            "{}/.config/wezterm",
-            win_home_in_wsl_fs_format
-        ))?;
+        filesystem::create_dir_if_not_exists(&format!("{}/.config", win_home_in_wsl_fs_format))?;
 
         let win_wezterm_dir = format!("{}\\.config\\wezterm", win_home);
         let wsl_wezterm_dir = format!(
