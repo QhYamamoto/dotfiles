@@ -4,10 +4,10 @@ return {
     local keymap = vim.keymap
 
     -- movement
-    keymap.set({ "n", "v" }, "<LEADER><Up>", "<CMD>Treewalker Up<CR>", { silent = true })
-    keymap.set({ "n", "v" }, "<LEADER><Down>", "<CMD>Treewalker Down<CR>", { silent = true })
-    keymap.set({ "n", "v" }, "<LEADER><Right>", "<CMD>Treewalker Right<CR>", { silent = true })
-    keymap.set({ "n", "v" }, "<LEADER><Left>", "<CMD>Treewalker Left<CR>", { silent = true })
+    keymap.set({ "n", "v" }, "<M-S-Up>", "<CMD>Treewalker Up<CR>", { silent = true })
+    keymap.set({ "n", "v" }, "<M-S-Down>", "<CMD>Treewalker Down<CR>", { silent = true })
+    keymap.set({ "n", "v" }, "<M-S-Right>", "<CMD>Treewalker Right<CR>", { silent = true })
+    keymap.set({ "n", "v" }, "<M-S-Left>", "<CMD>Treewalker Left<CR>", { silent = true })
 
     -- swapping
     keymap.set("n", "<LEADER>K", "<CMD>Treewalker SwapUp<CR>", { silent = true })
