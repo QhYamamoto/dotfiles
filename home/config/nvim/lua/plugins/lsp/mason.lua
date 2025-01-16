@@ -47,6 +47,7 @@ return {
         "beautysh",
         "php-cs-fixer",
         "blade-formatter",
+        "sql-formatter",
       },
     }
   end,
