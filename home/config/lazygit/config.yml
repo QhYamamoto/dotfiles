@@ -25,6 +25,21 @@ customCommands:
       - type: "input"
         title: "Empty commit message"
         initialValue: ""
+  - key: "R"
+    description: "Reset latest commit"
+    command: "git reset --{{.Form.ResetOption}} HEAD^"
+    context: "commits"
+    prompts:
+      - type: "menu"
+        title: "Select reset option"
+        key: "ResetOption"
+        options:
+          - name: "Soft"
+            value: "soft"
+          - name: "Hard"
+            value: "hard"
+          - name: "Mixed"
+            value: "mixed"
 os:
   editPreset: "nvim-remote"
 git:
