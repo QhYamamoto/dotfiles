@@ -6,7 +6,7 @@ return {
       chunk = {
         enable = true,
         style = {
-          { fg = "Cyan" },
+          { fg = "Yellow" },
           { fg = "#c21f30" },
         },
       },
@@ -25,7 +25,7 @@ return {
       line_num = {
         enable = true,
         use_treesitter = false,
-        style = "Cyan",
+        style = "Yellow",
       },
     }
   end,
