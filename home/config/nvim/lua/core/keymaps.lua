@@ -28,8 +28,6 @@ keymap.set("n", "<C-a>", "gg^vG$", { desc = "Select whole text" })
 keymap.set("n", "<C-e>", "$", { noremap = true, silent = true, desc = "Move cursor to the end of the line" })
 keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true, desc = "Move cursor to the end of the line" })
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Focus out from the terminal" })
-keymap.set({ "n", "v" }, "U", "<C-a>", { noremap = true, silent = true, desc = "Increment number" })
-keymap.set({ "n", "v" }, "D", "<C-x>", { noremap = true, silent = true, desc = "Increment number" })
 keymap.set("n", "<ESC>", function()
   -- if search register is not nil, then execute nohl command
   if vim.fn.getreg "/" ~= "" then
