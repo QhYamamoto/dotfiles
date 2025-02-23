@@ -7,4 +7,7 @@ return {
       fg_color = _C.COLOR_TAB_BAR_FG_DEFAULT,
     },
   },
+  cursor_bg = "#FFFF00",
+  cursor_fg = "#000000",
+  foreground = "#DDDDDD",
 }

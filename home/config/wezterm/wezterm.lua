@@ -24,6 +24,7 @@ config.harfbuzz_features = {
 
 config.line_height = 0.9
 config.colors = require "colors"
+config.color_scheme = "One Dark (Gogh)"
 config.window_decorations = "RESIZE"
 config.default_prog = { "wsl", "~" }
 config.window_background_opacity = 0.80
