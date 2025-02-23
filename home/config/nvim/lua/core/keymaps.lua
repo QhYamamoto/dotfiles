@@ -234,6 +234,115 @@ keymap.set("v", "ysi", ":lua convert_surrounding_chars_with_free_input()<CR>", {
 })
 
 --------------------------------------------------
+-- Jump to closest surrounding character.
+--------------------------------------------------
+function _G.jump_to_closest_parentheses(direction)
+  local current_line = vim.api.nvim_get_current_line()
+  local current_row, current_col = unpack(vim.api.nvim_win_get_cursor(0))
+
+  local parentheses = {
+    "(",
+    ")",
+    "[",
+    "]",
+    "{",
+    "}",
+  }
+
+  local start_col
+  local end_col
+  local step
+  local match
+
+  -- search for surrounding chars in current line.
+  if direction == "forward" then
+    start_col = current_col + 2
+    end_col = #current_line
+    step = 1
+  else
+    start_col = current_col
+    end_col = 1
+    step = -1
+  end
+
+  for col = start_col, end_col, step do
+    local char = current_line:sub(col, col)
+    for _, parenthesis in ipairs(parentheses) do
+      if char == parenthesis then
+        match = { current_row, col - 1 }
+      end
+
+      if match ~= nil then
+        break
+      end
+    end
+
+    if match ~= nil then
+      break
+    end
+  end
+
+  if match ~= nil then
+    return vim.api.nvim_win_set_cursor(0, match)
+  end
+
+  -- search for surrounding chars in next/previous lines.
+  local start_row
+  local end_row
+  if direction == "forward" then
+    start_row = current_row + 1
+    end_row = vim.api.nvim_buf_line_count(0)
+  else
+    start_row = current_row - 1
+    end_row = 1
+  end
+
+  for row = start_row, end_row, step do
+    local next_line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
+
+    if next_line == nil then
+      break
+    end
+
+    if direction == "forward" then
+      start_col = 1
+      end_col = #next_line
+    else
+      start_col = #next_line
+      end_col = 1
+    end
+
+    for col = start_col, end_col, step do
+      local char = next_line:sub(col, col)
+      for _, parenthesis in ipairs(parentheses) do
+        if char == parenthesis then
+          match = { row, col - 1 }
+        end
+      end
+
+      if match ~= nil then
+        break
+      end
+    end
+
+    if match ~= nil then
+      break
+    end
+  end
+
+  if match ~= nil then
+    return vim.api.nvim_win_set_cursor(0, match)
+  end
+end
+vim.keymap.set({ "n", "v" }, "<C-p>", function()
+  jump_to_closest_parentheses "forward"
+end, { noremap = true, silent = true })
+
+vim.keymap.set({ "n", "v" }, "<C-M-P>", function()
+  jump_to_closest_parentheses "backward"
+end, { noremap = true, silent = true })
+
+--------------------------------------------------
 -- Insert sequential numbers command
 --------------------------------------------------
 vim.api.nvim_create_user_command("InsertNumbers", function()
