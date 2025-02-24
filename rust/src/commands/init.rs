@@ -49,6 +49,7 @@ fn create_symlinks(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>> 
                 "/lazydocker",
                 "/nvim",
                 "/wezterm",
+                "/yazi",
             ],
         ),
         ("zsh", vec!["/compdef"]),

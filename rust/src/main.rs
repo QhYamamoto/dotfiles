@@ -69,6 +69,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             "lazygit",
                             "nvim",
                             "wezterm",
+                            "yazi",
                         ]))
                         .help("The app name to configure")
                         .num_args(1),

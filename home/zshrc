@@ -171,3 +171,5 @@ fi
 # aliases
 ##################################################
 alias dtf="dotfiles"
+
+export EDITOR="nvim"
