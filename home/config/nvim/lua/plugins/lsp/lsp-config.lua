@@ -5,7 +5,16 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
-    "ray-x/lsp_signature.nvim",
+    {
+      "ray-x/lsp_signature.nvim",
+      event = "InsertEnter",
+      opts = {
+        bind = true,
+        handler_opts = {
+          border = "rounded",
+        },
+      },
+    },
   },
   config = function()
     -- import lspconfig plugin
@@ -67,6 +76,14 @@ return {
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+
+        -- inlay hint
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client ~= nil then
+          if client.supports_method "textDocument/inlayHint" then
+            vim.lsp.inlay_hint.enable()
+          end
+        end
       end,
     })
 
