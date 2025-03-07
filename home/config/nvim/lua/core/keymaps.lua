@@ -14,10 +14,10 @@ keymap.set({ "n", "i" }, "<C-s>", "<CMD>silent! w<CR>", { desc = "Store" })
 keymap.set({ "n", "i", "v" }, "<C-z>", "<CMD>silent! u<CR>", { desc = "Undo" })
 keymap.set({ "n", "i", "v" }, "<C-y>", "<CMD>silent! redo<CR>", { desc = "Redo" })
 keymap.set({ "n", "i", "v" }, "<C-w>", "<CMD>bd!<CR>", { desc = "Delete current buffer" })
-keymap.set("n", "<S-Left>", "<C-W><", { noremap = true, silent = true, desc = "Expand window to the left" })
-keymap.set("n", "<S-Right>", "<C-W>>", { noremap = true, silent = true, desc = "Expand window to the right" })
-keymap.set("n", "<S-Up>", "<C-W>-", { noremap = true, silent = true, desc = "Expand window to top" })
-keymap.set("n", "<S-Down>", "<C-W>+", { noremap = true, silent = true, desc = "Expand window to bottom" })
+keymap.set("n", "<M-S-Left>", "<C-W><", { noremap = true, silent = true, desc = "Expand window to the left" })
+keymap.set("n", "<M-S-Right>", "<C-W>>", { noremap = true, silent = true, desc = "Expand window to the right" })
+keymap.set("n", "<M-S-Up>", "<C-W>-", { noremap = true, silent = true, desc = "Expand window to top" })
+keymap.set("n", "<M-S-Down>", "<C-W>+", { noremap = true, silent = true, desc = "Expand window to bottom" })
 keymap.set("n", "<tab>", "<CMD>><CR>", { desc = "Incriment indent level" })
 keymap.set("n", "<S-Tab>", "<CMD><<CR>", { desc = "Decriment indent level" })
 keymap.set("n", "<A-Down>", '"xdd"xp<CMD>Format<CR>', { desc = "Swap current line with line below" })
@@ -29,10 +29,9 @@ keymap.set("n", "<C-e>", "$", { noremap = true, silent = true, desc = "Move curs
 keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true, desc = "Move cursor to the end of the line" })
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Focus out from the terminal" })
 keymap.set("n", "cc", "yydd", { noremap = true, silent = true, desc = "Cut and delete line" })
-keymap.set("n", "p", function()
-  vim.cmd 'normal! "+p'
-  pcall(vim.cmd, "silent! :%s/\r//g")
-end)
+keymap.set("n", ",m", function()
+  vim.cmd [[silent! %s/\r//g]]
+end, { desc = "Remove all \\r characters in buffer" })
 keymap.set("n", "<ESC>", function()
   -- if search register is not nil, then execute nohl command
   if vim.fn.getreg "/" ~= "" then
