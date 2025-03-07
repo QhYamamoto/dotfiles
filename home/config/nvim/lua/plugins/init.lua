@@ -9,4 +9,5 @@ return {
     "aklt/plantuml-syntax",
     lazy = false,
   },
+  "jidn/vim-dbml",
 }
