@@ -39,8 +39,6 @@ return {
 
           opts.desc = "Show LSP definitions"
           keymap.set("n", "<F12>", "<CMD>Telescope lsp_definitions<CR>", opts)
-          keymap.set("n", "<M-Right>", "<C-I>", opts)
-          keymap.set("n", "<M-Left>", "<C-o>", opts)
 
           opts.desc = "Show LSP implementations"
           keymap.set("n", "gi", "<CMD>Telescope lsp_implementations<CR>", opts)
