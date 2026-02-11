@@ -105,7 +105,7 @@ _fzf_comprun() {
 ##################################################
 # better ls by eza
 ##################################################
-alias ls="eza --color=always --icons=always --git --no-filesize --no-time --no-user --no-permissions --group-directories-first --sort=type"
+# alias ls="eza --color=always --icons=always --git --no-filesize --no-time --no-user --no-permissions --group-directories-first --sort=type"
 
 ##################################################
 # better cd by zoxide
@@ -171,3 +171,8 @@ fi
 # aliases
 ##################################################
 alias dtf="dotfiles"
+
+export PATH="$HOME/.tfenv/bin:$PATH"
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
