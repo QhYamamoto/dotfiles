@@ -59,10 +59,14 @@ return {
           keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 
           opts.desc = "Go to previous diagnostic"
-          keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+          keymap.set("n", "[d", function()
+            vim.diagnostic.jump { count = -1, float = true }
+          end, opts)
 
           opts.desc = "Go to next diagnostic"
-          keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+          keymap.set("n", "]d", function()
+            vim.diagnostic.jump { count = 1, float = true }
+          end, opts)
 
           opts.desc = "Show documentation for what is under cursor"
           keymap.set("n", "K", vim.lsp.buf.hover, opts)
@@ -98,13 +102,18 @@ return {
 
     -- Add TypeScript-only utility mapping for organize imports.
     local function setup_typescript_keymap(_, bufnr)
+      local execute_workspace_command = function(params)
+        local result = vim.lsp.buf_request_sync(bufnr, "workspace/executeCommand", params, 5000)
+        return result ~= nil
+      end
+
       vim.keymap.set("n", "<LEADER>oi", function()
         local params = {
           command = "_typescript.organizeImports",
           arguments = { vim.api.nvim_buf_get_name(0) },
           title = "typescript.organizeImports",
         }
-        vim.lsp.buf.execute_command(params)
+        execute_workspace_command(params)
         vim.cmd "silent! write"
       end, { buffer = bufnr, noremap = true, silent = true })
     end
