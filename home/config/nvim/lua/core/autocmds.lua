@@ -17,3 +17,11 @@ vim.api.nvim_create_autocmd({
     })
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = "lua",
+  pattern = "*.tmpl",
+  callback = function()
+    vim.bo.filetype = "terraform"
+  end,
+})

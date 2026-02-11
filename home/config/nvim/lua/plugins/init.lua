@@ -5,6 +5,7 @@ return {
   "anuvyklack/pretty-fold.nvim",
   "mcauley-penney/tidy.nvim",
   "HiPhish/rainbow-delimiters.nvim",
+  "andres-lowrie/vim-sqlx",
   {
     "aklt/plantuml-syntax",
     lazy = false,
