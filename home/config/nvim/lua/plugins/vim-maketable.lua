@@ -5,5 +5,6 @@ return {
 
     keymap.set("n", "<LEADER>mt", ":MakeTable!<CR>", { noremap = true, silent = true })
     keymap.set("v", "<LEADER>mt", ":'<,'>MakeTable!<CR>", { noremap = true, silent = true })
+    keymap.set("n", "<LEADER>umt", ":'<CMD>UnmakeTable<CR>", { noremap = true, silent = true })
   end,
 }

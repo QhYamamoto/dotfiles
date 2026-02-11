@@ -16,6 +16,9 @@ return {
       float = {
         padding = 5,
       },
+      view_options = {
+        show_hidden = true,
+      },
     }
 
     oil.setup(opts)
