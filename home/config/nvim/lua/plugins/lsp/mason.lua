@@ -28,7 +28,6 @@ return {
         "powershell_es",
         "pyright",
         "bashls",
-        "volar",
         "prismals",
         "yamlls",
         "rust_analyzer",

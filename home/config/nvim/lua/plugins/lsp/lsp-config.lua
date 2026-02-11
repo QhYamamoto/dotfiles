@@ -142,24 +142,6 @@ return {
           filetypes = { "sh", "bash", "zsh" },
         }
       end,
-      ["volar"] = function()
-        lspconfig["volar"].setup {
-          capabilities = capabilities,
-          filetypes = { "vue", "javascript", "typescript", "javascriptreact", "typescriptreact" },
-          init_options = {
-            vue = {
-              hybridMode = false,
-            },
-            typescript = {
-              tsdk = vim.env.HOME .. "/node_modules/typescript/lib",
-            },
-          },
-          cmd = {
-            "/usr/local/bin/vue-language-server",
-            "--stdio",
-          },
-        }
-      end,
       ["yamlls"] = function()
         lspconfig["yamlls"].setup {
           capabilities = capabilities,
