@@ -16,6 +16,10 @@ return {
 
     local project_actions_ok, project_actions = pcall(require, "telescope._extensions.project.actions")
 
+    local function change_project_directory(project_path)
+      vim.api.nvim_set_current_dir(project_path)
+    end
+
     local function open_projects()
       local loaded, load_err = pcall(telescope.load_extension, "project")
       if not loaded then
@@ -30,6 +34,7 @@ return {
       extensions = {
         project = {
           base_dirs = { "~" },
+          cd_scope = { "global", "tab", "window" },
           theme = "dropdown",
           order_by = "asc",
           search_by = "title",
@@ -41,10 +46,17 @@ return {
             end
 
             local project_path = project_actions.get_selected_path(prompt_bufnr)
-            project_actions.change_working_directory(prompt_bufnr)
+            actions.close(prompt_bufnr)
+
+            local restored = auto_session.autosave_and_restore(project_path)
+            if not restored then
+              change_project_directory(project_path)
+            end
+
             vim.defer_fn(function()
-              auto_session.autosave_and_restore(project_path)
-              require("harpoon.ui").nav_file(1)
+              pcall(function()
+                require("harpoon.ui").nav_file(1)
+              end)
             end, 50)
           end,
         },
