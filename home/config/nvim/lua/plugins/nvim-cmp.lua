@@ -47,7 +47,6 @@ return {
       sources = cmp.config.sources {
         { name = "nvim_lsp", priority = 1000 },
         { name = "luasnip", priority = 750 },
-        { name = "supermaven", priority = 500 },
         { name = "buffer", priority = 250 },
         { name = "path", priority = 200 },
       },
