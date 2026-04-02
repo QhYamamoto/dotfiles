@@ -5,19 +5,8 @@ return {
     "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "folke/neodev.nvim", opts = {} },
-    {
-      "ray-x/lsp_signature.nvim",
-      event = "InsertEnter",
-      opts = {
-        bind = true,
-        handler_opts = {
-          border = "rounded",
-        },
-      },
-    },
   },
   config = function()
-    local lspconfig = require "lspconfig"
     local mason_lspconfig = require "mason-lspconfig"
     local cmp_nvim_lsp = require "cmp_nvim_lsp"
     local keymap = vim.keymap
@@ -32,19 +21,19 @@ return {
           local opts = { buffer = ev.buf, silent = true }
 
           opts.desc = "Show LSP references"
-          keymap.set("n", "gR", "<CMD>Telescope lsp_references<CR>", opts)
+          keymap.set("n", "gR", vim.lsp.buf.references, opts)
 
           opts.desc = "Go to declaration"
           keymap.set("n", "gd", vim.lsp.buf.declaration, opts)
 
           opts.desc = "Show LSP definitions"
-          keymap.set("n", "<F12>", "<CMD>Telescope lsp_definitions<CR>", opts)
+          keymap.set("n", "<F12>", vim.lsp.buf.definition, opts)
 
           opts.desc = "Show LSP implementations"
-          keymap.set("n", "gi", "<CMD>Telescope lsp_implementations<CR>", opts)
+          keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 
           opts.desc = "Show LSP type definitions"
-          keymap.set("n", "gt", "<CMD>Telescope lsp_type_definitions<CR>", opts)
+          keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
 
           opts.desc = "See available code actions"
           keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
@@ -155,20 +144,23 @@ return {
       },
     }
 
-    -- Setup all mason-managed servers with shared capabilities + per-server overrides.
+    -- Register all mason-managed server configs, then enable them explicitly.
     local function setup_servers()
-      mason_lspconfig.setup_handlers {
-        function(server_name)
+      local installed_servers = mason_lspconfig.get_installed_servers()
+
+      for _, server_name in ipairs(installed_servers) do
+        if server_name ~= "rust_analyzer" then
           local opts = vim.tbl_deep_extend("force", { capabilities = capabilities }, server_settings[server_name] or {})
-          lspconfig[server_name].setup(opts)
-        end,
-        ["rust_analyzer"] = function() end,
-      }
+          vim.lsp.config(server_name, opts)
+          vim.lsp.enable(server_name)
+        end
+      end
     end
 
     -- Register and setup the custom AutoHotkey v2 language server definition.
     local function setup_ahk2_server()
       -- FIXME: When opening an ahk file, the message `environment variable not found` is displayed.
+      local lspconfig = require "lspconfig"
       local configs = require "lspconfig.configs"
       configs["ahk2"] = {
         default_config = {
@@ -186,25 +178,17 @@ return {
           single_file_support = true,
           flags = { debounce_text_changes = 500 },
           capabilities = capabilities,
-          on_attach = function(_, _)
-            require("lsp_signature").on_attach {
-              bind = true,
-              use_lspsaga = false,
-              floating_window = true,
-              fix_pos = true,
-              hint_enable = true,
-              hi_parameter = "Search",
-              handler_opts = { "double" },
-            }
-          end,
         },
       }
-      lspconfig["ahk2"].setup {}
+      vim.lsp.enable "ahk2"
     end
 
     -- Setup terraformls and run LSP formatting before writing tf/tfvars files.
     local function setup_terraform_server()
-      lspconfig["terraformls"].setup {}
+      vim.lsp.config("terraformls", {
+        capabilities = capabilities,
+      })
+      vim.lsp.enable "terraformls"
       vim.api.nvim_create_autocmd({ "BufWritePre" }, {
         pattern = { "*.tf", "*.tfvars" },
         callback = function()

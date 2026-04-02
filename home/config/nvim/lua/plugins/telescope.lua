@@ -14,6 +14,7 @@ return {
     local actions = require "telescope.actions"
 
     local project_actions = require "telescope._extensions.project.actions"
+    local auto_session = require "auto-session"
     telescope.setup {
       extensions = {
         project = {
@@ -23,9 +24,12 @@ return {
           search_by = "title",
           sync_with_nvim_tree = true,
           on_project_selected = function(prompt_bufnr)
+            local project_path = project_actions.get_selected_path(prompt_bufnr)
             project_actions.change_working_directory(prompt_bufnr)
-            vim.cmd "SessionRestore"
-            require("harpoon.ui").nav_file(1)
+            vim.defer_fn(function()
+              auto_session.autosave_and_restore(project_path)
+              require("harpoon.ui").nav_file(1)
+            end, 50)
           end,
         },
       },
