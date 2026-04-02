@@ -12,9 +12,20 @@ return {
   config = function()
     local telescope = require "telescope"
     local actions = require "telescope.actions"
-
-    local project_actions = require "telescope._extensions.project.actions"
     local auto_session = require "auto-session"
+
+    local project_actions_ok, project_actions = pcall(require, "telescope._extensions.project.actions")
+
+    local function open_projects()
+      local loaded, load_err = pcall(telescope.load_extension, "project")
+      if not loaded then
+        vim.notify(("telescope-project.nvim failed to load: %s"):format(load_err), vim.log.levels.WARN)
+        return
+      end
+
+      telescope.extensions.project.project {}
+    end
+
     telescope.setup {
       extensions = {
         project = {
@@ -24,6 +35,11 @@ return {
           search_by = "title",
           sync_with_nvim_tree = true,
           on_project_selected = function(prompt_bufnr)
+            if not project_actions_ok then
+              vim.notify("telescope-project actions are unavailable", vim.log.levels.WARN)
+              return
+            end
+
             local project_path = project_actions.get_selected_path(prompt_bufnr)
             project_actions.change_working_directory(prompt_bufnr)
             vim.defer_fn(function()
@@ -57,13 +73,12 @@ return {
     }
 
     telescope.load_extension "fzf"
-    telescope.load_extension "project"
 
     local keymap = vim.keymap
 
     keymap.set("n", "<LEADER>ff", "<CMD>Telescope find_files<CR>", { desc = "Fuzzy find files in cwd" })
     keymap.set("n", "<LEADER>fr", "<CMD>Telescope resume<CR>", { desc = "Fuzzy find with cache" })
-    keymap.set("n", "<LEADER>fp", "<CMD>Telescope project<CR>", { desc = "Find project" })
+    keymap.set("n", "<LEADER>fp", open_projects, { desc = "Find project" })
     keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<CR>", { desc = "Find string in cwd" })
     keymap.set("n", "<LEADER>ft", "<CMD>TodoTelescope<CR>", { desc = "Find todos" })
   end,

@@ -8,6 +8,44 @@ return {
   },
   run = ":TSUpdate",
   config = function()
+    local parser_install_dir = nil
+    local is_headless = #vim.api.nvim_list_uis() == 0
+    local ensure_installed = {
+      "json",
+      "javascript",
+      "jsdoc",
+      "typescript",
+      "tsx",
+      "yaml",
+      "html",
+      "css",
+      "prisma",
+      "markdown",
+      "markdown_inline",
+      "svelte",
+      "graphql",
+      "bash",
+      "lua",
+      "vim",
+      "dockerfile",
+      "gitignore",
+      "query",
+      "vimdoc",
+      "c",
+      "vue",
+      "php",
+      "powershell",
+      "sql",
+      "python",
+      "rust",
+    }
+    if is_headless then
+      parser_install_dir = "/tmp/nvim-treesitter-parsers"
+      vim.fn.mkdir(parser_install_dir, "p")
+      vim.opt.runtimepath:append(parser_install_dir)
+      ensure_installed = {}
+    end
+
     vim.treesitter.language.register("bash", "zsh")
     -- import nvim-treesitter plugin
     local treesitter = require "nvim-treesitter.configs"
@@ -17,6 +55,7 @@ return {
       modules = {},
       sync_install = false,
       auto_install = false,
+      parser_install_dir = parser_install_dir,
       ignore_install = {},
       highlight = {
         enable = true,
@@ -24,35 +63,7 @@ return {
       -- enable indentation
       indent = { enable = true },
       -- ensure these language parsers are installed
-      ensure_installed = {
-        "json",
-        "javascript",
-        "jsdoc",
-        "typescript",
-        "tsx",
-        "yaml",
-        "html",
-        "css",
-        "prisma",
-        "markdown",
-        "markdown_inline",
-        "svelte",
-        "graphql",
-        "bash",
-        "lua",
-        "vim",
-        "dockerfile",
-        "gitignore",
-        "query",
-        "vimdoc",
-        "c",
-        "vue",
-        "php",
-        "powershell",
-        "sql",
-        "python",
-        "rust",
-      },
+      ensure_installed = ensure_installed,
       incremental_selection = {
         enable = true,
         keymaps = {

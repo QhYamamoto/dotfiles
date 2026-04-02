@@ -1,5 +1,8 @@
 return {
   "romgrk/barbar.nvim",
+  enabled = function()
+    return #vim.api.nvim_list_uis() > 0
+  end,
   dependencies = {
     "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
     "nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons

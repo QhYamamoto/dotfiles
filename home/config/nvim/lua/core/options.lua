@@ -1,5 +1,10 @@
 -- vim options
 local opt = vim.opt
+local is_headless = #vim.api.nvim_list_uis() == 0
+
+if is_headless then
+  opt.shadafile = "NONE"
+end
 
 opt.title = true
 opt.relativenumber = true
