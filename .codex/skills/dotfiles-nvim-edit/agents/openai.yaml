@@ -1,0 +1,3 @@
+display_name: Dotfiles Neovim Edit
+short_description: Safely edit the Neovim config in this dotfiles repo
+default_prompt: Edit this repository's Neovim configuration under home/config/nvim, preserving its module layout and validating with stylua and headless startup checks when appropriate.
