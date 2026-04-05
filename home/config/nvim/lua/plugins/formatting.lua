@@ -2,6 +2,7 @@ return {
   "stevearc/conform.nvim",
   event = { "BufReadPre", "BufNewFile" },
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").formatting
     local conform = require "conform"
 
     local FILETYPES_TO_DISABLE_AUTO_FORMAT = {} --[[ { "php", "blade" } ]]
@@ -57,14 +58,7 @@ return {
       end,
     }
 
-    local keymap = vim.keymap
-    keymap.set({ "n", "v" }, "<LEADER>mp", function()
-      conform.format {
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 1000,
-      }
-    end, { desc = "Format file or range (in visual mode)" })
+    plugin_keymaps.setup(conform)
 
     vim.api.nvim_create_user_command("Format", function(args)
       local range = nil

@@ -3,16 +3,12 @@ return {
   -- Optional dependencies
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").oil
     local oil = require "oil"
 
     ---@type oil.SetupOpts
     local opts = {
-      keymaps = {
-        ["q"] = { "actions.close", mode = "n" },
-        ["<M-t>"] = { "actions.close", mode = "n" },
-        ["h"] = { "actions.parent", mode = "n" },
-        ["<C-s>"] = false,
-      },
+      keymaps = plugin_keymaps.buffer_keymaps,
       float = {
         padding = 5,
       },
@@ -23,7 +19,6 @@ return {
 
     oil.setup(opts)
 
-    local keymap = vim.keymap
-    keymap.set("n", "<LEADER>ol", "<CMD>Oil --float<CR>", { desc = "Open oil buffer in floating view" })
+    plugin_keymaps.setup()
   end,
 }

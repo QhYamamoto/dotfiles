@@ -5,7 +5,6 @@ return {
 
     neogen.setup {}
 
-    local keymap = vim.keymap
-    keymap.set("n", "<LEADER>doc", ":lua require('neogen').generate()<CR>", { desc = "Generate docstring." })
+    require("core.keymaps.plugins").neogen.setup()
   end,
 }

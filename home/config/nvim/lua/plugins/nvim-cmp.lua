@@ -9,6 +9,7 @@ return {
     "rafamadriz/friendly-snippets",
   },
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").nvim_cmp
     local cmp = require "cmp"
 
     local luasnip = require "luasnip"
@@ -52,21 +53,6 @@ return {
       },
     }
 
-    local keymap = vim.keymap
-    keymap.set({ "i", "s" }, "<Tab>", function()
-      if luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", true)
-      end
-    end, { silent = true })
-
-    keymap.set({ "i", "s" }, "<S-Tab>", function()
-      if luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<CMD><<CR>", true, false, true), "n", true)
-      end
-    end, { silent = true })
+    plugin_keymaps.setup(luasnip)
   end,
 }

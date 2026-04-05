@@ -8,8 +8,6 @@ return {
       },
     }
 
-    local keymap = vim.keymap
-
-    keymap.set("n", "<LEADER>csv", "<CMD>CsvViewToggle<CR>", { desc = "Toggle csv view" })
+    require("core.keymaps.plugins").csvview.setup()
   end,
 }

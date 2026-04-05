@@ -1,10 +1,6 @@
 return {
   "mattn/vim-maketable",
   config = function()
-    local keymap = vim.keymap
-
-    keymap.set("n", "<LEADER>mt", ":MakeTable!<CR>", { noremap = true, silent = true })
-    keymap.set("v", "<LEADER>mt", ":'<,'>MakeTable!<CR>", { noremap = true, silent = true })
-    keymap.set("n", "<LEADER>umt", ":'<CMD>UnmakeTable<CR>", { noremap = true, silent = true })
+    require("core.keymaps.plugins").vim_maketable.setup()
   end,
 }

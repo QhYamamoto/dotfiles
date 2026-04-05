@@ -7,9 +7,9 @@ return {
     { "folke/neodev.nvim", opts = {} },
   },
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").lsp
     local mason_lspconfig = require "mason-lspconfig"
     local cmp_nvim_lsp = require "cmp_nvim_lsp"
-    local keymap = vim.keymap
 
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
@@ -17,57 +17,7 @@ return {
     local function setup_lsp_attach_keymaps()
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = function(ev)
-          local opts = { buffer = ev.buf, silent = true }
-
-          opts.desc = "Show LSP references"
-          keymap.set("n", "gR", vim.lsp.buf.references, opts)
-
-          opts.desc = "Go to declaration"
-          keymap.set("n", "gd", vim.lsp.buf.declaration, opts)
-
-          opts.desc = "Show LSP definitions"
-          keymap.set("n", "<F12>", vim.lsp.buf.definition, opts)
-
-          opts.desc = "Show LSP implementations"
-          keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-
-          opts.desc = "Show LSP type definitions"
-          keymap.set("n", "gt", vim.lsp.buf.type_definition, opts)
-
-          opts.desc = "See available code actions"
-          keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
-
-          opts.desc = "Smart rename"
-          keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-
-          opts.desc = "Show buffer diagnostics"
-          keymap.set("n", "<leader>D", "<CMD>Telescope diagnostics bufnr=0<CR>", opts)
-
-          opts.desc = "Show line diagnostics"
-          keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
-
-          opts.desc = "Go to previous diagnostic"
-          keymap.set("n", "[d", function()
-            vim.diagnostic.jump { count = -1, float = true }
-          end, opts)
-
-          opts.desc = "Go to next diagnostic"
-          keymap.set("n", "]d", function()
-            vim.diagnostic.jump { count = 1, float = true }
-          end, opts)
-
-          opts.desc = "Show documentation for what is under cursor"
-          keymap.set("n", "K", vim.lsp.buf.hover, opts)
-
-          opts.desc = "Restart LSP"
-          keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
-
-          local client = vim.lsp.get_client_by_id(ev.data.client_id)
-          if client ~= nil and client.supports_method "textDocument/inlayHint" then
-            vim.lsp.inlay_hint.enable()
-          end
-        end,
+        callback = plugin_keymaps.on_attach,
       })
     end
 
@@ -90,23 +40,6 @@ return {
     end
 
     -- Add TypeScript-only utility mapping for organize imports.
-    local function setup_typescript_keymap(_, bufnr)
-      local execute_workspace_command = function(params)
-        local result = vim.lsp.buf_request_sync(bufnr, "workspace/executeCommand", params, 5000)
-        return result ~= nil
-      end
-
-      vim.keymap.set("n", "<LEADER>oi", function()
-        local params = {
-          command = "_typescript.organizeImports",
-          arguments = { vim.api.nvim_buf_get_name(0) },
-          title = "typescript.organizeImports",
-        }
-        execute_workspace_command(params)
-        vim.cmd "silent! write"
-      end, { buffer = bufnr, noremap = true, silent = true })
-    end
-
     local server_settings = {
       emmet_ls = {
         filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
@@ -137,7 +70,7 @@ return {
         filetypes = { "yaml" },
       },
       ts_ls = {
-        on_attach = setup_typescript_keymap,
+        on_attach = plugin_keymaps.typescript_on_attach,
       },
       powershell_es = {
         bundle_path = vim.env.HOME,

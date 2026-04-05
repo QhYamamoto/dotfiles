@@ -10,6 +10,7 @@ return {
     "ThePrimeagen/harpoon",
   },
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").telescope
     local telescope = require "telescope"
     local actions = require "telescope.actions"
     local auto_session = require "auto-session"
@@ -64,12 +65,7 @@ return {
       defaults = {
         path_display = { "smart" },
         file_ignore_patterns = { ".git/" },
-        mappings = {
-          i = {
-            ["<C-k>"] = actions.move_selection_previous,
-            ["<C-j>"] = actions.move_selection_next,
-          },
-        },
+        mappings = plugin_keymaps.insert_mappings(actions),
       },
       pickers = {
         find_files = {
@@ -86,12 +82,6 @@ return {
 
     telescope.load_extension "fzf"
 
-    local keymap = vim.keymap
-
-    keymap.set("n", "<LEADER>ff", "<CMD>Telescope find_files<CR>", { desc = "Fuzzy find files in cwd" })
-    keymap.set("n", "<LEADER>fr", "<CMD>Telescope resume<CR>", { desc = "Fuzzy find with cache" })
-    keymap.set("n", "<LEADER>fp", open_projects, { desc = "Find project" })
-    keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<CR>", { desc = "Find string in cwd" })
-    keymap.set("n", "<LEADER>ft", "<CMD>TodoTelescope<CR>", { desc = "Find todos" })
+    plugin_keymaps.setup(open_projects)
   end,
 }

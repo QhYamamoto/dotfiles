@@ -4,27 +4,12 @@ return {
     "nvim-lua/plenary.nvim",
   },
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").nvim_spectre
     local spectre = require "spectre"
     local actions = require "spectre.actions"
 
     spectre.setup {
-      mapping = {
-        ["select_template"] = {
-          map = "<LEADER>rt",
-          cmd = "<cmd>lua require('spectre.actions').select_template()<CR>",
-          desc = "pick template",
-        },
-        ["toggle_line"] = {
-          map = "dl",
-          cmd = "<cmd>lua require('spectre').toggle_line()<CR>",
-          desc = "toggle item",
-        },
-        ["delete_line"] = {
-          map = "dd",
-          cmd = '"_dd',
-          desc = "delete line",
-        },
-      },
+      mapping = plugin_keymaps.panel_mappings,
       find_engine = {
         ["rg"] = {
           cmd = "rg",
@@ -57,41 +42,6 @@ return {
       },
     }
 
-    -- local variables to register search query
-    local path = ""
-    local search_query = ""
-    local replace_query = ""
-
-    -- function that refreshes search query
-    local refresh_query = function()
-      local state = actions.get_state()
-      -- by default, exclude .git directory
-      if path == "" then
-        path = "!.git/"
-      else
-        path = state.query.path
-      end
-      search_query = state.query.search_query
-      replace_query = state.query.replace_query
-    end
-
-    local keymap = vim.keymap
-    keymap.set("n", "<LEADER>rp", function()
-      -- keymaps
-      refresh_query()
-      spectre.toggle { search_text = search_query, replace_query = replace_query, path = path }
-    end, { desc = "Toggle Spectre" })
-
-    keymap.set("n", "<LEADER>rw", function()
-      spectre.open_visual { select_word = true, path = path }
-    end, { desc = "Search current word" })
-
-    keymap.set("v", "<LEADER>rw", function()
-      spectre.open_visual { path = path }
-    end, { desc = "Search current word" })
-
-    keymap.set("n", "<LEADER>rc", function()
-      spectre.open_file_search()
-    end, { desc = "Search on current file" })
+    plugin_keymaps.setup(spectre, actions)
   end,
 }
