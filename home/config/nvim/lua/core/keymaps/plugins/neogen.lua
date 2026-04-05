@@ -1,11 +1,14 @@
-local set_maps = require("core.keymaps.plugins.util").set_maps
-
 local M = {}
 
-function M.setup()
-  set_maps {
-    { mode = "n", lhs = "<LEADER>doc", rhs = ":lua require('neogen').generate()<CR>", desc = "Generate docstring." },
-  }
-end
+M.keys = {
+  {
+    "<LEADER>doc",
+    function()
+      require("neogen").generate()
+    end,
+    mode = "n",
+    desc = "Generate docstring.",
+  },
+}
 
 return M

@@ -3,6 +3,11 @@ vim.o.mouse = "a"
 
 local keymap = vim.keymap
 
+local copy_to_clipboard = function(value, message)
+  vim.fn.setreg("+", value)
+  print(message)
+end
+
 keymap.set({ "i", "c" }, "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 keymap.set({ "i", "c" }, "ｊｋ", "<ESC>", { desc = "Exit insert mode with ｊｋ" })
 keymap.set("n", "い", "i", { desc = "Enter insert mode with い" })
@@ -33,23 +38,20 @@ keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Fo
 keymap.set("n", "cc", "yydd", { noremap = true, silent = true, desc = "Cut and delete line" })
 keymap.set("n", ",m", "<CMD>silent! %s/\\r//g<CR>", { desc = "Remove all \\r characters in buffer" })
 keymap.set("n", "<ESC>", function()
-  -- if search register is not nil, then execute nohl command
+  -- Prefer clearing transient UI state before falling back to a plain <Esc>.
   if vim.fn.getreg "/" ~= "" then
     vim.fn.setreg("/", "")
     vim.cmd "nohl"
     return
   end
 
-  -- if focused window is floating one
   local winid = vim.api.nvim_get_current_win()
   if vim.api.nvim_win_get_config(winid).relative ~= "" then
     vim.api.nvim_win_close(winid, true)
     return
   end
 
-  -- Check if the current buffer is a Diffview buffer
-  local bufname = vim.api.nvim_buf_get_name(0)
-  if bufname:match "diffview:" then
+  if vim.api.nvim_buf_get_name(0):match "diffview:" then
     vim.cmd "DiffviewClose"
     return
   end
@@ -85,16 +87,13 @@ keymap.set("n", "<LEADER>sx", "<CMD>close<CR>", { desc = "Close current split" }
 keymap.set("n", "<LEADER>se", "<C-w>=", { desc = "Make splits equal size" })
 keymap.set("n", "<LEADER>bp", "<CMD>bprev<CR>", { desc = "Jump to previous buffer" })
 keymap.set("n", "<LEADER>yf", function()
-  vim.fn.setreg("+", vim.fn.expand "%:p")
-  print "Filepath has been copied to your clipboard!!"
+  copy_to_clipboard(vim.fn.expand "%:p", "Filepath has been copied to your clipboard!!")
 end, { noremap = true, silent = true, desc = "Save fullpath to currently opened file in a buffer" })
 keymap.set("n", "<LEADER>yb", function()
-  vim.fn.setreg("+", vim.fn.expand "%:t")
-  print "File basename has been copied to your clipboard!!"
+  copy_to_clipboard(vim.fn.expand "%:t", "File basename has been copied to your clipboard!!")
 end, { noremap = true, silent = true, desc = "Save basename of currently opened file in a buffer" })
 keymap.set("n", "<LEADER>yn", function()
-  vim.fn.setreg("+", vim.fn.expand "%:t:r")
-  print "File basename without extension has been copied to your clipboard!!"
+  copy_to_clipboard(vim.fn.expand "%:t:r", "File basename without extension has been copied to your clipboard!!")
 end, { noremap = true, silent = true, desc = "Copy basename without extension of currently opened file" })
 
 local jump_to_closest_parentheses = function(direction)
@@ -113,69 +112,12 @@ vim.keymap.set({ "n", "v" }, "<C-M-P>", function()
   jump_to_closest_parentheses "backward"
 end, { noremap = true, silent = true })
 
---------------------------------------------------
--- Insert sequential numbers command
---------------------------------------------------
-vim.api.nvim_create_user_command("InsertNumbers", function()
-  local start = tonumber(vim.fn.input "Enter start value (default: 1): ") or 1
-  local step = tonumber(vim.fn.input "Enter step value (default: 1): ") or 1
-  local format = vim.fn.input "Enter format (default: %d): "
-  format = format ~= "" and format or "%d" -- because `vim.fn.input` never returns nil
-
-  local start_pos = vim.fn.getpos "v"
-  local end_pos = vim.fn.getpos "."
-  local start_row = start_pos[2]
-  local start_col = start_pos[3]
-  local end_row = end_pos[2]
-
-  -- 現在のバッファを取得
-  local lines = vim.api.nvim_buf_get_lines(0, start_row - 1, end_row, false)
-
-  -- 選択範囲のカラムに連番を挿入
-  local number = start
-  for i, line in ipairs(lines) do
-    local left_part = line:sub(1, start_col - 1)
-    local right_part = line:sub(start_col)
-    lines[i] = left_part .. string.format(format, number) .. right_part
-    number = number + step
-  end
-
-  vim.api.nvim_buf_set_lines(0, start_row - 1, end_row, false, lines)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
-end, {
-  range = true,
-  desc = "Insert sequential numbers into the selected block",
-})
-
 vim.keymap.set(
   "v",
   "<LEADER>ns",
   "<CMD>InsertNumbers<CR>",
   { desc = "Insert sequential numbers into the selected block" }
 )
-
---------------------------------------------------
--- make numbers on selected lines sequential
---------------------------------------------------
-vim.api.nvim_create_user_command("MakeNumbersOnSelectedLinesSequential", function()
-  local start_pos = vim.fn.getpos "v"
-  local end_pos = vim.fn.getpos "."
-  local start_row = start_pos[2]
-  local end_row = end_pos[2]
-
-  local first_line = vim.fn.getline(start_row)
-
-  local start = tonumber(string.match(first_line, "%d+")) or 1
-  local step = tonumber(vim.fn.input "Enter step value (default: 1): ") or 1
-
-  local current_number = start
-  for row = start_row, end_row do
-    local line = vim.fn.getline(row)
-    local updated_line = string.gsub(line, "%d+", tostring(current_number))
-    vim.fn.setline(row, updated_line)
-    current_number = current_number + step
-  end
-end, { range = true })
 
 vim.keymap.set(
   "v",

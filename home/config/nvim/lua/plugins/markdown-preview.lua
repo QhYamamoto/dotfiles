@@ -2,13 +2,11 @@ return {
   "iamcco/markdown-preview.nvim",
   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
   ft = { "markdown", "plantuml" },
+  keys = require("core.keymaps.plugins").markdown_preview.keys,
   build = function()
     vim.fn["mkdp#util#install"]()
   end,
   init = function()
     vim.g.mkdp_filetypes = { "markdown", "plantuml" }
-  end,
-  config = function()
-    require("core.keymaps.plugins").markdown_preview.setup()
   end,
 }
