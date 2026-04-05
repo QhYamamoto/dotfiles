@@ -40,6 +40,16 @@ opt.clipboard:append "unnamedplus"
 
 opt.splitright = true
 opt.splitbelow = true
+opt.foldenable = true
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldcolumn = "1"
+opt.fillchars:append {
+  foldopen = "",
+  foldclose = "",
+  foldsep = " ",
+  fold = " ",
+}
 
 opt.whichwrap:append {
   ["<"] = true,
@@ -47,3 +57,24 @@ opt.whichwrap:append {
   ["["] = true,
   ["]"] = true,
 }
+
+vim.api.nvim_create_augroup("DotfilesFoldLevel", { clear = true })
+vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
+  group = "DotfilesFoldLevel",
+  callback = function(args)
+    if vim.bo[args.buf].buftype ~= "" then
+      return
+    end
+
+    local winid = vim.fn.bufwinid(args.buf)
+    if winid == -1 then
+      return
+    end
+
+    vim.schedule(function()
+      if vim.api.nvim_win_is_valid(winid) then
+        vim.wo[winid].foldlevel = 99
+      end
+    end)
+  end,
+})
