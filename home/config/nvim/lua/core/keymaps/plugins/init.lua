@@ -14,7 +14,6 @@ return {
   markview = require "core.keymaps.plugins.markview",
   neogen = require "core.keymaps.plugins.neogen",
   nvim_cmp = require "core.keymaps.plugins.nvim-cmp",
-  nvim_dap = require "core.keymaps.plugins.nvim-dap",
   nvim_spectre = require "core.keymaps.plugins.nvim-spectre",
   nvim_tree = require "core.keymaps.plugins.nvim-tree",
   oil = require "core.keymaps.plugins.oil",

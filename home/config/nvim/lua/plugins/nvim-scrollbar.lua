@@ -2,15 +2,16 @@ return {
   "petertriho/nvim-scrollbar",
   dependencies = {
     "lewis6991/gitsigns.nvim",
-    "cpea2506/one_monokai.nvim",
   },
   config = function()
-    local colors = require "one_monokai.colors"
+    local normal = vim.api.nvim_get_hl(0, { name = "Normal", link = false })
+    local normal_bg = normal.bg and string.format("#%06x", normal.bg) or "#1f2329"
+
     require("scrollbar").setup {
       handle = {
         text = " ",
         blend = 30, -- Integer between 0 and 100. 0 for fully opaque and 100 to full transparent. Defaults to 30.
-        color = colors.bg,
+        color = normal_bg,
         color_nr = nil, -- cterm
         highlight = "CursorColumn",
         hide_if_all_visible = false, -- Hides handle if all lines are visible
