@@ -31,9 +31,7 @@ keymap.set("n", "<C-e>", "$", { noremap = true, silent = true, desc = "Move curs
 keymap.set("i", "<C-e>", "<ESC>$a", { noremap = true, silent = true, desc = "Move cursor to the end of the line" })
 keymap.set("t", "jk", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Focus out from the terminal" })
 keymap.set("n", "cc", "yydd", { noremap = true, silent = true, desc = "Cut and delete line" })
-keymap.set("n", ",m", function()
-  vim.cmd [[silent! %s/\r//g]]
-end, { desc = "Remove all \\r characters in buffer" })
+keymap.set("n", ",m", "<CMD>silent! %s/\\r//g<CR>", { desc = "Remove all \\r characters in buffer" })
 keymap.set("n", "<ESC>", function()
   -- if search register is not nil, then execute nohl command
   if vim.fn.getreg "/" ~= "" then
@@ -99,104 +97,14 @@ keymap.set("n", "<LEADER>yn", function()
   print "File basename without extension has been copied to your clipboard!!"
 end, { noremap = true, silent = true, desc = "Copy basename without extension of currently opened file" })
 
-function _G.jump_to_closest_parentheses(direction)
-  local current_line = vim.api.nvim_get_current_line()
-  local current_row, current_col = unpack(vim.api.nvim_win_get_cursor(0))
-
-  local parentheses = {
-    "(",
-    ")",
-    "[",
-    "]",
-    "{",
-    "}",
-  }
-
-  local start_col
-  local end_col
-  local step
-  local match
-
-  -- search for surrounding chars in current line.
-  if direction == "forward" then
-    start_col = current_col + 2
-    end_col = #current_line
-    step = 1
-  else
-    start_col = current_col
-    end_col = 1
-    step = -1
-  end
-
-  for col = start_col, end_col, step do
-    local char = current_line:sub(col, col)
-    for _, parenthesis in ipairs(parentheses) do
-      if char == parenthesis then
-        match = { current_row, col - 1 }
-      end
-
-      if match ~= nil then
-        break
-      end
-    end
-
-    if match ~= nil then
-      break
-    end
-  end
-
-  if match ~= nil then
-    return vim.api.nvim_win_set_cursor(0, match)
-  end
-
-  -- search for surrounding chars in next/previous lines.
-  local start_row
-  local end_row
-  if direction == "forward" then
-    start_row = current_row + 1
-    end_row = vim.api.nvim_buf_line_count(0)
-  else
-    start_row = current_row - 1
-    end_row = 1
-  end
-
-  for row = start_row, end_row, step do
-    local next_line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
-
-    if next_line == nil then
-      break
-    end
-
-    if direction == "forward" then
-      start_col = 1
-      end_col = #next_line
-    else
-      start_col = #next_line
-      end_col = 1
-    end
-
-    for col = start_col, end_col, step do
-      local char = next_line:sub(col, col)
-      for _, parenthesis in ipairs(parentheses) do
-        if char == parenthesis then
-          match = { row, col - 1 }
-        end
-      end
-
-      if match ~= nil then
-        break
-      end
-    end
-
-    if match ~= nil then
-      break
-    end
-  end
-
-  if match ~= nil then
-    return vim.api.nvim_win_set_cursor(0, match)
+local jump_to_closest_parentheses = function(direction)
+  local flags = direction == "backward" and "bW" or "W"
+  local row, col = unpack(vim.fn.searchpos("[()\\[\\]{}]", flags))
+  if row > 0 then
+    vim.api.nvim_win_set_cursor(0, { row, col - 1 })
   end
 end
+
 vim.keymap.set({ "n", "v" }, "<C-p>", function()
   jump_to_closest_parentheses "forward"
 end, { noremap = true, silent = true })
