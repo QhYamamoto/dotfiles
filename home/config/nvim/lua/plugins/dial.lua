@@ -1,6 +1,7 @@
 return {
   "monaqa/dial.nvim",
   config = function()
+    local plugin_keymaps = require("core.keymaps.plugins").dial
     local augend = require "dial.augend"
     local config = require "dial.config"
 
@@ -31,14 +32,6 @@ return {
       },
     }
 
-    local map = require "dial.map"
-    local keymap = vim.keymap
-
-    keymap.set("n", "U", map.inc_normal(), { noremap = true, silent = true, desc = "Increment by dial" })
-    keymap.set("v", "U", map.inc_visual(), { noremap = true, silent = true, desc = "Increment by dial" })
-    keymap.set("n", "D", map.dec_normal(), { noremap = true, silent = true, desc = "Decrement by dial" })
-    keymap.set("v", "D", map.dec_normal(), { noremap = true, silent = true, desc = "Decrement by dial" })
-    keymap.set("n", "gU", map.inc_gnormal(), { noremap = true, silent = true, desc = "g incriment by dial" })
-    keymap.set("n", "gD", map.dec_gnormal(), { noremap = true, silent = true, desc = "g incriment by dial" })
+    plugin_keymaps.setup(require "dial.map")
   end,
 }

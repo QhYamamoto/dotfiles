@@ -9,8 +9,6 @@ return {
     vim.g.mkdp_filetypes = { "markdown", "plantuml" }
   end,
   config = function()
-    local keymap = vim.keymap
-
-    keymap.set("n", "<LEADER>mp", "<CMD>MarkdownPreview<CR>", { desc = "MarkdownPreview" })
+    require("core.keymaps.plugins").markdown_preview.setup()
   end,
 }

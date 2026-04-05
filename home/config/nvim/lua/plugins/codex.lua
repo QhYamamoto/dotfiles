@@ -1,29 +1,9 @@
 return {
   "johnseth97/codex.nvim",
   cmd = { "Codex", "CodexToggle" },
-  keys = {
-    {
-      "<LEADER>cx",
-      function()
-        require("codex").toggle()
-      end,
-      mode = { "n", "t" },
-      desc = "Toggle Codex",
-    },
-    {
-      "<LEADER>cr",
-      function()
-        require("core.codex_resume").resume_last()
-      end,
-      mode = { "n", "t" },
-      desc = "Resume last Codex session",
-    },
-  },
+  keys = require("core.keymaps.plugins").codex.keys,
   opts = {
-    keymaps = {
-      toggle = nil,
-      quit = "<C-q>",
-    },
+    keymaps = require("core.keymaps.plugins").codex.opts,
     border = "rounded",
     width = 0.8,
     height = 0.8,

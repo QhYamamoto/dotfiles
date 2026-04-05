@@ -1,6 +1,4 @@
 return {
   "szw/vim-maximizer",
-  keys = {
-    { "<LEADER>sm", "<CMD>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
-  },
+  keys = require("core.keymaps.plugins").vim_maximizer.keys,
 }
