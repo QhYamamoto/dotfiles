@@ -1,24 +1,8 @@
-local set_maps = require("core.keymaps.plugins.util").set_maps
-
 local M = {}
 
-function M.setup()
-  set_maps {
-    {
-      mode = "n",
-      lhs = "<LEADER>tr",
-      rhs = ":TranslateW<CR>",
-      desc = "Translate from en => ja",
-      opts = { silent = true },
-    },
-    {
-      mode = "v",
-      lhs = "<LEADER>tr",
-      rhs = ":'<,'>TranslateW<CR>",
-      desc = "Translate from en => ja",
-      opts = { silent = true },
-    },
-  }
-end
+M.keys = {
+  { "<LEADER>tr", ":TranslateW<CR>", mode = "n", desc = "Translate from en => ja", silent = true },
+  { "<LEADER>tr", ":'<,'>TranslateW<CR>", mode = "v", desc = "Translate from en => ja", silent = true },
+}
 
 return M
