@@ -22,6 +22,7 @@ return {
       { "<leader>w", group = "workspace / session" },
       { "<leader>x", group = "trouble" },
       { "<leader>y", group = "yank / copy" },
+      { "<leader>z", group = "fold" },
     },
   },
 }
