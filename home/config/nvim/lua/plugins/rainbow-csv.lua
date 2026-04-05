@@ -1,5 +1,8 @@
 return {
   "cameron-wags/rainbow_csv.nvim",
+  init = function()
+    vim.g.disable_rainbow_hover = 1
+  end,
   config = true,
   ft = {
     "csv",
