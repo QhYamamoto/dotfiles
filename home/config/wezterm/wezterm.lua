@@ -9,7 +9,7 @@ if _wt.config_builder then
 end
 
 config.font_shaper = "Harfbuzz"
-_wt.font("0xProto", { weight = "Regular", stretch = "Normal", style = "Italic" })
+config.font = _wt.font("0xProto", { weight = "Regular", stretch = "Normal", style = "Italic" })
 config.harfbuzz_features = {
   "ss02",
   "ss03",
