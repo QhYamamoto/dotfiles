@@ -86,3 +86,11 @@ Note that these commands are available after initialization.
    Options:
      -h, --help  Print help
    ```
+
+# tmux
+
+- Detach from tmux with `Ctrl-a d`.
+- Re-load config with `Ctrl-a r`.
+- Split panes with `Ctrl-a h` and `Ctrl-a v`.
+- Move panes with `Ctrl-h/j/k/l`.
+- In WezTerm, `Alt-h/j/k/l` also forwards to tmux pane movement.

@@ -6,6 +6,7 @@ liblua5.4-dev
 git
 npm
 ripgrep
+tmux
 xsel
 zsh
 zsh-syntax-highlighting

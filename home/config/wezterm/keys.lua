@@ -16,11 +16,11 @@ end
 return {
   -- tabs
   { key = "t", mods = "SHIFT|CTRL", action = act.SpawnTab "CurrentPaneDomain" },
-  -- panes
-  { key = "LeftArrow", mods = "CTRL|ALT", action = act.ActivatePaneDirection "Left" },
-  { key = "RightArrow", mods = "CTRL|ALT", action = act.ActivatePaneDirection "Right" },
-  { key = "UpArrow", mods = "CTRL|ALT", action = act.ActivatePaneDirection "Up" },
-  { key = "DownArrow", mods = "CTRL|ALT", action = act.ActivatePaneDirection "Down" },
+  -- tmux pane navigation
+  { key = "h", mods = "ALT", action = act.SendKey { key = "h", mods = "CTRL" } },
+  { key = "j", mods = "ALT", action = act.SendKey { key = "j", mods = "CTRL" } },
+  { key = "k", mods = "ALT", action = act.SendKey { key = "k", mods = "CTRL" } },
+  { key = "l", mods = "ALT", action = act.SendKey { key = "l", mods = "CTRL" } },
   { key = "d", mods = "CTRL|SHIFT", action = act.CloseCurrentPane { confirm = true } },
   {
     key = "r",
