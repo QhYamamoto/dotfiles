@@ -1,5 +1,6 @@
 local _C = require "consts"
 local _wt = require "wezterm"
+local _colors = require "colors"
 
 -- toggleable layer key flags
 local layer_key_flags = {}
@@ -15,14 +16,9 @@ local function update_tab_color_on_layer_key_pressed(layer_key_name)
   end
 
   return {
-    colors = {
-      tab_bar = {
-        active_tab = {
-          bg_color = bg_color,
-          fg_color = _C.COLOR_TAB_BAR_FG_DEFAULT,
-        },
-      },
-    },
+    -- Re-apply the full color table because config overrides on `colors`
+    -- can otherwise drop cursor colors back to the active scheme defaults.
+    colors = _colors.build(bg_color),
   }
 end
 

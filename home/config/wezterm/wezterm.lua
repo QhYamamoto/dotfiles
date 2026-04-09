@@ -1,6 +1,7 @@
 local _C = require "consts"
 local _wt = require "wezterm"
 local _u = require "utils"
+local _colors = require "colors"
 
 local config = {}
 if _wt.config_builder then
@@ -23,7 +24,7 @@ config.harfbuzz_features = {
 }
 
 config.line_height = 0.9
-config.colors = require "colors"
+config.colors = _colors.build()
 config.color_scheme = "One Dark (Gogh)"
 config.window_decorations = "RESIZE"
 config.default_prog = { "wsl", "~" }
