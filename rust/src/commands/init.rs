@@ -44,7 +44,7 @@ fn create_symlinks(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
     let symlink_hash_map: HashMap<&str, Vec<&str>> = HashMap::from([
         (
             "", // Prefix must start without `/`!!
-            vec!["zshrc", "p10k.zsh", "zenhan.zsh"],
+            vec!["zshrc", "p10k.zsh", "zenhan.zsh", "tmux.conf"],
         ),
         (
             "config",
