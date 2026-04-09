@@ -75,9 +75,11 @@ Note that these commands are available after initialization.
 
    Commands:
      init        Initialize dotfiles settings.
+     relink      Recreate dotfile symlinks only.
      ahk         Install ahk and reset its settings.
      git         Add ssh setting for git service.
      config      Open config directory of a specific tool in neovim.
+     sync        Synchronize dotfiles command.
      completion  Generate shell completion scripts.
      help        Print this message or the help of the given subcommand(s)
 

@@ -10,6 +10,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut app = Command::new("dotfiles")
         .about("Custom dotfiles command.")
         .subcommand(Command::new("init").about("Initialize dotfiles settings."))
+        .subcommand(Command::new("relink").about("Recreate dotfile symlinks only."))
         .subcommand(Command::new("ahk").about("Install ahk and reset its settings."))
         .subcommand(
             Command::new("git")
@@ -101,6 +102,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     match matches.subcommand() {
         Some(("init", _)) => {
             commands::init::run()?;
+        }
+        Some(("relink", _)) => {
+            commands::relink::run()?;
         }
         Some(("ahk", _)) => {
             commands::ahk::run()?;

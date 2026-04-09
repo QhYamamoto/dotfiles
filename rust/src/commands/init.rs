@@ -15,8 +15,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = get_wsl_home().expect("Error: Wsl home is Empty!!");
 
     cli::with_temporary_sudo_privileges(|| {
-        create_symlinks(&wsl_home)?;
-        create_wezterm_symlink_from_windows_to_wsl(&wsl_home)?;
+        relink(&wsl_home)?;
         install_packages(&wsl_home)?;
         create_command_shortcuts(&wsl_home)?;
         set_zsh_as_default_shell()?;
@@ -27,10 +26,17 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn create_symlinks(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>> {
+pub fn relink(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
+    create_symlinks(wsl_home)?;
+    create_wezterm_symlink_from_windows_to_wsl(wsl_home)?;
+
+    Ok(())
+}
+
+fn create_symlinks(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Make necessary directories.
     for dir in DIRECTORIES_TO_CREATE {
-        let full_path = wsl_home.clone() + dir;
+        let full_path = String::from(wsl_home) + dir;
         filesystem::create_dir_if_not_exists(&full_path)?;
     }
 
@@ -68,7 +74,7 @@ fn create_symlinks(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>> 
 }
 
 fn create_wezterm_symlink_from_windows_to_wsl(
-    wsl_home: &String,
+    wsl_home: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
     if let Some(win_home) = filesystem::get_win_home() {
         let wsl_home_in_windows_fs_format = filesystem::get_wsl_home_in_windows_fs_format()
@@ -105,7 +111,7 @@ fn create_wezterm_symlink_from_windows_to_wsl(
     Ok(())
 }
 
-fn install_packages(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>> {
+fn install_packages(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
     // Install packages via apt and brew.
     for t in ["apt", "brew"] {
         let status = Command::new(format!(
@@ -147,7 +153,7 @@ fn install_packages(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>>
     Ok(())
 }
 
-fn create_command_shortcuts(wsl_home: &String) -> Result<(), Box<dyn std::error::Error>> {
+fn create_command_shortcuts(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
     let local_bin_dir = format!("{}/.local/bin", wsl_home);
     filesystem::create_dir_if_not_exists(&local_bin_dir)?;
 
