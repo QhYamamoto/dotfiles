@@ -23,11 +23,6 @@ local function update_tab_color_on_layer_key_pressed(layer_key_name)
 end
 
 return {
-  foreach = function(table, callback)
-    for i, v in ipairs(table) do
-      callback(v, i)
-    end
-  end,
   register_toggleable_layer_key = function(layer_key_name)
     layer_key_flags[layer_key_name] = false
     local toggle_event_name = "toggle-" .. layer_key_name
