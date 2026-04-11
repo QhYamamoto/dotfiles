@@ -173,7 +173,7 @@ fi
 alias dtf="dotfiles"
 
 tmuxa() {
-  local session_name="${1:-agents}"
+  local session_name="${1:-main}"
 
   if ! command -v tmux >/dev/null 2>&1; then
     echo "tmux is not installed"
@@ -182,9 +182,6 @@ tmuxa() {
 
   if ! tmux has-session -t "$session_name" 2>/dev/null; then
     tmux new-session -d -s "$session_name" -n code -c "$PWD"
-    tmux split-window -h -t "${session_name}:1" -c "$PWD"
-    tmux split-window -v -t "${session_name}:1.2" -c "$PWD"
-    tmux select-pane -t "${session_name}:1.1"
   fi
 
   if [[ -n "$TMUX" ]]; then
