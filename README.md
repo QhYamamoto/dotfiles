@@ -89,8 +89,9 @@ Note that these commands are available after initialization.
 
 # tmux
 
-- Detach from tmux with `Ctrl-a d`.
-- Re-load config with `Ctrl-a r`.
-- Split panes with `Ctrl-a h` and `Ctrl-a v`.
+- Attach or create the default session with `tmuxa`.
+- Attach or create a named session with `tmuxa <session-name>`.
+- Detach from tmux with `Ctrl-b d`.
+- Re-load config with `Ctrl-b r`.
+- Split panes with `Ctrl-b v` for left/right and `Ctrl-b h` for top/bottom.
 - Move panes with `Ctrl-h/j/k/l`.
-- In WezTerm, `Alt-h/j/k/l` also forwards to tmux pane movement.
