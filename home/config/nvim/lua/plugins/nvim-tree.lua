@@ -15,9 +15,10 @@ return {
       on_attach = plugin_keymaps.on_attach,
       hijack_cursor = true,
       view = {
-        width = 35,
+        width = function()
+          return math.floor(vim.o.columns * 0.3)
+        end,
         relativenumber = true,
-        adaptive_size = true,
       },
       -- change folder arrow icons
       renderer = {
