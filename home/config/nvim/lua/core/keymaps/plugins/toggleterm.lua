@@ -18,6 +18,21 @@ end
 function M.register_tool(label, settings)
   settings.count = 1000 + toggleterm_tool_count
   toggleterm_tool_count = toggleterm_tool_count + 1
+  local on_open = settings.on_open
+
+  settings.on_open = function(term)
+    if term.bufnr then
+      vim.b[term.bufnr].tui_tool_terminal = true
+    end
+
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+
+    if on_open then
+      on_open(term)
+    end
+  end
+
   local Terminal = require("toggleterm.terminal").Terminal
   local tui_tool = Terminal:new(settings)
   toggleterm_tools[label] = tui_tool
