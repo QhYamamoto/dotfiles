@@ -50,6 +50,27 @@ vim.api.nvim_create_autocmd({
   end,
 })
 
+local function apply_terminal_line_numbers()
+  if vim.bo.buftype ~= "terminal" then
+    return
+  end
+
+  local show_numbers = not vim.b.tui_tool_terminal
+  vim.wo.number = show_numbers
+  vim.wo.relativenumber = show_numbers
+end
+
+vim.api.nvim_create_autocmd({
+  "BufWinEnter",
+  "TermOpen",
+  "WinEnter",
+}, {
+  group = "lua",
+  callback = function()
+    vim.schedule(apply_terminal_line_numbers)
+  end,
+})
+
 local fixed_width_filetypes = {
   codex = 0.4,
   NvimTree = 0.3,
