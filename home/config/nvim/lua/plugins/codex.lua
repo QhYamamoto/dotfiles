@@ -5,7 +5,7 @@ return {
   opts = {
     keymaps = require("core.keymaps.plugins").codex.opts,
     border = "rounded",
-    width = 0.8,
+    width = 0.4,
     height = 0.8,
     autoinstall = false,
     panel = true,

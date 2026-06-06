@@ -11,7 +11,7 @@ local config = {
   keymaps = {
     quit = "<C-q>",
   },
-  width = 0.8,
+  width = 0.4,
   panel = true,
 }
 
