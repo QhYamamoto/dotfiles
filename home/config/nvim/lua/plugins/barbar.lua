@@ -18,6 +18,7 @@ return {
     plugin_keymaps.setup()
   end,
   opts = {
+    exclude_ft = { "codex" },
     icons = {
       buffer_index = true,
     },

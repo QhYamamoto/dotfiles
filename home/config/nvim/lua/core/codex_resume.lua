@@ -27,6 +27,7 @@ local function create_buf()
   local buf = vim.api.nvim_create_buf(false, false)
 
   vim.api.nvim_set_option_value("bufhidden", "hide", { buf = buf })
+  vim.api.nvim_set_option_value("buflisted", false, { buf = buf })
   vim.api.nvim_set_option_value("swapfile", false, { buf = buf })
   vim.api.nvim_set_option_value("filetype", "codex", { buf = buf })
 
@@ -110,10 +111,24 @@ function M.close()
 end
 
 function M.resume_picker()
+  local codex_panel = require "core.codex_panel"
+
+  if codex_panel.is_visible() then
+    codex_panel.hide()
+    return
+  end
+
   start({ "codex", "resume" }, "resume_picker")
 end
 
 function M.resume_last()
+  local codex_panel = require "core.codex_panel"
+
+  if codex_panel.is_visible() then
+    codex_panel.hide()
+    return
+  end
+
   start({ "codex", "resume", "--last" }, "resume_last")
 end
 
