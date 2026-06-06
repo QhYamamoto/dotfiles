@@ -26,6 +26,30 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+  group = "lua",
+  pattern = "codex",
+  callback = function(event)
+    require("core.codex_panel").unlist(event.buf)
+  end,
+})
+
+vim.api.nvim_create_autocmd({
+  "BufWinEnter",
+  "SessionLoadPost",
+  "TermOpen",
+  "WinEnter",
+}, {
+  group = "lua",
+  callback = function()
+    vim.schedule(function()
+      local codex_panel = require "core.codex_panel"
+      codex_panel.normalize_buffers()
+      codex_panel.restore_focus_mode()
+    end)
+  end,
+})
+
 local fixed_width_filetypes = {
   codex = 0.4,
   NvimTree = 0.3,

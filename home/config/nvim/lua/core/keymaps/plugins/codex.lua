@@ -4,9 +4,8 @@ M.keys = {
   {
     "<LEADER>cx",
     function()
-      require("codex").toggle()
+      require("core.codex_panel").toggle()
     end,
-    mode = { "n", "t" },
     desc = "Toggle Codex",
   },
   {
@@ -14,7 +13,6 @@ M.keys = {
     function()
       require("core.codex_resume").resume_last()
     end,
-    mode = { "n", "t" },
     desc = "Resume last Codex session",
   },
 }

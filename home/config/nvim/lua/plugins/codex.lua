@@ -7,12 +7,22 @@ return {
     border = "rounded",
     width = 0.4,
     height = 0.8,
+    cmd = "codex",
     autoinstall = false,
     panel = true,
     use_buffer = false,
   },
   config = function(_, opts)
     require("codex").setup(opts)
+    local codex_panel = require "core.codex_panel"
+
+    vim.api.nvim_create_user_command("Codex", function()
+      codex_panel.toggle()
+    end, { desc = "Toggle Codex panel", force = true })
+
+    vim.api.nvim_create_user_command("CodexToggle", function()
+      codex_panel.toggle()
+    end, { desc = "Toggle Codex panel", force = true })
 
     vim.api.nvim_create_user_command("CodexResume", function()
       require("core.codex_resume").resume_picker()
