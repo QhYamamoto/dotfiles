@@ -1,6 +1,5 @@
 return {
-  "phaazon/hop.nvim",
-  branch = "v2",
+  "smoka7/hop.nvim",
   config = function()
     local plugin_keymaps = require("core.keymaps.plugins").hop
     local hop = require "hop"
