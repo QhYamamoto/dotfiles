@@ -1,6 +1,5 @@
 return {
-  "barrett-ruth/live-server.nvim",
-  build = "npm install -g live-server",
-  cmd = { "LiveServerStart", "LiveServerStop" },
-  config = true,
+  url = "https://forge.barrettruth.com/barrettruth/live-server.nvim",
+  name = "live-server.nvim",
+  cmd = { "LiveServerStart", "LiveServerStop", "LiveServerToggle" },
 }
