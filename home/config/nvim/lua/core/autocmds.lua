@@ -71,6 +71,16 @@ vim.api.nvim_create_autocmd({
   end,
 })
 
+vim.api.nvim_create_autocmd({
+  "BufWinEnter",
+  "WinEnter",
+}, {
+  group = "lua",
+  callback = function()
+    require("core.lazygit").remember_edit_window()
+  end,
+})
+
 local fixed_width_filetypes = {
   codex = 0.4,
   NvimTree = 0.3,
