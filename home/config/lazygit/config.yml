@@ -41,7 +41,11 @@ customCommands:
           - name: "Mixed"
             value: "mixed"
 os:
-  editPreset: "nvim-remote"
+  edit: 'nvr --remote-silent -cc ''lua require("core.lazygit").select_edit_window()'' -- "{{filename}}"'
+  editAtLine: 'nvr --remote-silent -cc ''lua require("core.lazygit").select_edit_window()'' +{{line}} -- "{{filename}}"'
+  editAtLineAndWait: 'nvr --remote-wait-silent -cc ''lua require("core.lazygit").select_edit_window()'' +{{line}} -- "{{filename}}"'
+  openDirInEditor: 'nvr --remote-silent -cc ''lua require("core.lazygit").select_edit_window()'' -- "{{dir}}"'
+promptToReturnFromSubprocess: false
 git:
   paging:
     colorArg: always
