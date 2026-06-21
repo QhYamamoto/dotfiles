@@ -177,15 +177,23 @@ function M.is_visible()
   return #codex_windows() > 0
 end
 
-function M.toggle()
+function M.toggle_existing()
   if M.is_visible() then
     M.hide()
-    return
+    return true
   end
 
   local buf = reusable_codex_buf()
   if buf then
     open_panel(buf)
+    return true
+  end
+
+  return false
+end
+
+function M.toggle()
+  if M.toggle_existing() then
     return
   end
 

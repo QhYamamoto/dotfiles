@@ -113,8 +113,7 @@ end
 function M.resume_picker()
   local codex_panel = require "core.codex_panel"
 
-  if codex_panel.is_visible() then
-    codex_panel.hide()
+  if codex_panel.toggle_existing() then
     return
   end
 
@@ -124,8 +123,7 @@ end
 function M.resume_last()
   local codex_panel = require "core.codex_panel"
 
-  if codex_panel.is_visible() then
-    codex_panel.hide()
+  if codex_panel.toggle_existing() then
     return
   end
 
