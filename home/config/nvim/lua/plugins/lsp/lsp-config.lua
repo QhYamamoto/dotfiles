@@ -39,6 +39,149 @@ return {
       end
     end
 
+    local function directory_exists(path)
+      local stat = vim.uv.fs_stat(path)
+      return stat and stat.type == "directory"
+    end
+
+    local function file_contains(path, pattern)
+      if vim.fn.filereadable(path) == 0 then
+        return false
+      end
+
+      for _, line in ipairs(vim.fn.readfile(path, "", 60)) do
+        if line:find(pattern) then
+          return true
+        end
+      end
+
+      return false
+    end
+
+    local function wordpress_root()
+      local wp_includes = vim.fs.find("wp-includes", {
+        path = vim.uv.cwd(),
+        upward = true,
+        type = "directory",
+      })[1]
+
+      if wp_includes then
+        return vim.fs.dirname(wp_includes)
+      end
+    end
+
+    local function is_wordpress_theme_project()
+      local style_css = vim.uv.cwd() .. "/style.css"
+      return file_contains(style_css, "^%s*%*?%s*Theme Name%s*:") and file_contains(style_css, "^%s*%*?%s*Template%s*:")
+    end
+
+    local function is_wordpress_project()
+      return wordpress_root() ~= nil or is_wordpress_theme_project()
+    end
+
+    local function wordpress_include_paths()
+      local paths = {}
+      local wp_root = wordpress_root()
+
+      if wp_root then
+        local candidates = {
+          wp_root,
+          wp_root .. "/wp-admin",
+          wp_root .. "/wp-includes",
+          wp_root .. "/wp-content/plugins",
+          wp_root .. "/wp-content/themes",
+        }
+
+        for _, path in ipairs(candidates) do
+          if directory_exists(path) then
+            table.insert(paths, path)
+          end
+        end
+      end
+
+      return paths
+    end
+
+    local function intelephense_stubs()
+      local stubs = {
+        "apache",
+        "bcmath",
+        "bz2",
+        "calendar",
+        "com_dotnet",
+        "Core",
+        "ctype",
+        "curl",
+        "date",
+        "dba",
+        "dom",
+        "enchant",
+        "exif",
+        "FFI",
+        "fileinfo",
+        "filter",
+        "fpm",
+        "ftp",
+        "gd",
+        "gettext",
+        "gmp",
+        "hash",
+        "iconv",
+        "imap",
+        "intl",
+        "json",
+        "ldap",
+        "libxml",
+        "mbstring",
+        "meta",
+        "mysqli",
+        "oci8",
+        "odbc",
+        "openssl",
+        "pcntl",
+        "pcre",
+        "PDO",
+        "pgsql",
+        "Phar",
+        "posix",
+        "pspell",
+        "random",
+        "readline",
+        "Reflection",
+        "session",
+        "shmop",
+        "SimpleXML",
+        "snmp",
+        "soap",
+        "sockets",
+        "sodium",
+        "SPL",
+        "sqlite3",
+        "standard",
+        "superglobals",
+        "sysvmsg",
+        "sysvsem",
+        "sysvshm",
+        "tidy",
+        "tokenizer",
+        "uri",
+        "xml",
+        "xmlreader",
+        "xmlrpc",
+        "xmlwriter",
+        "xsl",
+        "Zend OPcache",
+        "zip",
+        "zlib",
+      }
+
+      if is_wordpress_project() then
+        table.insert(stubs, "wordpress")
+      end
+
+      return stubs
+    end
+
     -- Add TypeScript-only utility mapping for organize imports.
     local server_settings = {
       emmet_ls = {
@@ -58,6 +201,19 @@ return {
       },
       bashls = {
         filetypes = { "sh", "bash", "zsh" },
+      },
+      intelephense = {
+        settings = {
+          intelephense = {
+            environment = {
+              includePaths = wordpress_include_paths(),
+            },
+            stubs = intelephense_stubs(),
+            telemetry = {
+              enabled = false,
+            },
+          },
+        },
       },
       yamlls = {
         settings = {

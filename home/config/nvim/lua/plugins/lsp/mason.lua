@@ -28,6 +28,7 @@ return {
         "powershell_es",
         "pyright",
         "bashls",
+        "intelephense",
         "prismals",
         "yamlls",
         "rust_analyzer",
