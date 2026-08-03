@@ -10,7 +10,13 @@ return {
     local opts = {
       keymaps = plugin_keymaps.buffer_keymaps,
       float = {
+        border = "rounded",
         padding = 5,
+        override = function(conf)
+          conf.title = "Oil"
+          conf.title_pos = "left"
+          return conf
+        end,
       },
       view_options = {
         show_hidden = true,
