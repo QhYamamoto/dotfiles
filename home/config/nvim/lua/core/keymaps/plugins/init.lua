@@ -11,7 +11,6 @@ return {
   hop = require "core.keymaps.plugins.hop",
   lsp = require "core.keymaps.plugins.lsp",
   markdown_preview = require "core.keymaps.plugins.markdown-preview",
-  markview = require "core.keymaps.plugins.markview",
   neogen = require "core.keymaps.plugins.neogen",
   nvim_cmp = require "core.keymaps.plugins.nvim-cmp",
   nvim_spectre = require "core.keymaps.plugins.nvim-spectre",
