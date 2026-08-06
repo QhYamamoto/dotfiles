@@ -1,0 +1,120 @@
+# Alacritty 設定。Windows 側の Alacritty.exe が読み込み、shell として WSL を起動する。
+# WezTerm と同じく多重化・ペイン・タブ・スクロールバックは tmux 側が担うため、ここでは
+# フォント/色/ウィンドウ挙動と、シェルへ渡す一部キーバインドだけを定義する。
+#
+# 注意(Alacritty で表現できない WezTerm 設定):
+#   - フォントの stylistic set(ss02-06 / zero / onum 等の OpenType feature)は非対応。
+#     0xProto はデフォルトグリフで描画される。
+#   - line_height(行間倍率)相当の指定は無い。詰めたい場合は [font.offset] の y で調整する。
+#   - 画像プロトコル(kitty graphics / iterm2 / sixel)は非対応。
+#   - F13 トグルレイヤーは Alacritty の静的設定では表現できない。スクロール/タブ移動は
+#     tmux 側の操作で代替する。
+
+[font]
+size = 12.0
+
+[font.normal]
+# 【重要 / 再現性】この family "0xProto Freeze Slant" は手作業で生成した派生フォントで、
+# リポジトリには含まれない。Windows 側に別途インストールしておく必要があり、未導入の
+# マシンでは Alacritty が別フォントにフォールバックする(このフォントを入れて初めて
+# 意図した見た目になる)。生成手順自体はリポジトリ管理外。以下はその生成内容の記録。
+#
+# 0xProto Nerd Font Mono の Italic フェイスをベースに作った派生フォント。以下2つの加工を
+# フォント側に焼き込んであり、Alacritty 側の設定では表現できない見た目を再現する。
+#   1. stylistic set(ss02-06 / zero / onum)を feature-freeze でデフォルト字形化。
+#      Alacritty は OpenType feature の切り替えをサポートしないための対処。
+#   2. 斜体アウトラインを「Regular スタイル」として付け替え(斜体ビット解除)。
+#      style = "Italic" を指定すると 0xProto に無い日本語がフォールバック先で合成
+#      オブリークになり全部斜体化するため、斜体字形を Regular として持たせておく。
+#      これで style = "Regular" のままラテンは斜体字形・日本語は立体になる。
+# Nerd Font 由来なのでアイコンも表示でき、Mono 版なのでアイコンは1セル幅に収まる。
+family = "0xProto Freeze Slant"
+style = "Regular"
+
+# 文字間隔・行間の微調整。x は letter spacing(正で広がる)、y は line spacing。
+# WezTerm より少し文字間隔を開けたいので x に正の値を入れる。
+[font.offset]
+x = 1
+y = 0
+
+[window]
+opacity = 1.0
+# WezTerm の window_decorations = "RESIZE"(タイトルバー無し)に相当。
+# タイトルバーを出したい場合は "Full" にする。
+decorations = "None"
+startup_mode = "Maximized"
+
+# シェルとして WSL のホームで起動する(WezTerm の default_prog = { "wsl", "~" } と同じ)。
+# 古い Alacritty(< 0.13)では [terminal.shell] ではなくトップレベルの [shell] を使う。
+[terminal.shell]
+program = "wsl.exe"
+args = ["~"]
+
+# 配色。WezTerm の "One Dark (Gogh)" をベースに、cursor と foreground を上書きした状態を再現する。
+[colors.primary]
+background = "#1e2127"
+foreground = "#dddddd"
+
+[colors.cursor]
+text = "#000000"
+cursor = "#ffff00"
+
+[colors.normal]
+black = "#000000"
+red = "#e06c75"
+green = "#98c379"
+yellow = "#d19a66"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+white = "#abb2bf"
+
+[colors.bright]
+black = "#5c6370"
+red = "#e06c75"
+green = "#98c379"
+yellow = "#d19a66"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+white = "#ffffff"
+
+# キーバインド。WezTerm keys.lua のうち、シェルへキーを送る静的なものだけ移植する。
+# タブ生成/クローズ(Ctrl+Shift+t / Ctrl+Shift+d)と F13 レイヤーは tmux 側に任せるため除外。
+# chars の \u001B は ESC(Meta 相当)、\u0005 は Ctrl+e。
+
+# Ctrl+Shift+Left / Ctrl+Left → Meta+b(単語単位で後方移動)
+[[keyboard.bindings]]
+key = "Left"
+mods = "Control|Shift"
+chars = "\u001Bb"
+
+[[keyboard.bindings]]
+key = "Left"
+mods = "Control"
+chars = "\u001Bb"
+
+# Ctrl+Right → Meta+f(単語単位で前方移動)
+[[keyboard.bindings]]
+key = "Right"
+mods = "Control"
+chars = "\u001Bf"
+
+# Ctrl+Shift+i → Ctrl+e(行末へ)
+[[keyboard.bindings]]
+key = "I"
+mods = "Control|Shift"
+chars = "\u0005"
+
+# Ctrl+v → ペースト(WezTerm の PasteFrom "Clipboard" 相当)
+[[keyboard.bindings]]
+key = "V"
+mods = "Control"
+action = "Paste"
+
+# Ctrl+Shift+v → コピーモード。WezTerm の ActivateCopyMode に相当する Alacritty の vi モード。
+# 普段 tmux のコピーモードを使うなら不要。
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "ToggleViMode"
