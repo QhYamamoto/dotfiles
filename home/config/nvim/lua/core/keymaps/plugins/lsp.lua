@@ -47,8 +47,8 @@ function M.on_attach(ev)
   vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
 
   local client = vim.lsp.get_client_by_id(ev.data.client_id)
-  if client ~= nil and client.supports_method "textDocument/inlayHint" then
-    vim.lsp.inlay_hint.enable()
+  if client ~= nil and client:supports_method "textDocument/inlayHint" then
+    vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
   end
 end
 
