@@ -48,6 +48,9 @@ return {
 
     vim.treesitter.language.register("bash", "zsh")
 
+    -- Neovim 0.12のバグ対策: nvim-treesitterのカスタムdirectiveが
+    -- match[capture_id]を単一ノードとして扱っているが、0.12ではリストを返すため
+    -- nilエラーが発生する。正しい実装で上書き登録する。
     local function get_node_from_match(match, capture_id)
       local node_or_list = match[capture_id]
       if type(node_or_list) == "table" then
@@ -87,7 +90,10 @@ return {
       if not node then
         return
       end
-      metadata["injection.language"] = vim.treesitter.get_node_text(node, bufnr):lower()
+      local injection_alias = vim.treesitter.get_node_text(node, bufnr):lower()
+      -- markdown info string → parser名のマッピングはnvim-treesitter側の関数がないので
+      -- 取得したaliasをそのまま使う（Neovimのパーサー自動検出にフォールバック）
+      metadata["injection.language"] = injection_alias
     end, force_opts)
 
     query.add_directive("downcase!", function(match, _, bufnr, pred, metadata)

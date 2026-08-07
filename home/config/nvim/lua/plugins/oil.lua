@@ -10,13 +10,11 @@ return {
     local opts = {
       keymaps = plugin_keymaps.buffer_keymaps,
       float = {
-        border = "rounded",
         padding = 5,
-        override = function(conf)
-          conf.title = "Oil"
-          conf.title_pos = "left"
-          return conf
-        end,
+        -- oilのフロートは枠(border)がある時だけ、現在のディレクトリパスを枠の
+        -- タイトルとして表示する。Neovim 0.12でwinborder未設定時のフロート既定が
+        -- 枠なしになったため、明示的に枠を付けてパスが出るようにする。
+        border = "rounded",
       },
       view_options = {
         show_hidden = true,

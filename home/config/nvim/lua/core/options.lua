@@ -44,7 +44,7 @@ opt.foldenable = true
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldcolumn = "1"
-opt.foldexpr = ""
+opt.foldexpr = "" -- Neovim 0.12のデフォルトtreesitter foldexprを無効化（ufoが管理）
 opt.fillchars:append {
   foldopen = "",
   foldclose = "",
