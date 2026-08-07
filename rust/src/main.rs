@@ -66,7 +66,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         .required(true)
                         .value_parser(clap::builder::PossibleValuesParser::new([
                             "alacritty",
-                            "broot",
                             "claude-squad",
                             "lazydocker",
                             "lazygit",

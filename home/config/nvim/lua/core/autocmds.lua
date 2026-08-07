@@ -71,13 +71,36 @@ vim.api.nvim_create_autocmd({
   end,
 })
 
-vim.api.nvim_create_autocmd({
-  "BufWinEnter",
-  "WinEnter",
-}, {
+vim.api.nvim_create_autocmd("TextYankPost", {
   group = "lua",
   callback = function()
-    require("core.lazygit").remember_edit_window()
+    if vim.bo.buftype ~= "terminal" or vim.v.event.operator ~= "y" then
+      return
+    end
+
+    local strip = function(reg)
+      local lines = vim.fn.getreg(reg, 1, true)
+      local changed = false
+      for i, line in ipairs(lines) do
+        local stripped = line:gsub("%s+$", "")
+        if stripped ~= line then
+          changed = true
+        end
+        lines[i] = stripped
+      end
+      if changed then
+        vim.fn.setreg(reg, lines, vim.fn.getregtype(reg))
+      end
+    end
+
+    local regname = vim.v.event.regname
+    if regname ~= "" then
+      strip(regname)
+    else
+      strip '"'
+      strip "0"
+      strip "+"
+    end
   end,
 })
 

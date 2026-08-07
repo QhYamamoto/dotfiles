@@ -1,5 +1,4 @@
 return {
-  accelerated_jk = require "core.keymaps.plugins.accelerated-jk",
   auto_session = require "core.keymaps.plugins.auto-session",
   barbar = require "core.keymaps.plugins.barbar",
   codex = require "core.keymaps.plugins.codex",

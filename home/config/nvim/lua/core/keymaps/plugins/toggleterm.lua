@@ -25,8 +25,8 @@ function M.register_tool(label, settings)
       vim.b[term.bufnr].tui_tool_terminal = true
     end
 
-    vim.wo.number = false
-    vim.wo.relativenumber = false
+    vim.wo.number = settings.numbers ~= false
+    vim.wo.relativenumber = settings.numbers ~= false
 
     if on_open then
       on_open(term)
@@ -103,14 +103,6 @@ function M.setup()
         require("core.claude_squad").capture()
       end,
       desc = "Capture Claude Squad conversation",
-      opts = { silent = true },
-    },
-    {
-      mode = "n",
-      lhs = "<LEADER>br",
-      rhs = function()
-        M.toggle_tool "broot"
-      end,
       opts = { silent = true },
     },
     {

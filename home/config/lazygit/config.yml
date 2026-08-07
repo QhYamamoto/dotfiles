@@ -2,8 +2,10 @@ gui:
   theme:
     selectedLineBgColor:
       - reverse
-  expandFocusedSidePanel: true
-  sidePanelWidth: 0.25
+  # expandFocusedSidePanel: true
+  # lazygit rounds sidePanelWidth internally. 0.3 gives the narrowest practical
+  # left panel without jumping the layout to 50%.
+  sidePanelWidth: 0.3
 customCommands:
   - key: "<C-p>"
     description: "Pull (force)"
@@ -41,11 +43,10 @@ customCommands:
           - name: "Mixed"
             value: "mixed"
 os:
-  edit: 'nvr --remote-silent -cc ''lua require("core.lazygit").select_edit_window()'' -- "{{filename}}"'
-  editAtLine: 'nvr --remote-silent -cc ''lua require("core.lazygit").select_edit_window()'' +{{line}} -- "{{filename}}"'
-  editAtLineAndWait: 'nvr --remote-wait-silent -cc ''lua require("core.lazygit").select_edit_window()'' +{{line}} -- "{{filename}}"'
-  openDirInEditor: 'nvr --remote-silent -cc ''lua require("core.lazygit").select_edit_window()'' -- "{{dir}}"'
-promptToReturnFromSubprocess: false
+  editInTerminal: false
+  edit: '[ -z "$NVIM" ] && nvim -- {{filename}} || nvim --server "$NVIM" --remote-expr "v:lua.lazygit_open(''$(printf %s {{filename}} | base64 -w0)'', 0)" >/dev/null'
+  editAtLine: '[ -z "$NVIM" ] && nvim +{{line}} -- {{filename}} || nvim --server "$NVIM" --remote-expr "v:lua.lazygit_open(''$(printf %s {{filename}} | base64 -w0)'', {{line}})" >/dev/null'
+  editAtLineAndWait: 'nvim +{{line}} -- {{filename}}'
 git:
   paging:
     colorArg: always

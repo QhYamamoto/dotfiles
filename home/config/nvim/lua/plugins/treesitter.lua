@@ -47,6 +47,62 @@ return {
     end
 
     vim.treesitter.language.register("bash", "zsh")
+
+    local function get_node_from_match(match, capture_id)
+      local node_or_list = match[capture_id]
+      if type(node_or_list) == "table" then
+        return node_or_list[1]
+      end
+      return node_or_list
+    end
+
+    local html_script_type_languages = {
+      ["text/javascript"] = "javascript",
+      ["text/babel"] = "javascript",
+      ["text/jsx"] = "javascriptreact",
+      ["application/javascript"] = "javascript",
+      ["application/ecmascript"] = "javascript",
+    }
+
+    local query = vim.treesitter.query
+    local force_opts = { force = true, all = true }
+
+    query.add_directive("set-lang-from-mimetype!", function(match, _, bufnr, pred, metadata)
+      local node = get_node_from_match(match, pred[2])
+      if not node then
+        return
+      end
+      local type_attr_value = vim.treesitter.get_node_text(node, bufnr)
+      local configured = html_script_type_languages[type_attr_value]
+      if configured then
+        metadata["injection.language"] = configured
+      else
+        local parts = vim.split(type_attr_value, "/", {})
+        metadata["injection.language"] = parts[#parts]
+      end
+    end, force_opts)
+
+    query.add_directive("set-lang-from-info-string!", function(match, _, bufnr, pred, metadata)
+      local node = get_node_from_match(match, pred[2])
+      if not node then
+        return
+      end
+      metadata["injection.language"] = vim.treesitter.get_node_text(node, bufnr):lower()
+    end, force_opts)
+
+    query.add_directive("downcase!", function(match, _, bufnr, pred, metadata)
+      local id = pred[2]
+      local node = get_node_from_match(match, id)
+      if not node then
+        return
+      end
+      local text = vim.treesitter.get_node_text(node, bufnr, { metadata = metadata[id] }) or ""
+      if not metadata[id] then
+        metadata[id] = {}
+      end
+      metadata[id].text = string.lower(text)
+    end, force_opts)
+
     -- import nvim-treesitter plugin
     local treesitter = require "nvim-treesitter.configs"
 

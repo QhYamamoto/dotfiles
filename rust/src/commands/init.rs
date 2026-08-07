@@ -9,8 +9,7 @@ use dotfiles::{
     },
 };
 
-const DIRECTORIES_TO_CREATE: [&str; 4] =
-    ["/.config", "/.config/alacritty", "/.config/broot", "/.zsh"];
+const DIRECTORIES_TO_CREATE: [&str; 3] = ["/.config", "/.config/alacritty", "/.zsh"];
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = get_wsl_home().expect("Error: Wsl home is Empty!!");
@@ -51,15 +50,7 @@ fn create_symlinks(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
         ),
         (
             "config",
-            vec![
-                "/alacritty",
-                "/broot/config.toml",
-                "/broot/open_file.sh",
-                "/lazygit",
-                "/lazydocker",
-                "/nvim",
-                "/wezterm",
-            ],
+            vec!["/alacritty", "/lazygit", "/lazydocker", "/nvim", "/wezterm"],
         ),
         ("zsh", vec!["/compdef"]),
     ]);
