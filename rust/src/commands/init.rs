@@ -9,7 +9,8 @@ use dotfiles::{
     },
 };
 
-const DIRECTORIES_TO_CREATE: [&str; 3] = ["/.config", "/.config/broot", "/.zsh"];
+const DIRECTORIES_TO_CREATE: [&str; 4] =
+    ["/.config", "/.config/alacritty", "/.config/broot", "/.zsh"];
 
 pub fn run() -> Result<(), Box<dyn std::error::Error>> {
     let wsl_home = get_wsl_home().expect("Error: Wsl home is Empty!!");
@@ -29,6 +30,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 pub fn relink(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
     create_symlinks(wsl_home)?;
     create_wezterm_symlink_from_windows_to_wsl(wsl_home)?;
+    create_claude_squad_symlink(wsl_home)?;
 
     Ok(())
 }
@@ -49,6 +51,7 @@ fn create_symlinks(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
         (
             "config",
             vec![
+                "/alacritty",
                 "/broot/config.toml",
                 "/broot/open_file.sh",
                 "/lazygit",
@@ -107,6 +110,19 @@ fn create_wezterm_symlink_from_windows_to_wsl(
             "Failed to execute Powershell script.",
         )?;
     }
+
+    Ok(())
+}
+
+fn create_claude_squad_symlink(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
+    filesystem::create_dir_if_not_exists(&format!("{}/.claude-squad", wsl_home))?;
+
+    let src = format!(
+        "{}/{}/home/config/claude-squad/config.json",
+        wsl_home, DOTFILES_DIR
+    );
+    let dest = format!("{}/.claude-squad/config.json", wsl_home);
+    filesystem::create_symlink(&src, &dest)?;
 
     Ok(())
 }

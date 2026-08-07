@@ -63,7 +63,7 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
-':tool -- The app name to configure:(broot lazydocker lazygit nvim wezterm)' \
+':tool -- The app name to configure:(alacritty broot claude-squad lazydocker lazygit nvim wezterm)' \
 && ret=0
 ;;
 (sync)
