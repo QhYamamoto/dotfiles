@@ -100,6 +100,45 @@ end, { noremap = true, silent = true, desc = "Save basename of currently opened 
 keymap.set("n", "<LEADER>yn", function()
   copy_to_clipboard(vim.fn.expand "%:t:r", "File basename without extension has been copied to your clipboard!!")
 end, { noremap = true, silent = true, desc = "Copy basename without extension of currently opened file" })
+keymap.set("n", "<LEADER>yr", function()
+  copy_to_clipboard(vim.fn.expand "%:.", "Relative filepath has been copied to your clipboard!!")
+end, { noremap = true, silent = true, desc = "Copy filepath relative to the current directory" })
+keymap.set({ "n", "x" }, "<LEADER>yl", function()
+  local rel = vim.fn.expand "%:."
+  local mode = vim.fn.mode()
+  local ref
+  if mode == "v" or mode == "V" or mode == "\22" then
+    local start_line, end_line = vim.fn.line "v", vim.fn.line "."
+    if start_line > end_line then
+      start_line, end_line = end_line, start_line
+    end
+    ref = start_line == end_line and (rel .. ":" .. start_line) or (rel .. ":" .. start_line .. "-" .. end_line)
+  else
+    ref = rel .. ":" .. vim.fn.line "."
+  end
+  copy_to_clipboard(ref, "Relative filepath with line has been copied to your clipboard!!")
+end, { noremap = true, silent = true, desc = "Copy relative filepath with line number" })
+keymap.set("n", "<LEADER>yd", function()
+  copy_to_clipboard(vim.fn.expand "%:.:h", "Directory of current file has been copied to your clipboard!!")
+end, { noremap = true, silent = true, desc = "Copy directory of current file" })
+keymap.set("n", "<LEADER>yG", function()
+  local root = vim.fs.root(0, ".git")
+  local file = vim.fn.expand "%:p"
+  if root and file:sub(1, #root) == root then
+    copy_to_clipboard(file:sub(#root + 2), "Git-root-relative filepath has been copied to your clipboard!!")
+  else
+    vim.fn.setreg("+", vim.fn.expand "%:.")
+    vim.notify("Not in a git repo; copied cwd-relative path instead.", vim.log.levels.WARN)
+  end
+end, { noremap = true, silent = true, desc = "Copy filepath relative to the git root" })
+
+keymap.set("n", "<LEADER>?", function()
+  require("core.cheatsheet").open()
+end, { noremap = true, silent = true, desc = "Open personal cheat sheet" })
+
+vim.api.nvim_create_user_command("Cheatsheet", function()
+  require("core.cheatsheet").open()
+end, { desc = "Open the personal cheat sheet in a floating window" })
 
 local jump_to_closest_parentheses = function(direction)
   local flags = direction == "backward" and "bW" or "W"
