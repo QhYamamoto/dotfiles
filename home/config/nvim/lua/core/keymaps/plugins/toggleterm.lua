@@ -89,6 +89,24 @@ function M.setup()
     },
     {
       mode = "n",
+      lhs = "<LEADER>lc",
+      rhs = function()
+        M.toggle_tool "claude-squad"
+      end,
+      desc = "Claude Squad",
+      opts = { silent = true },
+    },
+    {
+      mode = "n",
+      lhs = "<LEADER>lC",
+      rhs = function()
+        require("core.claude_squad").capture()
+      end,
+      desc = "Capture Claude Squad conversation",
+      opts = { silent = true },
+    },
+    {
+      mode = "n",
       lhs = "<LEADER>br",
       rhs = function()
         M.toggle_tool "broot"
@@ -118,6 +136,10 @@ function M.setup()
       opts = { noremap = true, silent = true },
     },
   }
+
+  vim.api.nvim_create_user_command("ClaudeSquadCapture", function()
+    require("core.claude_squad").capture()
+  end, { desc = "Open a Claude Squad agent conversation in a buffer" })
 end
 
 return M

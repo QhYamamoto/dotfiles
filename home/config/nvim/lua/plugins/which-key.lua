@@ -14,6 +14,7 @@ return {
       { "<leader>f", group = "find" },
       { "<leader>g", group = "git / diff" },
       { "<leader>h", group = "hunk" },
+      { "<leader>l", group = "TUI tools" },
       { "<leader>m", group = "markdown / make / format" },
       { "<leader>o", group = "open / organize" },
       { "<leader>r", group = "replace / rename / restore" },
