@@ -31,6 +31,66 @@ return {
       telescope.extensions.project.project {}
     end
 
+    local function split_display_path(opts, path)
+      local tail = require("telescope.utils").path_tail(path)
+      local cwd = (opts and opts.cwd) or vim.loop.cwd()
+      local rel = path
+      if cwd and cwd ~= "" and path:sub(1, #cwd) == cwd then
+        rel = path:sub(#cwd + 2)
+      end
+      local parent = rel:match "(.+)/[^/]+$"
+      return tail, parent
+    end
+
+    local function render_path(head, parent, filename)
+      local text = parent and (head .. "  " .. parent) or head
+      local display, hl_group, icon = require("telescope.utils").transform_devicons(filename, text)
+      local highlights = {}
+      if hl_group then
+        highlights[#highlights + 1] = { { 0, #icon }, hl_group }
+      end
+      if parent then
+        local prefix = icon and (#icon + 1) or 0
+        local dir_start = prefix + #head + 2
+        highlights[#highlights + 1] = { { dir_start, #display }, "TelescopeResultsComment" }
+      end
+      return display, highlights
+    end
+
+    local file_base, grep_base
+    local function rebuild_entry_bases()
+      local make_entry = require "telescope.make_entry"
+      file_base = make_entry.gen_from_file { cwd = vim.loop.cwd() }
+      grep_base = make_entry.gen_from_vimgrep { cwd = vim.loop.cwd() }
+    end
+    rebuild_entry_bases()
+    vim.api.nvim_create_autocmd("DirChanged", { callback = rebuild_entry_bases })
+
+    local function file_entry_maker(line)
+      local entry = file_base(line)
+      if not entry then
+        return nil
+      end
+      entry.display = function(e)
+        local tail, parent = split_display_path({ cwd = vim.loop.cwd() }, e.value)
+        return render_path(tail, parent, e.value)
+      end
+      return entry
+    end
+
+    local function grep_entry_maker(line)
+      local entry = grep_base(line)
+      if not entry then
+        return nil
+      end
+      entry.display = function(e)
+        local tail, parent = split_display_path({ cwd = vim.loop.cwd() }, e.filename)
+        local head = e.lnum and string.format("%s:%s", tail, e.lnum) or tail
+        return render_path(head, parent, e.filename)
+      end
+      return entry
+    end
+
     telescope.setup {
       extensions = {
         project = {
@@ -63,19 +123,34 @@ return {
         },
       },
       defaults = {
-        path_display = { "smart" },
+        path_display = function(opts, path)
+          local tail, parent = split_display_path(opts, path)
+          if not parent or parent == "" then
+            return tail
+          end
+          return string.format("%s  %s", tail, parent)
+        end,
+        layout_strategy = "horizontal",
+        layout_config = {
+          horizontal = {
+            preview_width = 0.65,
+          },
+        },
         file_ignore_patterns = { ".git/" },
         mappings = plugin_keymaps.insert_mappings(actions),
       },
       pickers = {
         find_files = {
           find_command = { "rg", "--ignore", "--iglob", "!.git", "--hidden", "--files" },
+          entry_maker = file_entry_maker,
         },
         grep_string = {
           additional_args = { "--hidden" },
+          entry_maker = grep_entry_maker,
         },
         live_grep = {
           additional_args = { "--hidden" },
+          entry_maker = grep_entry_maker,
         },
       },
     }
