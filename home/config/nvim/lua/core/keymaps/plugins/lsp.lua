@@ -44,6 +44,7 @@ function M.on_attach(ev)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
   opts.desc = "Restart LSP"
+  -- Neovim 0.12のビルトイン :lsp restart を使う(:LspRestartはlspconfigが定義しなくなった)
   vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts)
 
   local client = vim.lsp.get_client_by_id(ev.data.client_id)
