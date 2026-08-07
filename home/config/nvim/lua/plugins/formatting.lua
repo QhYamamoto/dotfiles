@@ -5,39 +5,55 @@ return {
     local plugin_keymaps = require("core.keymaps.plugins").formatting
     local conform = require "conform"
 
-    local FILETYPES_TO_DISABLE_AUTO_FORMAT = {} --[[ { "php", "blade" } ]]
+    local FILETYPES_TO_DISABLE_AUTO_FORMAT = { "yml", "yaml", "blade" }
 
     conform.setup {
       formatters_by_ft = {
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescriptreact = { "prettier" },
+        -- Biome（フォーマット + リント）
+        javascript = { "biome" },
+        typescript = { "biome" },
+        javascriptreact = { "biome" },
+        typescriptreact = { "biome" },
+        json = { "biome" },
+        jsonc = { "biome" },
+        -- Prettier（Biome非対応のファイルタイプ）
         svelte = { "prettier" },
         css = { "prettier" },
         html = { "prettier" },
-        json = { "prettier" },
         yaml = { "prettier" },
         markdown = { "prettier" },
         graphql = { "prettier" },
         liquid = { "prettier" },
+        vue = { "prettier" },
+        -- その他
         lua = { "stylua" },
-        php = { "php-cs-fixer" },
-        python = { "autopep8" },
+        php = { "pint" },
+        python = { "ruff" },
         sh = { "shfmt" },
         bash = { "shfmt" },
         zsh = { "beautysh" },
         zshrc = { "beautysh" },
         blade = { "blade-formatter" },
-        vue = { "prettier" },
         sql = { "sql_formatter" },
       },
       formatters = {
+        -- biome check --write でフォーマット + organize imports + safe lint fix
+        biome = {
+          command = "biome",
+          args = { "check", "--write", "$FILENAME" },
+          stdin = false,
+        },
         beautysh = {
           inherit = true,
           append_args = {
             "-i",
             "2",
+          },
+        },
+        ruff = {
+          cmd = {
+            "ruff",
+            "format",
           },
         },
       },

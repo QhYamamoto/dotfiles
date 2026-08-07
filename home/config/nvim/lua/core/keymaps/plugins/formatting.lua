@@ -6,7 +6,7 @@ function M.setup(conform)
   set_maps {
     {
       mode = { "n", "v" },
-      lhs = "<LEADER>mp",
+      lhs = "<LEADER>mf",
       rhs = function()
         conform.format {
           lsp_fallback = true,
