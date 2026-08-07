@@ -30,6 +30,7 @@ pub fn run() -> Result<(), Box<dyn std::error::Error>> {
 pub fn relink(wsl_home: &str) -> Result<(), Box<dyn std::error::Error>> {
     create_symlinks(wsl_home)?;
     create_wezterm_symlink_from_windows_to_wsl(wsl_home)?;
+    create_alacritty_symlink_from_windows_to_wsl(wsl_home)?;
     create_claude_squad_symlink(wsl_home)?;
 
     Ok(())
@@ -106,6 +107,48 @@ fn create_wezterm_symlink_from_windows_to_wsl(
                 &win_wezterm_dir,
                 "-TargetPath",
                 &wsl_wezterm_dir,
+            ],
+            "Failed to execute Powershell script.",
+        )?;
+    }
+
+    Ok(())
+}
+
+fn create_alacritty_symlink_from_windows_to_wsl(
+    wsl_home: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    if let Some(win_home) = filesystem::get_win_home() {
+        let wsl_home_in_windows_fs_format = filesystem::get_wsl_home_in_windows_fs_format()
+            .expect("Error: Failed to get wsl home directory in windows file system format.");
+
+        let win_home_in_wsl_fs_format = filesystem::get_win_home_in_wsl_fs_format()
+            .expect("Error: Failed to get windows home directory in wsl file system format.");
+
+        filesystem::create_dir_if_not_exists(&format!(
+            "{}/AppData/Roaming/alacritty",
+            win_home_in_wsl_fs_format
+        ))?;
+
+        let win_alacritty_file =
+            format!("{}\\AppData\\Roaming\\alacritty\\alacritty.toml", win_home);
+        let wsl_alacritty_file = format!(
+            "{}\\{}\\home\\config\\alacritty\\alacritty.toml",
+            wsl_home_in_windows_fs_format, DOTFILES_DIR
+        );
+        let mklink_ps1_path = format!("{}/{}/powershell/mklink.ps1", wsl_home, DOTFILES_DIR);
+
+        cli::run_command(
+            &[
+                "powershell.exe",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                &mklink_ps1_path,
+                "-LinkPath",
+                &win_alacritty_file,
+                "-TargetPath",
+                &wsl_alacritty_file,
             ],
             "Failed to execute Powershell script.",
         )?;
