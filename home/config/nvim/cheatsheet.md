@@ -2,7 +2,7 @@
 
 自分用のキー一覧。追記・修正はこの `cheatsheet.md` を直接編集する。
 
-## Alacritty
+## Alacritty (ターミナル本体)
 
     Ctrl+Shift+C       選択範囲をコピー
     Ctrl+V             ペースト
@@ -12,7 +12,7 @@
     Alt+Enter          全画面トグル
     Ctrl+Shift+V       vi モード開始(y=ヤンク / q=終了)
 
-## tmux
+## tmux (タブ・分割はこちら)
 
     Ctrl+b  c          新規ウィンドウ(= タブ)
     Ctrl+b  n / p      次 / 前のタブ
@@ -23,8 +23,7 @@
     Ctrl+b  x          ペインを閉じる
     Ctrl+b  [          コピーモード(q で抜ける)
 
-## Neovim
+## Neovim (自分用メモ)
 
     <leader>?          このチートシートを開く
-    <leader>lc         Claude Squad を開く
     <leader>lC         Claude Squad の会話をバッファに取り込む

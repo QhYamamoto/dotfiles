@@ -44,7 +44,7 @@ function M.on_attach(ev)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
   opts.desc = "Restart LSP"
-  vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+  vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts)
 
   local client = vim.lsp.get_client_by_id(ev.data.client_id)
   if client ~= nil and client:supports_method "textDocument/inlayHint" then

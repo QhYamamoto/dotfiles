@@ -101,41 +101,50 @@ keymap.set("n", "<LEADER>yn", function()
   copy_to_clipboard(vim.fn.expand "%:t:r", "File basename without extension has been copied to your clipboard!!")
 end, { noremap = true, silent = true, desc = "Copy basename without extension of currently opened file" })
 keymap.set("n", "<LEADER>yr", function()
+  -- %:. はカレントディレクトリ(Neovimを開いたディレクトリ)を基準にした相対パス。
+  -- カレント配下にないファイルはそのまま絶対パスになる。
   copy_to_clipboard(vim.fn.expand "%:.", "Relative filepath has been copied to your clipboard!!")
-end, { noremap = true, silent = true, desc = "Copy filepath relative to the current directory" })
+end, { noremap = true, silent = true, desc = "Copy filepath relative to the current directory (project root)" })
 keymap.set({ "n", "x" }, "<LEADER>yl", function()
+  -- 相対パス + 行番号(レビューやログ参照の定番形式)。ビジュアルモードでは選択した
+  -- 行範囲を付ける(例 src/foo.ts:42-48)。単一行や通常モードは1行だけ(:42)。
   local rel = vim.fn.expand "%:."
   local mode = vim.fn.mode()
   local ref
   if mode == "v" or mode == "V" or mode == "\22" then
-    local start_line, end_line = vim.fn.line "v", vim.fn.line "."
-    if start_line > end_line then
-      start_line, end_line = end_line, start_line
+    local a, b = vim.fn.line "v", vim.fn.line "."
+    if a > b then
+      a, b = b, a
     end
-    ref = start_line == end_line and (rel .. ":" .. start_line) or (rel .. ":" .. start_line .. "-" .. end_line)
+    ref = a == b and (rel .. ":" .. a) or (rel .. ":" .. a .. "-" .. b)
   else
     ref = rel .. ":" .. vim.fn.line "."
   end
   copy_to_clipboard(ref, "Relative filepath with line has been copied to your clipboard!!")
-end, { noremap = true, silent = true, desc = "Copy relative filepath with line number" })
+end, { noremap = true, silent = true, desc = "Copy relative filepath with line number (range in visual)" })
 keymap.set("n", "<LEADER>yd", function()
+  -- %:.:h はカレント基準の相対パスの親ディレクトリ。直下のファイルでは "." になる。
   copy_to_clipboard(vim.fn.expand "%:.:h", "Directory of current file has been copied to your clipboard!!")
-end, { noremap = true, silent = true, desc = "Copy directory of current file" })
+end, { noremap = true, silent = true, desc = "Copy directory of current file (relative)" })
 keymap.set("n", "<LEADER>yG", function()
+  -- gitルート(.gitを持つ最も近い祖先)基準の相対パス。cwd基準の<LEADER>yrと違い、
+  -- cwd≠gitルートでも常にリポジトリルートからの相対になる。
   local root = vim.fs.root(0, ".git")
   local file = vim.fn.expand "%:p"
   if root and file:sub(1, #root) == root then
     copy_to_clipboard(file:sub(#root + 2), "Git-root-relative filepath has been copied to your clipboard!!")
   else
+    -- git管理外: gitルートが無いのでcwd相対(cwdの外なら絶対)にフォールバックする。
+    -- コピー内容と表示が食い違わないよう、フォールバックした旨を明示する。
     vim.fn.setreg("+", vim.fn.expand "%:.")
-    vim.notify("Not in a git repo; copied cwd-relative path instead.", vim.log.levels.WARN)
+    vim.notify("Not in a git repo — copied cwd-relative path instead.", vim.log.levels.WARN)
   end
 end, { noremap = true, silent = true, desc = "Copy filepath relative to the git root" })
 
+-- 自分用チートシート(cheatsheet.md)をフローティングウィンドウで開く。
 keymap.set("n", "<LEADER>?", function()
   require("core.cheatsheet").open()
 end, { noremap = true, silent = true, desc = "Open personal cheat sheet" })
-
 vim.api.nvim_create_user_command("Cheatsheet", function()
   require("core.cheatsheet").open()
 end, { desc = "Open the personal cheat sheet in a floating window" })

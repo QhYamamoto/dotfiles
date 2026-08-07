@@ -15,9 +15,10 @@ return {
       on_attach = plugin_keymaps.on_attach,
       hijack_cursor = true,
       view = {
-        width = function()
-          return math.floor(vim.o.columns * 0.3)
-        end,
+        -- 長いファイル名に合わせて幅を伸ばすが、上限(max)で頭打ちにする。
+        -- adaptive_size(真偽値・上限なし)だと際限なく広がり他ペイン(Claude等)を
+        -- 押しつぶして戻らなくなるため、テーブル形式の min/max に置き換える。
+        width = { min = 35, max = 50 },
         relativenumber = true,
       },
       -- change folder arrow icons

@@ -17,8 +17,32 @@ return {
           return ""
         end
 
-        return { "indent" }
+        return { "treesitter", "indent" }
       end,
     }
+
+    -- conform等によるバッファ書き換え後にfoldが閉じるのを防止
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      group = vim.api.nvim_create_augroup("UfoPreserveFolds", { clear = true }),
+      callback = function()
+        vim.defer_fn(function()
+          if vim.wo.foldenable then
+            vim.wo.foldlevel = 99
+          end
+        end, 100)
+      end,
+    })
+
+    -- バッファ表示時にfoldlevelを再適用（auto-session復元対策）
+    vim.api.nvim_create_autocmd("BufWinEnter", {
+      group = vim.api.nvim_create_augroup("UfoInitFolds", { clear = true }),
+      callback = function()
+        vim.defer_fn(function()
+          if vim.wo.foldenable then
+            vim.wo.foldlevel = 99
+          end
+        end, 100)
+      end,
+    })
   end,
 }

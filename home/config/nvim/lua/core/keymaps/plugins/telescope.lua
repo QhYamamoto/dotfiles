@@ -14,6 +14,9 @@ end
 function M.setup(open_projects)
   local builtin = require "telescope.builtin"
 
+  -- gitignore対象も含めて検索する版(rgに--no-ignoreを渡す)。node_modules等まで
+  -- 拾って重く・ノイジーになるため、普段のff/fsとは分けてShift付きキーでopt-inする。
+  -- pickers側で設定したentry_maker(表示整形)は runtime opts では上書きされず維持される。
   local function find_files_all()
     builtin.find_files {
       find_command = { "rg", "--no-ignore", "--iglob", "!.git", "--hidden", "--files" },
