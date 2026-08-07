@@ -43,7 +43,7 @@ return {
       },
       format_on_save = function(bufnr)
         -- Disable format_on_save according to current buffer's filetype
-        local current_filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+        local current_filetype = vim.bo[bufnr].filetype
         for _, file_type_to_disable_auto_format in ipairs(FILETYPES_TO_DISABLE_AUTO_FORMAT) do
           if current_filetype == file_type_to_disable_auto_format then
             return

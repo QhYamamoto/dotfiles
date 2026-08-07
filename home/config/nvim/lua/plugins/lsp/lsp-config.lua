@@ -249,26 +249,21 @@ return {
     -- Register and setup the custom AutoHotkey v2 language server definition.
     local function setup_ahk2_server()
       -- FIXME: When opening an ahk file, the message `environment variable not found` is displayed.
-      local lspconfig = require "lspconfig"
-      local configs = require "lspconfig.configs"
-      configs["ahk2"] = {
-        default_config = {
-          autostart = true,
-          cmd = {
-            "node",
-            vim.fn.expand(vim.env.HOME .. "/vscode-autohotkey2-lsp/server/dist/server.js"),
-            "--stdio",
-          },
-          filetypes = { "ahk", "autohotkey", "ah2" },
-          init_options = {
-            locale = "en-us",
-            InterpreterPath = "/mnt/c/Program Files/AutoHotkey/v2/AutoHotkey.exe",
-          },
-          single_file_support = true,
-          flags = { debounce_text_changes = 500 },
-          capabilities = capabilities,
+      vim.lsp.config("ahk2", {
+        cmd = {
+          "node",
+          vim.fn.expand(vim.env.HOME .. "/vscode-autohotkey2-lsp/server/dist/server.js"),
+          "--stdio",
         },
-      }
+        filetypes = { "ahk", "autohotkey", "ah2" },
+        root_markers = { ".git" },
+        init_options = {
+          locale = "en-us",
+          InterpreterPath = "/mnt/c/Program Files/AutoHotkey/v2/AutoHotkey.exe",
+        },
+        flags = { debounce_text_changes = 500 },
+        capabilities = capabilities,
+      })
       vim.lsp.enable "ahk2"
     end
 
