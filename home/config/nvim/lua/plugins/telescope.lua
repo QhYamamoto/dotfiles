@@ -63,10 +63,10 @@ return {
       return display, highlights
     end
 
-    local file_base, grep_base
     -- find_files / grep のresult表示を差し替えるためのbase entry_maker。
     -- gen_from_file / gen_from_vimgrep は生成時のcwdをパス解決の基準として焼き込むため、
     -- telescope-project等でcwdが変わってもパスが壊れないよう、DirChangedで作り直す。
+    local file_base, grep_base
     local function rebuild_bases()
       local make_entry = require "telescope.make_entry"
       file_base = make_entry.gen_from_file { cwd = vim.loop.cwd() }

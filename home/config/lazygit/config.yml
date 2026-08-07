@@ -3,8 +3,11 @@ gui:
     selectedLineBgColor:
       - reverse
   # expandFocusedSidePanel: true
-  # lazygit rounds sidePanelWidth internally. 0.3 gives the narrowest practical
-  # left panel without jumping the layout to 50%.
+  # 左カラム(コミット一覧等)と右のmain側(commit log/command log)の幅比。
+  # 注意: lazygitは内部で左カラム実効幅 = 1/int(1/sidePanelWidth) と整数丸めするため、
+  # 取れる値は離散的(0.20→20% / 0.25→25% / (0.25,0.333]→33% / (0.333,0.5]→50%)。
+  # 0.28等の中間値は無意味(0.3と同じ33%になる)。0.34以上は50%に跳ねmainが狭すぎて崩れる。
+  # log側を崩さず最も狭くできる33%(=0.3)にする。
   sidePanelWidth: 0.3
 customCommands:
   - key: "<C-p>"
@@ -43,6 +46,13 @@ customCommands:
           - name: "Mixed"
             value: "mixed"
 os:
+  # nvim内(toggletermのフロート)からファイルを開くと、--remote-tabだと新規タブが、
+  # --remoteだとフロート自身に開いて既存レイアウトに覆いかぶさってしまう。
+  # そこで親nvimのLua関数(_G.lazygit_open)を--remote-exprで呼び、フロートを閉じてから
+  # 背後の通常ウィンドウでファイルを開く。filenameはlazygitのシェルクオートを避けるため
+  # base64で渡す。nvim外($NVIM未設定)では通常起動。
+  # editは--remote-exprで即座に返るので、lazygitをサスペンドさせない
+  # (editInTerminal=false)。これで編集後の "press Enter to return" が出ない。
   editInTerminal: false
   edit: '[ -z "$NVIM" ] && nvim -- {{filename}} || nvim --server "$NVIM" --remote-expr "v:lua.lazygit_open(''$(printf %s {{filename}} | base64 -w0)'', 0)" >/dev/null'
   editAtLine: '[ -z "$NVIM" ] && nvim +{{line}} -- {{filename}} || nvim --server "$NVIM" --remote-expr "v:lua.lazygit_open(''$(printf %s {{filename}} | base64 -w0)'', {{line}})" >/dev/null'

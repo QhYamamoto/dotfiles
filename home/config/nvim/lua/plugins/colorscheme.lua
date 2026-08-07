@@ -2,16 +2,24 @@ return {
   "sainnhe/everforest",
   priority = 1000,
   config = function()
+    -- 視認性検証のため、カスタム上書きは一切せず素の配色をそのまま使う。
+    -- 背景透過も無効(このマシンでは不要)。視認性重視でhard(高コントラスト)。
     vim.g.everforest_background = "hard"
     vim.g.everforest_transparent_background = 0
     vim.g.everforest_better_performance = 1
     vim.o.background = "dark"
     vim.cmd.colorscheme "everforest"
 
-    local parameter_hl = { fg = "#e69875" }
+    -- 関数の仮引数(外部から渡る変数)を通常の変数と色で区別する。素のeverforestでは
+    -- 変数も仮引数も同じfg色(#d3c6aa)で見分けられないため、仮引数だけアクセント色に
+    -- する。「この変数は自分で宣言したものか、渡されたものか」を一目で判別するための
+    -- 意図的な上書き。treesitter(@variable.parameter)とLSPセマンティック
+    -- (@lsp.type.parameter)の両方を上書きし、LSP有無に関わらず一貫させる。
+    local parameter_hl = { fg = "#e69875" } -- everforest orange
     vim.api.nvim_set_hl(0, "@variable.parameter", parameter_hl)
     vim.api.nvim_set_hl(0, "@lsp.type.parameter", parameter_hl)
 
+    -- 配色ではなく診断の表示挙動の設定なので維持する。
     vim.diagnostic.config {
       underline = true,
       signs = true,
