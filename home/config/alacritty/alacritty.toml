@@ -37,7 +37,7 @@ x = 1
 y = 0
 
 [window]
-opacity = 1.0
+opacity = 0.85
 # WezTerm の window_decorations = "RESIZE"(タイトルバー無し)に相当。
 # タイトルバーを出したい場合は "Full" にする。
 decorations = "None"

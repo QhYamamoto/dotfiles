@@ -2,10 +2,9 @@ return {
   "sainnhe/everforest",
   priority = 1000,
   config = function()
-    -- 視認性検証のため、カスタム上書きは一切せず素の配色をそのまま使う。
-    -- 背景透過も無効(このマシンでは不要)。視認性重視でhard(高コントラスト)。
+    -- 視認性重視でhard(高コントラスト)にし、ターミナル側の透過を活かす。
     vim.g.everforest_background = "hard"
-    vim.g.everforest_transparent_background = 0
+    vim.g.everforest_transparent_background = 1
     vim.g.everforest_better_performance = 1
     vim.o.background = "dark"
     vim.cmd.colorscheme "everforest"
