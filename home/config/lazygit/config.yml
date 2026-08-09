@@ -2,12 +2,7 @@ gui:
   theme:
     selectedLineBgColor:
       - reverse
-  # expandFocusedSidePanel: true
-  # 左カラム(コミット一覧等)と右のmain側(commit log/command log)の幅比。
-  # 注意: lazygitは内部で左カラム実効幅 = 1/int(1/sidePanelWidth) と整数丸めするため、
-  # 取れる値は離散的(0.20→20% / 0.25→25% / (0.25,0.333]→33% / (0.333,0.5]→50%)。
-  # 0.28等の中間値は無意味(0.3と同じ33%になる)。0.34以上は50%に跳ねmainが狭すぎて崩れる。
-  # log側を崩さず最も狭くできる33%(=0.3)にする。
+  expandFocusedSidePanel: false
   sidePanelWidth: 0.3
 customCommands:
   - key: "<C-p>"
