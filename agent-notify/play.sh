@@ -13,6 +13,17 @@ set -eu
 
 event="${1:-stop}"
 script_dir="$(cd "$(dirname "$0")" && pwd)"
+
+# Claude Code の Notification は「許可待ち」だけでなく、入力待ちのまま数分アイドルに
+# なったときの「waiting for your input」通知でも発火する。後者は鳴らさず、許可・注意喚起
+# のときだけ鳴らしたい。フック実行時は stdin に通知内容の JSON が来るのでそれを見て判定し、
+# アイドル通知なら無音で終了する。手動実行(stdin が端末)では素通りして通常再生する。
+if [ "$event" = "notification" ] && [ ! -t 0 ]; then
+  if cat | grep -qi 'waiting for your input'; then
+    exit 0
+  fi
+fi
+
 wav="$script_dir/sounds/${event}.wav"
 
 # 未知イベントは完了音にフォールバック。
