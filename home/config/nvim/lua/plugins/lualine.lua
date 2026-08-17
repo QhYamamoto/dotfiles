@@ -12,6 +12,7 @@ return {
         theme = "auto",
         section_separators = "",
         component_separators = "",
+        globalstatus = true, -- 分割ごとではなく画面下部に1本だけ表示し、フォーカス中のバッファ情報を出す
       },
       sections = {
         lualine_a = {
