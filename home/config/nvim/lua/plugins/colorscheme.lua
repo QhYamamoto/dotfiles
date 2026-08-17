@@ -18,6 +18,11 @@ return {
     vim.api.nvim_set_hl(0, "@variable.parameter", parameter_hl)
     vim.api.nvim_set_hl(0, "@lsp.type.parameter", parameter_hl)
 
+    -- グローバルステータスライン化で分割の境界がステータスラインで区切られなくなるため、
+    -- WinSeparatorを素のグレーより明るくして分割境界を視認しやすくする。透過を維持したいので
+    -- 背景はnoneのまま。
+    vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#9da9a0", bg = "none" })
+
     -- 配色ではなく診断の表示挙動の設定なので維持する。
     vim.diagnostic.config {
       underline = true,

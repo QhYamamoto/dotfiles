@@ -50,6 +50,14 @@ opt.fillchars:append {
   foldclose = "",
   foldsep = " ",
   fold = " ",
+  -- 分割の境界線を実線の罫線にして視認性を上げる（色はWinSeparatorで調整）。
+  vert = "│",
+  horiz = "─",
+  horizup = "┴",
+  horizdown = "┬",
+  vertleft = "┤",
+  vertright = "├",
+  verthoriz = "┼",
 }
 
 opt.whichwrap:append {
