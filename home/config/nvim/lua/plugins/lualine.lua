@@ -34,6 +34,15 @@ return {
         },
         lualine_c = {
           {
+            "filename",
+            path = 1, -- cwd（nvim を開いたディレクトリ）起点の相対パスを表示
+            symbols = {
+              modified = "[+]",
+              readonly = "[RO]",
+              unnamed = "[No Name]",
+            },
+          },
+          {
             lazy_status.updates,
             cond = lazy_status.has_updates,
             color = { fg = "#ff9e64" },
