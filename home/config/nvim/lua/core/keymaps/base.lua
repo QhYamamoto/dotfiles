@@ -13,7 +13,26 @@ keymap.set({ "i", "c" }, "ｊｋ", "<ESC>", { desc = "Exit insert mode with ｊ�
 keymap.set("n", "い", "i", { desc = "Enter insert mode with い" })
 keymap.set("i", "<C-v>", "<ESC>pa", { desc = "Paste." })
 keymap.set({ "n", "v" }, "d", '"_d', { desc = "Yank on delete" })
-keymap.set("n", "<C-c>", "<C-w>w", { noremap = true, silent = true, desc = "Jump to floating window" })
+-- フローティングウィンドウ(LSPホバー等のポップアップ)があればそこへカーソルを移す。
+-- 単なる <C-w>w はウィンドウ順送りのため、フローティングを狙っても別ペイン(Claude等)へ
+-- 飛ぶことがある。フォーカス可能なフローティングのうち最前面(zindexが最大)のものへ移動し、
+-- 無ければ通常のウィンドウ切替に委ねる。複数フロート(定義ホバーと診断等)が並んでも、
+-- 今一番手前に見えているポップアップに入れる。
+local focus_floating_window = function()
+  local target, top_zindex = nil, -1
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    local config = vim.api.nvim_win_get_config(win)
+    if config.relative ~= "" and config.focusable and (config.zindex or 0) > top_zindex then
+      target, top_zindex = win, config.zindex or 0
+    end
+  end
+  if target then
+    vim.api.nvim_set_current_win(target)
+  else
+    vim.cmd "wincmd w"
+  end
+end
+keymap.set("n", "<C-c>", focus_floating_window, { noremap = true, silent = true, desc = "Jump to floating window" })
 keymap.set("n", "<M-f>", "w", { noremap = true, silent = true, desc = "Move to next word" })
 keymap.set("n", "<M-Right>", "<C-I>", { noremap = true, silent = true, desc = "Jump to newer position" })
 keymap.set("n", "<M-Left>", "<C-o>", { noremap = true, silent = true, desc = "Jump to older position" })
