@@ -66,6 +66,20 @@ _arguments "${_arguments_options[@]}" : \
 ':tool -- The app name to configure:(alacritty claude-squad lazydocker lazygit nvim wezterm)' \
 && ret=0
 ;;
+(md-preview)
+_arguments "${_arguments_options[@]}" : \
+'--root=[Directory to serve (defaults to the git root, else the file'\''s directory)]:DIR:_default' \
+'-p+[Port to serve on (defaults to one derived from the root path)]:PORT:_default' \
+'--port=[Port to serve on (defaults to one derived from the root path)]:PORT:_default' \
+'--stop[Stop the preview server serving this file'\''s root]' \
+'--list[List running preview servers]' \
+'--stop-all[Stop all running preview servers]' \
+'--daemon[]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'::file -- The markdown file to preview:_default' \
+&& ret=0
+;;
 (sync)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
@@ -112,6 +126,10 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(md-preview)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (sync)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -141,6 +159,7 @@ _dotfiles_commands() {
 'ahk:Install ahk and reset its settings.' \
 'git:Add ssh setting for git service.' \
 'config:Open config directory of a specific tool in neovim.' \
+'md-preview:Serve a markdown tree and open it in the browser.' \
 'sync:Synchronize dotfiles command.' \
 'completion:Generate shell completion scripts.' \
 'help:Print this message or the help of the given subcommand(s)' \
@@ -175,6 +194,7 @@ _dotfiles__help_commands() {
 'ahk:Install ahk and reset its settings.' \
 'git:Add ssh setting for git service.' \
 'config:Open config directory of a specific tool in neovim.' \
+'md-preview:Serve a markdown tree and open it in the browser.' \
 'sync:Synchronize dotfiles command.' \
 'completion:Generate shell completion scripts.' \
 'help:Print this message or the help of the given subcommand(s)' \
@@ -211,6 +231,11 @@ _dotfiles__help__init_commands() {
     local commands; commands=()
     _describe -t commands 'dotfiles help init commands' commands "$@"
 }
+(( $+functions[_dotfiles__help__md-preview_commands] )) ||
+_dotfiles__help__md-preview_commands() {
+    local commands; commands=()
+    _describe -t commands 'dotfiles help md-preview commands' commands "$@"
+}
 (( $+functions[_dotfiles__help__relink_commands] )) ||
 _dotfiles__help__relink_commands() {
     local commands; commands=()
@@ -225,6 +250,11 @@ _dotfiles__help__sync_commands() {
 _dotfiles__init_commands() {
     local commands; commands=()
     _describe -t commands 'dotfiles init commands' commands "$@"
+}
+(( $+functions[_dotfiles__md-preview_commands] )) ||
+_dotfiles__md-preview_commands() {
+    local commands; commands=()
+    _describe -t commands 'dotfiles md-preview commands' commands "$@"
 }
 (( $+functions[_dotfiles__relink_commands] )) ||
 _dotfiles__relink_commands() {

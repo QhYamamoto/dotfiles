@@ -7,6 +7,13 @@ edition = "2021"
 arboard = "3.4.1"
 clap = "4.5.23"
 clap_complete = "4.5.40"
+comrak = "0.29"
 rand = "0.8"
 symlink = "0.1.0"
+tiny_http = "0.12"
 whoami = "1.2"
+
+# comrak が引き込む推移的依存のうち、新しい Rust（edition2024 / 1.88）を要求する版を
+# このリポジトリのツールチェイン（1.84）で通るバージョンへ固定する。
+indexmap = "=2.9.0"
+time = "=0.3.36"

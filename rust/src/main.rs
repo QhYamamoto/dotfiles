@@ -77,6 +77,59 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 ),
         )
         .subcommand(
+            Command::new("md-preview")
+                .about("Serve a markdown tree and open it in the browser.")
+                .arg(
+                    Arg::new("file")
+                        .required(false)
+                        .value_name("FILE")
+                        .help("The markdown file to preview")
+                        .num_args(1),
+                )
+                .arg(
+                    Arg::new("root")
+                        .long("root")
+                        .required(false)
+                        .value_name("DIR")
+                        .help("Directory to serve (defaults to the git root, else the file's directory)")
+                        .num_args(1),
+                )
+                .arg(
+                    Arg::new("port")
+                        .short('p')
+                        .long("port")
+                        .required(false)
+                        .value_name("PORT")
+                        .help("Port to serve on (defaults to one derived from the root path)")
+                        .num_args(1),
+                )
+                .arg(
+                    Arg::new("stop")
+                        .long("stop")
+                        .help("Stop the preview server serving this file's root")
+                        .action(clap::ArgAction::SetTrue),
+                )
+                .arg(
+                    Arg::new("list")
+                        .long("list")
+                        .help("List running preview servers")
+                        .action(clap::ArgAction::SetTrue),
+                )
+                .arg(
+                    Arg::new("stop-all")
+                        .long("stop-all")
+                        .help("Stop all running preview servers")
+                        .action(clap::ArgAction::SetTrue),
+                )
+                .arg(
+                    // 内部用: フォアグラウンド起動が detached で立ち上げる実サーバ本体。
+                    Arg::new("daemon")
+                        .long("daemon")
+                        .hide(true)
+                        .action(clap::ArgAction::SetTrue),
+                ),
+        )
+        .subcommand(
             Command::new("sync")
                 .about("Synchronize dotfiles command.")
                 .arg(
@@ -115,6 +168,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Some(("config", sub_matches)) => {
             commands::config::run(sub_matches)?;
+        }
+        Some(("md-preview", sub_matches)) => {
+            commands::md_preview::run(sub_matches)?;
         }
         Some(("sync", sub_matches)) => {
             let shell = sub_matches
