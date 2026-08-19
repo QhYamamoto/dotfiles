@@ -28,6 +28,27 @@ return {
       "^[0-9a-fA-F-]{36}$", -- UUID
     }
 
+    local function is_alnum(char)
+      return char ~= "" and char:match "^%w$" ~= nil
+    end
+
+    local function is_upper(char)
+      return char ~= "" and char:match "^%u$" ~= nil
+    end
+
+    -- 誤り語がより長い識別子の一部にたまたま一致するのを弾く(例: 誤り語 "sting" が
+    -- "testing" の中に一致する)。ただし spelunker は camelCase / snake_case を分解して
+    -- 語を取るので、英数字境界だけを見ると camelCase の途中の語を取りこぼす。
+    -- そのため大小の切り替わりも境界として扱う(例: "getRequstData" の "Requst")。
+    -- Lua の %w は英数字のみで _ を含まないため、snake_case は自然に境界になる。
+    local function has_word_boundary(line, start_col, end_col, word)
+      local prev_char = start_col > 1 and line:sub(start_col - 1, start_col - 1) or ""
+      local next_char = line:sub(end_col + 1, end_col + 1)
+      local head_ok = not is_alnum(prev_char) or (is_upper(word:sub(1, 1)) and not is_upper(prev_char))
+      local tail_ok = not is_alnum(next_char) or is_upper(next_char)
+      return head_ok and tail_ok
+    end
+
     local function update_spelunker_diagnostics(bufnr)
       -- disable diagnostics on terminal
       local file_type = vim.bo[bufnr].buftype
@@ -73,16 +94,19 @@ return {
               break
             end
 
-            table.insert(diagnostics, {
-              lnum = lnum - 1,
-              col = start_col - 1,
-              end_col = end_col,
-              severity = vim.diagnostic.severity.INFO,
-              message = ("Misspelled word: '%s'"):format(badword),
-              source = "spelunker",
-            })
-
-            current_col = end_col + 1
+            if has_word_boundary(line, start_col, end_col, badword) then
+              table.insert(diagnostics, {
+                lnum = lnum - 1,
+                col = start_col - 1,
+                end_col = end_col,
+                severity = vim.diagnostic.severity.INFO,
+                message = ("Misspelled word: '%s'"):format(badword),
+                source = "spelunker",
+              })
+              current_col = end_col + 1
+            else
+              current_col = start_col + 1
+            end
           end
 
           ::continue::
