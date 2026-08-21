@@ -39,7 +39,50 @@ keymap.set("n", "<M-Left>", "<C-o>", { noremap = true, silent = true, desc = "Ju
 keymap.set({ "n", "i" }, "<C-s>", "<CMD>silent! w<CR>", { desc = "Store" })
 keymap.set({ "n", "i", "v" }, "<C-z>", "<CMD>silent! u<CR>", { desc = "Undo" })
 keymap.set({ "n", "i", "v" }, "<C-y>", "<CMD>silent! redo<CR>", { desc = "Redo" })
-keymap.set({ "n", "i", "v" }, "<C-w>", "<CMD>bd!<CR>", { desc = "Delete current buffer" })
+-- 素の :bdelete は、そのバッファを表示していたウィンドウも一緒に閉じてしまう。分割
+-- レイアウトを保ったままバッファだけを破棄したいので、対象を映しているウィンドウを先に
+-- 別のバッファへ差し替えてから削除する。差し替え先はそのウィンドウの直前のバッファを
+-- 優先し、無ければバッファ番号順で次(末尾なら手前)のものを使う。他に何も残らない場合は
+-- 空バッファを作ってウィンドウを埋める。フローティングは差し替えず削除時に閉じさせる。
+local delete_current_buffer = function()
+  local target = vim.api.nvim_get_current_buf()
+
+  local listed = vim.tbl_filter(function(buf)
+    return buf ~= target and vim.bo[buf].buflisted
+  end, vim.api.nvim_list_bufs())
+
+  local usable = function(buf)
+    return buf ~= nil and buf > 0 and buf ~= target and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted
+  end
+
+  local shared = nil
+  local fallback = function()
+    if usable(shared) then
+      return shared
+    end
+    for _, buf in ipairs(listed) do
+      if buf > target then
+        shared = buf
+        break
+      end
+    end
+    shared = shared or listed[#listed] or vim.api.nvim_create_buf(true, false)
+    return shared
+  end
+
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local is_floating = vim.api.nvim_win_get_config(win).relative ~= ""
+    if not is_floating and vim.api.nvim_win_get_buf(win) == target then
+      local alt = vim.api.nvim_win_call(win, function()
+        return vim.fn.bufnr "#"
+      end)
+      vim.api.nvim_win_set_buf(win, usable(alt) and alt or fallback())
+    end
+  end
+
+  pcall(vim.api.nvim_buf_delete, target, { force = true })
+end
+keymap.set({ "n", "i", "v" }, "<C-w>", delete_current_buffer, { desc = "Delete current buffer, keeping the window" })
 keymap.set("n", "<M-S-Left>", "<C-W><", { noremap = true, silent = true, desc = "Expand window to the left" })
 keymap.set("n", "<M-S-Right>", "<C-W>>", { noremap = true, silent = true, desc = "Expand window to the right" })
 keymap.set("n", "<M-S-Up>", "<C-W>-", { noremap = true, silent = true, desc = "Expand window to top" })
