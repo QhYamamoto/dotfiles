@@ -11,7 +11,8 @@
 #     tmux 側の操作で代替する。
 
 [font]
-size = 12.0
+# 画面に入る行数・桁数を稼ぐため既定より少し小さめにしている。
+size = 10.5
 
 [font.normal]
 # 【重要 / 再現性】この family "0xProto Freeze Slant" は生成が必要な派生フォント。
@@ -32,9 +33,11 @@ style = "Regular"
 
 # 文字間隔・行間の微調整。x は letter spacing(正で広がる)、y は line spacing。
 # WezTerm より少し文字間隔を開けたいので x に正の値を入れる。
+# y は負でセル高さを削って行数を稼ぐ。詰めすぎると下線や Nerd Font のアイコンが
+# 縦方向にクリップされるので -2 程度までに留める。
 [font.offset]
 x = 1
-y = 0
+y = -1
 
 [window]
 opacity = 0.85
